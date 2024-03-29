@@ -8,13 +8,16 @@ namespace Attendance_Time_tracking_System.Models
         public int Id { get; set; }
 
         [Required]
-        [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Invalid Email Format")]
+        //[RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Invalid Email Format")]
         [MaxLength(250)]
+        [EmailAddress(ErrorMessage ="invalid email message")]
+
         public string Email { get; set; }
 
         //at least  8 char upper/lower/numbers/special characers
         [Required]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$" , ErrorMessage ="Enter a Valid password")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
 

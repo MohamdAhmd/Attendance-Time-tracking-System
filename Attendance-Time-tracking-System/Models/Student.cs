@@ -17,6 +17,7 @@ namespace Attendance_Time_tracking_System.Models
         public int Grade { get; set; } 
         // status can be  (Pending, Accepted, Rejected, Fired)
         public string status {  get; set; }
+        [Range(5,30,ErrorMessage ="minus shouldn't exseed 30 degree")]
         public int? NextMinus { get; set; }
         [ForeignKey("TrackNavigation")]
         public int TrackId { get; set; }

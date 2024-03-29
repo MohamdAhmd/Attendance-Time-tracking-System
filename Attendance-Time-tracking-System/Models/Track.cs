@@ -16,6 +16,7 @@ namespace Attendance_Time_tracking_System.Models
         [Required]
         [ForeignKey("ProgramNavigation")]
         public int ProgramID { get; set; }
+        [Range(maximum:50,minimum:10 , ErrorMessage ="enter number between 10 and 50") ]
         public int? Capacity { get; set; }
 
         public Instructor InstructorNavigation { get; set; }
