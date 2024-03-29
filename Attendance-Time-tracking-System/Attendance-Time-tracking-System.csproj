@@ -7,4 +7,10 @@
     <RootNamespace>Attendance_Time_tracking_System</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="IRepos\" />
+    <Folder Include="Repos\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>
