@@ -27,10 +27,6 @@ namespace Attendance_Time_tracking_System.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=.;Database=test;integrated security = true; trust server certificate = true");
-            }
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -45,6 +41,22 @@ namespace Attendance_Time_tracking_System.Models
             {
                 entity.Property(e => e.Grade).HasDefaultValue(250);
             });
+            modelBuilder.Entity<Instructor>(entity =>
+            {
+
+                entity.HasMany(e => e.works)
+                .WithOne(e => e.InstructorNavigation)
+                .HasForeignKey(e => e.InstructorId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            });
+
+            modelBuilder.Entity<Track>(entity =>
+            {
+                entity.HasOne(e=>e.InstructorNavigation).WithMany().HasForeignKey(e=>e.SupervisorID)
+                .OnDelete(DeleteBehavior.NoAction);
+            });
+
 
             modelBuilder.Entity<Attend>(entity =>
             {

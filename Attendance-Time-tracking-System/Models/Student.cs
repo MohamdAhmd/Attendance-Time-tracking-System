@@ -19,7 +19,7 @@ namespace Attendance_Time_tracking_System.Models
         public string status {  get; set; }
         public int? NextMinus { get; set; }
         [ForeignKey("TrackNavigation")]
-        public int TrackID { get; set; }
+        public int TrackId { get; set; }
         [ForeignKey("IntakeNavigation")]
         public int IntakeID { get; set; }
 

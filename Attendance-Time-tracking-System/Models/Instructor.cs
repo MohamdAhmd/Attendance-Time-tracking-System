@@ -6,5 +6,6 @@
         public DateTime? HireDate { get; set; }
 
         public List<WorksIn> works { get; set; } = new List<WorksIn>();
+        public Track? track { get; set; }
     }
 }

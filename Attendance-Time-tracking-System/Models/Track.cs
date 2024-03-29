@@ -10,8 +10,10 @@ namespace Attendance_Time_tracking_System.Models
         [Required]
         public string Name { get; set; }
         public bool Status { get; set; } = true;
+        [Required]
         [ForeignKey("InstructorNavigation")]
         public int SupervisorID { get; set; }
+        [Required]
         [ForeignKey("ProgramNavigation")]
         public int ProgramID { get; set; }
         public int? Capacity { get; set; }
