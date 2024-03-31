@@ -61,7 +61,9 @@ namespace Attendance_Time_tracking_System
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            // pattern: "{controller=Home}/{action=Index}/{id?}");
+             pattern: "{controller=program}/{action=Index}/{id?}");
+
 
             app.Run();
         }

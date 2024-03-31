@@ -9,36 +9,32 @@ using Attendance_Time_tracking_System.Models;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+   
     public class ProgramController : Controller
     {
-        private readonly dbContext _context;
-
-        public ProgramController(dbContext context)
+        IProgramRepo programRepo;
+        public ProgramController(IProgramRepo programRepo)
         {
-            _context = context;
+            this.programRepo = programRepo;
         }
-
         // GET: Program
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
-            return View(await _context.Programs.ToListAsync());
+            return View(programRepo.GetAllPrograms());
         }
 
         // GET: Program/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var program = await _context.Programs
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var program =  programRepo.GetProgramById(id.Value);
             if (program == null)
             {
                 return NotFound();
             }
-
             return View(program);
         }
 
@@ -53,26 +49,25 @@ namespace Attendance_Time_tracking_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Models.Program program)
+        public IActionResult Create([Bind("Id,Name")] Models.Program program)
         {
-            if (ModelState.IsValid)
+           if(!ModelState.IsValid)
             {
-                _context.Programs.Add(program);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View("create",program);
             }
-            return View(program);
+            programRepo.AddProgram(program);
+            return RedirectToAction("index");
         }
 
         // GET: Program/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var program = await _context.Programs.FindAsync(id);
+            var program = programRepo.GetProgramById(id.Value);
             if (program == null)
             {
                 return NotFound();
@@ -85,7 +80,7 @@ namespace Attendance_Time_tracking_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Models.Program program)
+        public IActionResult Edit(int id, [Bind("Id,Name")] Models.Program program)
         {
             if (id != program.Id)
             {
@@ -96,8 +91,7 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 try
                 {
-                    _context.Update(program);
-                    await _context.SaveChangesAsync();
+                    programRepo.UpdateProgram(program);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,15 +110,14 @@ namespace Attendance_Time_tracking_System.Controllers
         }
 
         // GET: Program/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var program = await _context.Programs
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var program = programRepo.GetProgramById(id.Value);
             if (program == null)
             {
                 return NotFound();
@@ -136,21 +129,21 @@ namespace Attendance_Time_tracking_System.Controllers
         // POST: Program/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var program = await _context.Programs.FindAsync(id);
-            if (program != null)
+            var program = programRepo.GetProgramById(id);
+            
+            if(program == null)
             {
-                _context.Programs.Remove(program);
+                return NotFound();
             }
-
-            await _context.SaveChangesAsync();
+            programRepo.DeleteProgram(id);
             return RedirectToAction(nameof(Index));
-        }
 
+        }
         private bool ProgramExists(int id)
         {
-            return _context.Programs.Any(e => e.Id == id);
+            return programRepo.GetProgramById(id) != null;
         }
     }
 }
