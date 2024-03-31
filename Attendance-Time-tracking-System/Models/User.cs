@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Attendance_Time_tracking_System.Models
 {
-    public class User
+    public partial class User
     {
         [Key]
         public int Id { get; set; }
@@ -11,7 +13,7 @@ namespace Attendance_Time_tracking_System.Models
         //[RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Invalid Email Format")]
         [MaxLength(250)]
         [EmailAddress(ErrorMessage ="invalid email message")]
-
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         //at least  8 char upper/lower/numbers/special characers
@@ -20,18 +22,27 @@ namespace Attendance_Time_tracking_System.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-
+        [StringLength(50,MinimumLength =3,ErrorMessage ="enter a string between 3 and 50")]
         [Required]
-        [Length(maximumLength: 50, minimumLength: 3, ErrorMessage = "Enter A name between 3 and 50 letter")]
         public string F_name { get; set; }
 
         [Required]
-        [Length(maximumLength: 50, minimumLength: 3, ErrorMessage = "Enter A name between 3 and 50 letter")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "enter a string between 3 and 50")]
         public string L_name {  get; set; }
-
+        [Range(00000000000,99999999999)]
         public int? phone { get; set; }
+
+
+        //this is for validation
+
+        [NotMapped]
+        [DataType(DataType.Password)]
+        [Remote("confirmpassword", "Validation", AdditionalFields = "Password", ErrorMessage = "the confirm password doesn't match")]
+        public string? ConfirmPassword { get; set; }
 
         public List<Roles> roles { get; set; } = new List<Roles>();
         public List<Attend> attends { get; set; } = new List<Attend>();
     }
+
+    
 }
