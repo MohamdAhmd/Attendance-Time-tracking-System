@@ -2,5 +2,6 @@
 {
     public interface IUserRepo
     {
+        public bool isunique(string Email , int Id);
     }
 }

@@ -28,6 +28,10 @@
             <img src="/images/itiLogo.png" alt="Alternate Text" class="img-fluid" style="width: 100px; height:100px;" />
             <h3 class="mt-2" style="color:#a1272d;">ITI Attendance System</h3>
         </div>
+        @if(TempData.ContainsKey("error"))
+        {
+            <h1 class="text-center" > Some Thing wend Wrong with @TempData["error"].ToString()</h1>
+        }
         <form class="mt-3 row g-3" asp-action="Register" asp-controller="Account" method="post" >
             <div asp-validation-summary="ModelOnly"></div> 
 
@@ -68,11 +72,11 @@
             </div>
             <div class="col-md-6">
                 <label  class="form-label"> Select Track</label>
-                <select asp-items="alltracks" class="form-select"></select>
+                <select asp-items="alltracks" asp-for="TrackId" class="form-select"></select>
             </div>
             <div class="col-md-6">
                 <label class="form-label"> Select Intake</label>
-                <select asp-items="allintakes" class="form-select"></select>
+                <select asp-items="allintakes" asp-for="IntakeID" class="form-select"></select>
             </div>
             <div class="col-md-6">
                 <label asp-for="Password" class="form-label"></label>
@@ -83,6 +87,11 @@
                 <label asp-for="ConfirmPassword" class="form-label"></label>
                 <input asp-for="ConfirmPassword" class="form-control mb-1" required>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="col-md-12">
+                <label asp-for="phone" class="form-label"></label>
+                <input asp-for="phone" class="form-control mb-1" >
+                <span asp-validation-for="phone" class="text-danger"></span>
             </div>
 
             <button type="submit" class="btn">Register</button>

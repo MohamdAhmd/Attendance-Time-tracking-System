@@ -7,5 +7,34 @@
         {
             this.db = db;
         }
+
+        public int AddStudent(Student student)
+        {
+            try
+            {
+                if (student == null)
+                {
+                    throw new ArgumentNullException();
+                }
+                int saved = 0;
+                student.status = "Pending";
+                student.Grade = 250;
+                student.NextMinus = 0;
+                db.Students.Add(student);
+                var done = db.SaveChanges();
+                if (done > 0)
+                {
+                    db.Roles.Add(new Roles { UserId = student.Id, Role = "Student" });
+                    saved = db.SaveChanges();
+                }
+                return saved;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
+
+        }
     }
 }

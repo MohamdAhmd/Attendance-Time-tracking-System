@@ -2,5 +2,6 @@
 {
     public interface IStudentRepo
     {
+        public int AddStudent(Student student);
     }
 }
