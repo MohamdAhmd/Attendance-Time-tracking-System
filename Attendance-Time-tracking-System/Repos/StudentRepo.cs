@@ -37,5 +37,11 @@
             
 
         }
+
+        public Student GetStudentById(int id)
+        {
+            var model = db.Students.FirstOrDefault(s => s.Id == id);
+            return model;
+        }
     }
 }

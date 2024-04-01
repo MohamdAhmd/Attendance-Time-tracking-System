@@ -72,6 +72,17 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             else if(loginroles.Contains("Student"))
             {
+                var student = studentRepo.GetStudentById(user.Id);
+                if(student.status == "Pending")
+                {
+                    TempData["NOT Found"] = "Your Account still waiting for approval";
+                    return View(loginVM);
+                }
+                else if(student.status == "Rejected")
+                {
+                    TempData["Not Found"] = "Your account have been refused";
+                    return View(loginVM);
+                }
                 return RedirectToAction("Student", "Account");
             }
             else
@@ -113,7 +124,7 @@ namespace Attendance_Time_tracking_System.Controllers
         public IActionResult showusers()
         {
             List<User> users = userRepo.GetAllUsers();
-            return Content(users[0].Id.ToString());
+            return Content(users[0].Status.ToString());
         }
     }
 }
