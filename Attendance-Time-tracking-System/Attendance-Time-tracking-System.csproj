@@ -2,14 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Attendance_Time_tracking_System</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Validations\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
