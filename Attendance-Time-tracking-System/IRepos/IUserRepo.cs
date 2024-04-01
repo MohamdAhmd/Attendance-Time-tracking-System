@@ -3,5 +3,7 @@
     public interface IUserRepo
     {
         public bool isunique(string Email , int Id);
+
+        public User GetUser(string Email , string Password);
     }
 }

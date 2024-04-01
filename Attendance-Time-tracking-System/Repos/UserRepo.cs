@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace Attendance_Time_tracking_System.Repos
 {
@@ -8,6 +9,12 @@ namespace Attendance_Time_tracking_System.Repos
         public UserRepo(dbContext db)
         {
             this.db = db;
+        }
+
+        public User GetUser(string Email, string Password)
+        {
+            var user = db.Users.Include(x=>x.roles).FirstOrDefault(x=>x.Email == Email && x.Password == Password);
+            return user;
         }
 
         public bool isunique(string Email , int Id)

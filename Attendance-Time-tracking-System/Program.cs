@@ -1,5 +1,6 @@
 using Attendance_Time_tracking_System.Models;
 using Attendance_Time_tracking_System.Repos;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Time_tracking_System
@@ -14,6 +15,11 @@ namespace Attendance_Time_tracking_System
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddSession();
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = "/Account/login";
+            });
 
             //////////////////////////////
             ////////connection////////////
@@ -56,7 +62,7 @@ namespace Attendance_Time_tracking_System
             app.UseRouting();
 
             app.UseSession();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
