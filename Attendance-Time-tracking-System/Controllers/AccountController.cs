@@ -110,6 +110,10 @@ namespace Attendance_Time_tracking_System.Controllers
             }
         }
 
-
+        public IActionResult showusers()
+        {
+            List<User> users = userRepo.GetAllUsers();
+            return Content(users[0].Id.ToString());
+        }
     }
 }

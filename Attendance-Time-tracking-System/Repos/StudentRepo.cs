@@ -17,6 +17,7 @@
                     throw new ArgumentNullException();
                 }
                 int saved = 0;
+                student.Status = true;
                 student.status = "Pending";
                 student.Grade = 250;
                 student.NextMinus = 0;

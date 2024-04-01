@@ -37,6 +37,7 @@ namespace Attendance_Time_tracking_System.Models
         [RegularExpression(@"^\d{11}$", ErrorMessage = "Phone number must be exactly 11 digits")]
         public int? phone { get; set; }
 
+        public bool Status {  get; set; } = true;
 
         //this is for validation
 
