@@ -16,19 +16,23 @@
                 {
                     throw new ArgumentNullException();
                 }
-                int saved = 0;
+                //int saved = 0;
                 student.Status = true;
                 student.status = "Pending";
                 student.Grade = 250;
                 student.NextMinus = 0;
+
+                student.roles.Add(new Roles { Role = "Student" });
+
                 db.Students.Add(student);
                 var done = db.SaveChanges();
-                if (done > 0)
-                {
-                    db.Roles.Add(new Roles { UserId = student.Id, Role = "Student" });
-                    saved = db.SaveChanges();
-                }
-                return saved;
+
+                //if (done > 0)
+                //{
+                //    db.Roles.Add(new Roles { UserId = student.Id, Role = "Student" });
+                //    saved = db.SaveChanges();
+                //}
+                return done;
             }
             catch (Exception ex)
             {
