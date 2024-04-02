@@ -9,6 +9,7 @@ namespace Attendance_Time_tracking_System.Models
         public DateTime? HireDate { get; set; }
 
         public List<WorksIn> works { get; set; } = new List<WorksIn>();
-        public Track? track { get; set; }
+        public List<Track> trackSupervised { get; set; } = new List<Track>();
+        //public Track? track { get; set; }
     }
 }

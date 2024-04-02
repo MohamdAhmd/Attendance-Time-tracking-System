@@ -1,0 +1,68 @@
+﻿@model List<Intake>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <!-- Add more table headers for other properties -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var intake in Model)
+        {
+            <tr>
+                <td>@intake.Id</td>
+                <td>
+                    <span class="editable" onclick="makeEditable(this)">@intake.Name</span>
+                    <input type="text" class="form-control edit-input" style="display: none;">
+                    <button type="button" class="btn btn-primary save-btn" style="display: none;" onclick="saveChanges(this)">Save</button>
+                </td>
+                <!-- Add more table cells for other properties -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        var currentlyEditing = null;
+
+        function makeEditable(span) {
+            var input = span.nextElementSibling;
+            var button = input.nextElementSibling;
+
+            if (currentlyEditing && currentlyEditing !== span) {
+                closeEdit(currentlyEditing);
+            }
+
+            span.style.display = 'none';
+            input.value = span.innerText;
+            input.style.display = 'block';
+            input.focus();
+            button.style.display = 'block';
+            currentlyEditing = span;
+        }
+
+        function saveChanges(button) {
+            var input = button.previousElementSibling;
+            var span = input.previousElementSibling;
+
+            span.innerText = input.value;
+            span.style.display = 'inline';
+            input.style.display = 'none';
+            button.style.display = 'none';
+            currentlyEditing = null;
+            // Here you can add AJAX call to save changes to the backend if needed
+        }
+
+        function closeEdit(span) {
+            var input = span.nextElementSibling;
+            var button = input.nextElementSibling;
+
+            span.style.display = 'inline';
+            input.style.display = 'none';
+            button.style.display = 'none';
+        }
+    </script>
+}
