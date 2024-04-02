@@ -28,5 +28,21 @@ namespace Attendance_Time_tracking_System.Controllers
             instructorRepo.AddInstructor(instructor);
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            return View(instructorRepo.GetInstructorById(id));
+        }
+        [HttpPost]
+        public IActionResult Edit(Instructor instructor)
+        {
+            instructorRepo.UpdateInstructor(instructor);
+            return RedirectToAction("Index");
+        }
+        public IActionResult Delete(int id)
+        {
+            instructorRepo.DeleteInstructor(instructorRepo.GetInstructorById(id));
+            return RedirectToAction("Index");
+        }
     }
 }
