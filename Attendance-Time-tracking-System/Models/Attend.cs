@@ -14,8 +14,8 @@ namespace Attendance_Time_tracking_System.Models
         public string? PermissionBody { get; set; }
         public string? PermissionStatus { get; set; }
 
-        public User UserNavigation { get; set; }
+        public virtual User UserNavigation { get; set; }
 
-        public Days DaysNavigation { get; set; }
+        public virtual Days DaysNavigation { get; set; }
     }
 }

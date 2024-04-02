@@ -31,7 +31,9 @@ namespace Attendance_Time_tracking_System.Models
 
         public int? phone { get; set; }
 
-        public List<Roles> roles { get; set; } = new List<Roles>();
-        public List<Attend> attends { get; set; } = new List<Attend>();
+        public bool Status { get; set; }
+
+        public virtual List<Roles> roles { get; set; } = new List<Roles>();
+        public virtual List<Attend> attends { get; set; } = new List<Attend>();
     }
 }

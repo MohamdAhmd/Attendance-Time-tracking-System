@@ -11,8 +11,8 @@ namespace Attendance_Time_tracking_System.Models
         [ForeignKey("IntakeNavigation")]
         public int IntakeId { get; set; }
 
-        public Instructor InstructorNavigation { get; set; }
-        public Track TrackNavigation { get; set; }
-        public Intake IntakeNavigation  { get; set; }
+        public virtual Instructor InstructorNavigation { get; set; }
+        public virtual Track TrackNavigation { get; set; }
+        public virtual Intake IntakeNavigation  { get; set; }
     }
 }

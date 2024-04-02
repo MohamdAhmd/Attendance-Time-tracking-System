@@ -10,6 +10,6 @@ namespace Attendance_Time_tracking_System.Models
         //role can be (Student, Instructor, Supervisor, Security, Student_affairs, Admin)
         public string Role { get; set; }
 
-        public User UserNavigation { get; set; }
-    }
+        public virtual User UserNavigation { get; set; }
+    } 
 }
