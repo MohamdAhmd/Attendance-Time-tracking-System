@@ -1,6 +1,7 @@
 ﻿using Attendance_Time_tracking_System.Repos;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.ComponentModel;
@@ -64,7 +65,7 @@ namespace Attendance_Time_tracking_System.Controllers
 
             if (loginroles.Contains("Admin"))
             {
-                return RedirectToAction("Admin","Account");
+                return RedirectToAction("showusers", "Account");
             }
             else if (loginroles.Contains("Instructor"))
             {
@@ -120,7 +121,6 @@ namespace Attendance_Time_tracking_System.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
         public IActionResult showusers()
         {
             List<User> users = userRepo.GetAllUsers();
