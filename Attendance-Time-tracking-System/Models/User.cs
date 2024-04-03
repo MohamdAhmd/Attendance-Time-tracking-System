@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Attendance_Time_tracking_System.Models
 {
-    public class User
+    public partial class User
     {
         [Key]
         public int Id { get; set; }
@@ -11,7 +14,8 @@ namespace Attendance_Time_tracking_System.Models
         //[RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Invalid Email Format")]
         [MaxLength(250)]
         [EmailAddress(ErrorMessage ="invalid email message")]
-
+        [DataType(DataType.EmailAddress)]
+        [Remote("uniqueEmail","Validation" ,AdditionalFields ="Id", ErrorMessage = "This Email Already exist")]
         public string Email { get; set; }
 
         //at least  8 char upper/lower/numbers/special characers
@@ -19,21 +23,32 @@ namespace Attendance_Time_tracking_System.Models
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$" , ErrorMessage ="Enter a Valid password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-
+        [StringLength(50,MinimumLength =3,ErrorMessage ="enter a string between 3 and 50")]
         [Required]
-        [Length(maximumLength: 50, minimumLength: 3, ErrorMessage = "Enter A name between 3 and 50 letter")]
+        [Display(Name ="First Name")]
         public string F_name { get; set; }
 
         [Required]
-        [Length(maximumLength: 50, minimumLength: 3, ErrorMessage = "Enter A name between 3 and 50 letter")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "enter a string between 3 and 50")]
+        [Display(Name = "Last Name")]
         public string L_name {  get; set; }
-
+        [AllowNull]
+        [Range(00000000000,99999999999)]
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "Phone number must be exactly 11 digits")]
         public int? phone { get; set; }
 
-        public bool Status { get; set; }
+        public bool Status {  get; set; } = true;
 
-        public virtual List<Roles> roles { get; set; } = new List<Roles>();
-        public virtual List<Attend> attends { get; set; } = new List<Attend>();
+        //this is for validation
+
+        [NotMapped]
+        [DataType(DataType.Password)]
+        [Remote("confirmpassword", "Validation", AdditionalFields = "Password", ErrorMessage = "the confirm password doesn't match")]
+        public string? ConfirmPassword { get; set; }
+
+        public List<Roles> roles { get; set; } = new List<Roles>();
+        public List<Attend> attends { get; set; } = new List<Attend>();
     }
+
+    
 }

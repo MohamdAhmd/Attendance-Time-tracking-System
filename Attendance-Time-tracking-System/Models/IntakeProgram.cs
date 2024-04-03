@@ -8,8 +8,9 @@ namespace Attendance_Time_tracking_System.Models
         public int IntakeId { get; set; }
         [ForeignKey("ProgramNavigation")]
         public int ProgramId {  get; set; }
-
-        public virtual Intake IntakeNavigation { get; set; }
-        public virtual Program ProgramNavigation { get; set; }
+        [ForeignKey("IntakeId")]
+        public Intake IntakeNavigation { get; set; }
+        [ForeignKey("ProgramId")]
+        public Program ProgramNavigation { get; set; }
     }
 }

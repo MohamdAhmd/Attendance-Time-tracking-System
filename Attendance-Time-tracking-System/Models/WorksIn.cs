@@ -10,9 +10,11 @@ namespace Attendance_Time_tracking_System.Models
         public int TrackId { get; set; }
         [ForeignKey("IntakeNavigation")]
         public int IntakeId { get; set; }
-
-        public virtual Instructor InstructorNavigation { get; set; }
-        public virtual Track TrackNavigation { get; set; }
-        public virtual Intake IntakeNavigation  { get; set; }
+        [ForeignKey("InstructorId")]
+        public Instructor InstructorNavigation { get; set; }
+        [ForeignKey("TrackId")]
+        public Track TrackNavigation { get; set; }
+        [ForeignKey("IntakeId")]
+        public Intake IntakeNavigation  { get; set; }
     }
 }

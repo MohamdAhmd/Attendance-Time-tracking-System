@@ -9,6 +9,7 @@ namespace Attendance_Time_tracking_System.Models
         [Required]
         [Length(maximumLength: 50, minimumLength: 5, ErrorMessage = "Enter A name between 5 and 50 letter")]
         public string Name { get; set; }
+        public bool status { get; set; } = true;
 
         public virtual List<Student> Students { get; set; } = new List<Student>();
         public virtual List<WorksIn> Works { get; set; } = new List<WorksIn>();

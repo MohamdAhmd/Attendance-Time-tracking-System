@@ -11,7 +11,9 @@ namespace Attendance_Time_tracking_System.Models
         public string? Lecture1 { get; set; }
         public string? Lecture2 { get; set; }
         public string? Lecture3 { get; set; }
-        public virtual Days DayNavigation { get; set; }
-        public virtual Track TrackNavigation { get; set; }
+        [ForeignKey("DayId")]
+        public Days DayNavigation { get; set; }
+        [ForeignKey("TrackId")]
+        public Track TrackNavigation { get; set; }
     }
 }

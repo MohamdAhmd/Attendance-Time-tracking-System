@@ -2,5 +2,6 @@
 {
     public interface IIntakeRepo
     {
+        public List<Intake> GetAllIntakes();
     }
 }
