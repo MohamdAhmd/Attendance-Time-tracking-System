@@ -17,12 +17,12 @@
                     throw new ArgumentNullException();
                 }
                 //int saved = 0;
-                student.Status = true;
+                //student.Status = true;
                 student.status = "Pending";
                 student.Grade = 250;
                 student.NextMinus = 0;
 
-                student.roles.Add(new Roles { Role = "Student" });
+                //student.roles.Add(new Roles { Role = "Student" });
 
                 db.Students.Add(student);
                 var done = db.SaveChanges();

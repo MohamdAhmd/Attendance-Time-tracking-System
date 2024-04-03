@@ -47,11 +47,11 @@ namespace Attendance_Time_tracking_System.Controllers
 
             List<string> loginroles = new List<string>();
 
-            foreach(var role in user.roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role,role.Role));
-                loginroles.Add(role.Role);
-            }
+            //foreach(var role in user.roles)
+            //{
+            //    claims.Add(new Claim(ClaimTypes.Role,role.Role));
+            //    loginroles.Add(role.Role);
+            //}
             ClaimsIdentity claimsIdentity1 = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
 
             claimsIdentity1.AddClaim(claim1);
@@ -121,10 +121,10 @@ namespace Attendance_Time_tracking_System.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-        public IActionResult showusers()
-        {
-            List<User> users = userRepo.GetAllUsers();
-            return Content(users[0].Status.ToString());
-        }
+        //public IActionResult showusers()
+        //{
+        //    List<User> users = userRepo.GetAllUsers();
+        //    return Content(users[0].Status.ToString());
+        //}
     }
 }
