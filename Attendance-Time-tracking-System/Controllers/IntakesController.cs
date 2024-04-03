@@ -14,17 +14,43 @@ namespace Attendance_Time_tracking_System.Controllers
         {
             return View(IntakeRepo.GetAll());
         }
-
-        public IActionResult Create(Intake data)
+        [HttpGet]
+        public IActionResult Edit(int? id)
         {
+            if (id == null)
+                return BadRequest();
+            var model = IntakeRepo.GetById(id.Value);
+            if (model == null)
+                return NotFound();
+            return View(model);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+
+
+
+        [HttpPost]
+        public IActionResult Create(IntakeViewModel data)
+        {
+            if (!ModelState.IsValid)
+                return View("Create", data);
+
             IntakeRepo.add(data);
-            return Content("Intake Added Successfully");
+            return RedirectToAction("index");
         }
         [HttpPost]
-        public IActionResult Edit(int id,[FromBody]Intake _intake)
+        public IActionResult Edit(Intake _intake)
         {
-            IntakeRepo.UpdateIntake(_intake);
-            return Content("Intake Updated Successfully");
+            if (ModelState.IsValid)
+            {
+                IntakeRepo.UpdateIntake(_intake);
+                return RedirectToAction("Index");
+            }
+            return View(_intake);
         }
 
         public IActionResult Delete(int id)

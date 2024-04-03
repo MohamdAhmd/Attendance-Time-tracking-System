@@ -1,0 +1,17 @@
+﻿@model Intake
+@{
+
+    ViewBag.Title = "Edit";
+}
+
+
+
+<form method="post">
+    <label asp-for="Id" hidden></label><input asp-for="Id" hidden /> <br />
+    <label asp-for="Name"></label>
+    <input asp-for="Name" />
+    <span asp-validation-for="Name"></span>
+    <br/> <br />
+    <input type="submit" class="btn btn-primary" value="Update " />
+</form>
+

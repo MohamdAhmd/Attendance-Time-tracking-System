@@ -2,8 +2,3 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-let intakeName = document.getElementById("intakeName")
-
-addEventListener('dblclick', (e) => {
-    e.target = Text
-})
