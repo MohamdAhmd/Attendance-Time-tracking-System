@@ -14,9 +14,10 @@ namespace Attendance_Time_tracking_System.Controllers
     {
         ITrackRepo trackRepo;
         IProgramRepo programRepo;
-        public TracksController(ITrackRepo trackRepo)
+        public TracksController(ITrackRepo trackRepo, IProgramRepo programRepo)
         {
             this.trackRepo = trackRepo;
+            this.programRepo = programRepo;
         }
         // GET: Tracks
         public IActionResult Index()
@@ -42,8 +43,8 @@ namespace Attendance_Time_tracking_System.Controllers
         // GET: Tracks/Create
         public IActionResult Create()
         {
-            //ViewData["SupervisorID"] = new SelectList(_context.Instructors, "Id", "Email");
-            //ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
+            ViewData["SupervisorID"] = new SelectList(trackRepo.GetAllInstructors(), "Id", "Email");
+            ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
             return View();
         }
 
@@ -58,9 +59,10 @@ namespace Attendance_Time_tracking_System.Controllers
             //FIX CODE HERE ===============================================================================
             if (false)
             {
+                ViewData["SupervisorID"] = new SelectList(trackRepo.GetAllInstructors(), "Id", "Email");
+                ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
                 return View("create", track);
             }
-            //ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
             trackRepo.AddTrack(track);
             return RedirectToAction("index");
         }
@@ -77,8 +79,8 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 return NotFound();
             }
-            //ViewData["SupervisorID"] = new SelectList(_context.Instructors, "Id", "Email", track.SupervisorID);
-            //ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
+            ViewData["SupervisorID"] = new SelectList(trackRepo.GetAllInstructors(), "Id", "Email");
+            ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
             return View(track);
         }
 
@@ -114,8 +116,8 @@ namespace Attendance_Time_tracking_System.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["SupervisorID"] = new SelectList(_context.Instructors, "Id", "Email", track.SupervisorID);
-           // ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
+            ViewData["SupervisorID"] = new SelectList(trackRepo.GetAllInstructors(), "Id", "Email");
+            ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
             return View(track);
         }
 
