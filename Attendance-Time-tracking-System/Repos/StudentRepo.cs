@@ -17,19 +17,18 @@
                     throw new ArgumentNullException();
                 }
                 //int saved = 0;
-                //student.Status = true;
+                student.User_Status = true;
                 student.status = "Pending";
                 student.Grade = 250;
                 student.NextMinus = 0;
-
-                //student.roles.Add(new Roles { Role = "Student" });
+                student.roles.Add(new Roles { RoleId = 2 });
 
                 db.Students.Add(student);
                 var done = db.SaveChanges();
 
                 //if (done > 0)
                 //{
-                //    db.Roles.Add(new Roles { UserId = student.Id, Role = "Student" });
+                //    db.Roles.Add(new Roles { UserId = student.Id, RoleId = 2 });
                 //    saved = db.SaveChanges();
                 //}
                 return done;
@@ -44,7 +43,7 @@
 
         public Student GetStudentById(int id)
         {
-            var model = db.Students.FirstOrDefault(s => s.Id == id);
+            var model = db.Students.Where(x=>x.User_Status==true).FirstOrDefault(s => s.Id == id);
             return model;
         }
     }
