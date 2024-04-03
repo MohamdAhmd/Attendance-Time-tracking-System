@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Attendance_Time_tracking_System.Models
@@ -18,10 +19,10 @@ namespace Attendance_Time_tracking_System.Models
         public int ProgramID { get; set; }
         [Range(maximum:50,minimum:10 , ErrorMessage ="enter number between 10 and 50") ]
         public int? Capacity { get; set; }
-
+       // [BindNever]
         public Instructor InstructorNavigation { get; set; }
+       // [BindNever]
         public Program ProgramNavigation { get; set; }
-
         public List<Student> Students { get; set; } = new List<Student>();
         public List<WorksIn> Works { get; set; } = new List<WorksIn>();
     }

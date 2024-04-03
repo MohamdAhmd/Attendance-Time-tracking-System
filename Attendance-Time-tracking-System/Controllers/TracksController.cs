@@ -57,7 +57,7 @@ namespace Attendance_Time_tracking_System.Controllers
         public IActionResult Create([Bind("Id,Name,Status,SupervisorID,ProgramID,Capacity")] Track track)
         {
             //FIX CODE HERE ===============================================================================
-            if (false)
+            if (!ModelState.IsValid)
             {
                 ViewData["SupervisorID"] = new SelectList(trackRepo.GetAllInstructors(), "Id", "Email");
                 ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
@@ -96,7 +96,7 @@ namespace Attendance_Time_tracking_System.Controllers
                 return NotFound();
             }
             //FIX CODE HERE ===============================================================================
-            if (true)
+            if (ModelState.IsValid)
             {
                 try
                 {
