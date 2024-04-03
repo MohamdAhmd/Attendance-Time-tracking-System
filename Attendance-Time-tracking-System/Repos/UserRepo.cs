@@ -19,7 +19,7 @@ namespace Attendance_Time_tracking_System.Repos
 
         public User GetUser(string Email, string Password)
         {
-            var user = db.Users.Include(x=>x.roles).FirstOrDefault(x=>x.Email == Email && x.Password == Password);
+            var user = db.Users.Where(x => x.User_Status == true).Include(x=>x.roles).ThenInclude(x=>x.RoleNavigation).FirstOrDefault(x=>x.Email == Email && x.Password == Password);
             return user;
         }
 
