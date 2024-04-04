@@ -1,10 +1,4 @@
-﻿@model IEnumerable<Attendance_Time_tracking_System.ViewModels.InstructorViewModel>
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -12,18 +6,20 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <script src="https://kit.fontawesome.com/b59801b295.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <h1>Instructor</h1>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <input type="text" id="searchInput" placeholder="Search by email...">
                 <a href="/Instructor/Create" class="btn btn-primary">Create</a>
             </div>
         </div>
     </div>
-    
-    <table class="table table-bordered table-hover">
+
+    <table class="table table-bordered table-hover" id="dataTable">
         <thead>
             <tr>
                 <th>Instructor ID</th>
@@ -35,26 +31,36 @@
                 <th>Action</th>
             </tr>
         </thead>
-       <tbody>
-           @foreach (var item in Model)
-           {
-               <tr>
-                   <td>@item.Id</td>
-                   <td>@item.Name</td>
-                   <td>@item.Email</td>
-                   <td>@item.Password</td>
-                   <td>@item.Salary</td>
-                   <td>@item.HireDate</td>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.Password</td>
+                    <td>@item.Salary</td>
+                    <td>@item.HireDate</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"
-                        onclick="return confirm('Are you sure?')">Delete</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
-                    
-               </tr>
-           }
-
-       </tbody>
+                </tr>
+            }
+        </tbody>
     </table>
+
+    <script>
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("table tbody tr").filter(function () {
+                    $(this).toggle($(this).find("td:nth-child(3)").text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+            $('#dataTable').DataTable();
+        });
+
+    </script>
 </body>
 </html>
