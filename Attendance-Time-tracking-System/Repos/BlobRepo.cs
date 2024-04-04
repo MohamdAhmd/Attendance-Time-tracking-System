@@ -47,20 +47,26 @@ namespace Attendance_Time_tracking_System.Repos
             {
                 return false;
             }
-            var uri = new Uri(imagename);
-            var blobname = Path.GetFileName(uri.LocalPath);
-            var blobServiceClient = new BlobServiceClient(_storageConnectionString);
+            try
+            {
+                var uri = new Uri(imagename);
+                var blobname = Path.GetFileName(uri.LocalPath);
+                var blobServiceClient = new BlobServiceClient(_storageConnectionString);
 
-            var blobContainerClient = blobServiceClient.GetBlobContainerClient(ContainerName);
+                var blobContainerClient = blobServiceClient.GetBlobContainerClient(ContainerName);
 
-            // Get the blob client
-            var blobClient = blobContainerClient.GetBlobClient(blobname);
+                // Get the blob client
+                var blobClient = blobContainerClient.GetBlobClient(blobname);
 
-            // Delete the blob
-            var response = await blobClient.DeleteIfExistsAsync();
+                // Delete the blob
+                var response = await blobClient.DeleteIfExistsAsync();
 
-            return response != null ? true : false;
-            
+                return response != null ? true : false;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
         }
 
