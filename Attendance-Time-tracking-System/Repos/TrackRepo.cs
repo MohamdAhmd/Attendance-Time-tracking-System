@@ -31,7 +31,7 @@ namespace Attendance_Time_tracking_System.Repos
         {
             return db.Tracks.Include(t => t.InstructorNavigation).Include(t => t.ProgramNavigation).ToList();
         }
-
+            
         public Track GetTrackById(int id)
         {
             return db.Tracks.Include(t => t.InstructorNavigation).Include(t => t.ProgramNavigation).FirstOrDefault(t => t.Id == id);
@@ -41,7 +41,6 @@ namespace Attendance_Time_tracking_System.Repos
         {
             db.Tracks.Update(track);
             db.SaveChanges();
-
         }
     }
 }
