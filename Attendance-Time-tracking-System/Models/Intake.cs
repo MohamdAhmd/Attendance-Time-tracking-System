@@ -13,9 +13,9 @@ namespace Attendance_Time_tracking_System.Models
         [DefaultValue(true)]
         public bool status { get; set; } = true;
 
-        public List<Student> Students { get; set; } = new List<Student>();
-        public List<WorksIn> Works { get; set; } = new List<WorksIn>();
-        public List<IntakeProgram> intakePrograms { get; set; } = new List<IntakeProgram> ();
+        public  List<Student> Students { get; set; } = new List<Student>();
+        public  List<WorksIn> Works { get; set; } = new List<WorksIn>();
+        public  List<IntakeProgram> intakePrograms { get; set; } = new List<IntakeProgram> ();
 
     }
 }
