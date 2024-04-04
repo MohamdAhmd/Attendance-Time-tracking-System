@@ -15,6 +15,6 @@ namespace Attendance_Time_tracking_System.Models
         
         public string? Description { get; set; }
 
-        public virtual List<IntakeProgram> intakePrograms { get; set; } = new List<IntakeProgram>();
+        public  List<IntakeProgram> intakePrograms { get; set; } = new List<IntakeProgram>();
     }
 }

@@ -13,7 +13,8 @@ namespace Attendance_Time_tracking_System.Repos
 
         public IEnumerable<Employee> GetAll()
         {
-           return  db.Employees.Where(a=>a.Status==true).ToList();
+            return  db.Employees.Where(a=>a.User_Status==true).ToList();
+            
         }
 
         public Employee GetById(int id)
@@ -23,14 +24,14 @@ namespace Attendance_Time_tracking_System.Repos
 
         public void Add(Employee employee)
         {
-            employee.Status = true;
+            employee.User_Status = true;
             db.Employees.Add(employee);
             db.SaveChanges();
         }
 
         public void Delete(Employee employee)
         {
-            employee.Status = false;
+            //employee.Status = false;
             db.SaveChanges();
         }
             

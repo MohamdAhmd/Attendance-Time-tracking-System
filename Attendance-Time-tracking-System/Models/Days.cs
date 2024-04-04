@@ -13,7 +13,7 @@ namespace Attendance_Time_tracking_System.Models
         [Required]
         public string Status { get; set; } 
 
-        public virtual List<Attend> attends { get; set; } = new List<Attend>();
-        public virtual List<TrackDays> trackDays { get; set; } = new List<TrackDays>();
+        public  List<Attend> attends { get; set; } = new List<Attend>();
+        public  List<TrackDays> trackDays { get; set; } = new List<TrackDays>();
     }
 }
