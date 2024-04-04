@@ -2,5 +2,7 @@
 {
     public interface ITrackRepo
     {
+        public List<Track> GetAllTracks();
+
     }
 }

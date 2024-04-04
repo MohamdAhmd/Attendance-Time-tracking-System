@@ -33,11 +33,12 @@ namespace Attendance_Time_tracking_System.Migrations
                     b.Property<string>("PermissionBody")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PermissionStatus")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool?>("PermissionStatus")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PermissionType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1)
+                        .HasColumnType("nvarchar(1)");
 
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
@@ -86,6 +87,11 @@ namespace Attendance_Time_tracking_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.HasKey("Id");
 
                     b.ToTable("Intakes");
@@ -114,13 +120,41 @@ namespace Attendance_Time_tracking_System.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.HasKey("Id");
 
                     b.ToTable("Programs");
+                });
+
+            modelBuilder.Entity("Attendance_Time_tracking_System.Models.RoleId", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("RoleIds");
                 });
 
             modelBuilder.Entity("Attendance_Time_tracking_System.Models.Roles", b =>
@@ -128,10 +162,12 @@ namespace Attendance_Time_tracking_System.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
-                    b.HasKey("UserId", "Role");
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Roles");
                 });
@@ -155,7 +191,9 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int>("SupervisorID")
                         .HasColumnType("int");
@@ -208,15 +246,22 @@ namespace Attendance_Time_tracking_System.Migrations
 
                     b.Property<string>("F_name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("L_name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("User_Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int?>("phone")
                         .HasColumnType("int");
@@ -268,10 +313,10 @@ namespace Attendance_Time_tracking_System.Migrations
                     b.Property<int>("Salary")
                         .HasColumnType("int");
 
-                    b.Property<int?>("trackId")
+                    b.Property<int?>("supervisorId")
                         .HasColumnType("int");
 
-                    b.HasIndex("trackId");
+                    b.HasIndex("supervisorId");
 
                     b.ToTable("Instructors");
                 });
@@ -282,12 +327,17 @@ namespace Attendance_Time_tracking_System.Migrations
 
                     b.Property<string>("Faculty")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Grade")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(250);
+
+                    b.Property<string>("GraduationDegree")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("GraduationYear")
                         .HasColumnType("datetime2");
@@ -295,7 +345,7 @@ namespace Attendance_Time_tracking_System.Migrations
                     b.Property<int>("IntakeID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NextMinus")
+                    b.Property<int>("NextMinus")
                         .HasColumnType("int");
 
                     b.Property<int>("TrackId")
@@ -303,11 +353,13 @@ namespace Attendance_Time_tracking_System.Migrations
 
                     b.Property<string>("University")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("specialization")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("status")
                         .IsRequired()
@@ -360,11 +412,19 @@ namespace Attendance_Time_tracking_System.Migrations
 
             modelBuilder.Entity("Attendance_Time_tracking_System.Models.Roles", b =>
                 {
+                    b.HasOne("Attendance_Time_tracking_System.Models.RoleId", "RoleNavigation")
+                        .WithMany("Roles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Attendance_Time_tracking_System.Models.User", "UserNavigation")
                         .WithMany("roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("RoleNavigation");
 
                     b.Navigation("UserNavigation");
                 });
@@ -451,11 +511,11 @@ namespace Attendance_Time_tracking_System.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Attendance_Time_tracking_System.Models.Track", "track")
+                    b.HasOne("Attendance_Time_tracking_System.Models.Track", "supervisor")
                         .WithMany()
-                        .HasForeignKey("trackId");
+                        .HasForeignKey("supervisorId");
 
-                    b.Navigation("track");
+                    b.Navigation("supervisor");
                 });
 
             modelBuilder.Entity("Attendance_Time_tracking_System.Models.Student", b =>
@@ -502,6 +562,11 @@ namespace Attendance_Time_tracking_System.Migrations
             modelBuilder.Entity("Attendance_Time_tracking_System.Models.Program", b =>
                 {
                     b.Navigation("intakePrograms");
+                });
+
+            modelBuilder.Entity("Attendance_Time_tracking_System.Models.RoleId", b =>
+                {
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("Attendance_Time_tracking_System.Models.Track", b =>

@@ -24,10 +24,12 @@ namespace Attendance_Time_tracking_System.Models
         public virtual DbSet<Track> Tracks { get; set; }
         public virtual DbSet<TrackDays> TrackDays { get; set; }
         public virtual DbSet<WorksIn> worksIns { get; set; }
+        public virtual DbSet<RoleId> RoleIds { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +37,7 @@ namespace Attendance_Time_tracking_System.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.UseTptMappingStrategy();
+                entity.Property(e=>e.User_Status).HasDefaultValue(true);
             });
 
             modelBuilder.Entity<Student>(entity => 
@@ -55,6 +58,7 @@ namespace Attendance_Time_tracking_System.Models
             {
                 entity.HasOne(e=>e.InstructorNavigation).WithMany().HasForeignKey(e=>e.SupervisorID)
                 .OnDelete(DeleteBehavior.NoAction);
+                entity.Property(e=>e.Status).HasDefaultValue(true);
             });
 
 
@@ -68,15 +72,22 @@ namespace Attendance_Time_tracking_System.Models
                 entity.Property(e=>e.Status).HasDefaultValue("offline");
             });
 
+
             modelBuilder.Entity<IntakeProgram>(entity =>
             {
-                entity.HasKey(e => new { e.IntakeId , e.ProgramId});
+                entity.HasKey(e => new { e.IntakeId , e.ProgramId}); 
+            });
+
+            modelBuilder.Entity<RoleId>(entity =>
+            {
+                entity.HasIndex(e=>e.Name).IsUnique();
             });
 
             modelBuilder.Entity<Roles>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.Role });
+                entity.HasKey(e => new { e.UserId, e.RoleId });
             });
+
 
             modelBuilder.Entity<TrackDays>(entity =>
             {
@@ -88,7 +99,16 @@ namespace Attendance_Time_tracking_System.Models
                 entity.HasKey(e => new { e.InstructorId, e.IntakeId, e.TrackId });
             });
 
+            
 
+            modelBuilder.Entity<Program>(entity =>
+            {
+                entity.Property(e => e.status).HasDefaultValue(true);
+            });
+            modelBuilder.Entity<Intake>(entity =>
+            {
+                entity.Property(e => e.status).HasDefaultValue(true);
+            });
 
 
 
