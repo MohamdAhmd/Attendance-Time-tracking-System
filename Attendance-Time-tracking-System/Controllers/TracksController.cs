@@ -64,7 +64,6 @@ namespace Attendance_Time_tracking_System.Controllers
             ViewData["ProgramID"] = new SelectList(programRepo.GetAllPrograms(), "Id", "Name");
             return View("create", track);
         }
-
         // GET: Tracks/Edit/5
         public IActionResult Edit(int? id)
         {

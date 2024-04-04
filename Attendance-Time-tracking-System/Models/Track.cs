@@ -20,11 +20,13 @@ namespace Attendance_Time_tracking_System.Models
         public int ProgramID { get; set; }
         [Range(maximum:50,minimum:10 , ErrorMessage ="enter number between 10 and 50") ]
         public int? Capacity { get; set; }
+#nullable disable
 
         [ForeignKey("SupervisorID")]
         public Instructor InstructorNavigation { get; set; }
         [ForeignKey("ProgramID")]
         public Program ProgramNavigation { get; set; }
+#nullable restore
 
         public List<Student> Students { get; set; } = new List<Student>();
         public List<WorksIn> Works { get; set; } = new List<WorksIn>();
