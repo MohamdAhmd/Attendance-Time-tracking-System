@@ -88,10 +88,21 @@
                 <input asp-for="ConfirmPassword" class="form-control mb-1" required>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <label asp-for="phone" class="form-label"></label>
                 <input asp-for="phone" class="form-control mb-1" >
                 <span asp-validation-for="phone" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="GraduationDegree" class="form-label"></label>
+                <select class="form-select" asp-for="GraduationDegree">
+                    <option value="Excellent">Excellent</option>
+                    <option value="Very Good">Very Good</option>
+                    <option value="Good">Good</option>
+                    <option value="acceptable">acceptable</option>
+                    <option value="Failed">Failed</option>
+                    <span asp-validation-for="GraduationDegree" class="text-danger"></span>
+                </select>
             </div>
 
             <button type="submit" class="btn">Register</button>

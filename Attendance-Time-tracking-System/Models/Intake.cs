@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Attendance_Time_tracking_System.Models
 {
@@ -9,6 +10,7 @@ namespace Attendance_Time_tracking_System.Models
         [Required]
         [Length(maximumLength: 50, minimumLength: 5, ErrorMessage = "Enter A name between 5 and 50 letter")]
         public string Name { get; set; }
+        [DefaultValue(true)]
         public bool status { get; set; } = true;
 
         public virtual List<Student> Students { get; set; } = new List<Student>();

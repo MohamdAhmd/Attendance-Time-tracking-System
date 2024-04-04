@@ -22,8 +22,8 @@ namespace Attendance_Time_tracking_System.Models
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:mm/dd/yyyy}", ApplyFormatInEditMode =true)]
         [Remote("GraduationYear","Validation",ErrorMessage = "Enter a date in the past")]
         public DateTime GraduationYear { get; set; }
-
-        public string GraduationGrade { get; set; }
+        [Display(Name = "Graduation Grade")]
+        public string GraduationDegree { get; set; }
         public int Grade { get; set; } 
         // status can be  (Pending, Accepted, Rejected, Fired)
         public string status { get; set; } = "Pending";

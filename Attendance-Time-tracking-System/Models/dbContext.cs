@@ -37,6 +37,7 @@ namespace Attendance_Time_tracking_System.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.UseTptMappingStrategy();
+                entity.Property(e=>e.User_Status).HasDefaultValue(true);
             });
 
             modelBuilder.Entity<Student>(entity => 
@@ -57,6 +58,7 @@ namespace Attendance_Time_tracking_System.Models
             {
                 entity.HasOne(e=>e.InstructorNavigation).WithMany().HasForeignKey(e=>e.SupervisorID)
                 .OnDelete(DeleteBehavior.NoAction);
+                entity.Property(e=>e.Status).HasDefaultValue(true);
             });
 
 
@@ -70,10 +72,6 @@ namespace Attendance_Time_tracking_System.Models
                 entity.Property(e=>e.Status).HasDefaultValue("offline");
             });
 
-            modelBuilder.Entity<Intake>(entity =>
-            {
-                entity.HasIndex(e => e.Name).IsUnique();
-            });
 
             modelBuilder.Entity<IntakeProgram>(entity =>
             {
@@ -101,7 +99,16 @@ namespace Attendance_Time_tracking_System.Models
                 entity.HasKey(e => new { e.InstructorId, e.IntakeId, e.TrackId });
             });
 
+            
 
+            modelBuilder.Entity<Program>(entity =>
+            {
+                entity.Property(e => e.status).HasDefaultValue(true);
+            });
+            modelBuilder.Entity<Intake>(entity =>
+            {
+                entity.Property(e => e.status).HasDefaultValue(true);
+            });
 
 
 

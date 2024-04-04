@@ -4,6 +4,7 @@ using Attendance_Time_tracking_System.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Time_tracking_System.Migrations
 {
     [DbContext(typeof(dbContext))]
-    partial class dbContextModelSnapshot : ModelSnapshot
+    [Migration("20240403215953_updating2")]
+    partial class updating2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,9 +91,7 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -128,9 +129,7 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -145,9 +144,8 @@ namespace Attendance_Time_tracking_System.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Name")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -191,9 +189,7 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<int>("SupervisorID")
                         .HasColumnType("int");
@@ -259,9 +255,7 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("User_Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<int?>("phone")
                         .HasColumnType("int");
@@ -335,7 +329,7 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(250);
 
-                    b.Property<string>("GraduationDegree")
+                    b.Property<string>("GraduationGrade")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
