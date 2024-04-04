@@ -43,6 +43,10 @@ namespace Attendance_Time_tracking_System.Repos
 
         public async Task<bool> RemoveImage(string imagename)
         {
+            if(imagename == null)
+            {
+                return false;
+            }
             var uri = new Uri(imagename);
             var blobname = Path.GetFileName(uri.LocalPath);
             var blobServiceClient = new BlobServiceClient(_storageConnectionString);
@@ -55,22 +59,23 @@ namespace Attendance_Time_tracking_System.Repos
             // Delete the blob
             var response = await blobClient.DeleteIfExistsAsync();
 
-            if (response != null)
-            {
-                return true;
-            }
-            return false;
+            return response != null ? true : false;
+            
+
         }
 
         public async Task<string> UpdateImage(string oldimage, IFormFile image)
         {
             try
             {
-                if (await RemoveImage(oldimage))
+                if (image == null)
                 {
-                    return await AddingImage(image);
+                    return oldimage;
                 }
-                return null;
+                var result  =  await RemoveImage(oldimage);
+                
+                return await AddingImage(image);
+                
             }
             catch (Exception ex)
             {
