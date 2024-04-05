@@ -43,6 +43,7 @@ namespace Attendance_Time_tracking_System.Repos
         }
         public void UpdateInstructor(Instructor instructor)
         {
+            
             db.Instructors.Update(instructor);
             db.SaveChanges();
         }

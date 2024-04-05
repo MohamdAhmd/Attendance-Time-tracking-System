@@ -31,6 +31,8 @@ namespace Attendance_Time_tracking_System.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            var roles = db.Roles.ToList();
+            ViewBag.Roles = roles;
             return View(instructorRepo.GetInstructorById(id));
         }
         [HttpPost]
