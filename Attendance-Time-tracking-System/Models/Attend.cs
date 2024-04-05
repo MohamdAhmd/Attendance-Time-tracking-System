@@ -21,8 +21,8 @@ namespace Attendance_Time_tracking_System.Models
         [DefaultValue(true)]
         public bool? PermissionStatus { get; set; } = true;
         [ForeignKey("UserId")]
-        public User UserNavigation { get; set; }
+        public virtual User UserNavigation { get; set; }
         [ForeignKey("DayId")]
-        public Days DaysNavigation { get; set; }
+        public virtual Days DaysNavigation { get; set; }
     }
 }

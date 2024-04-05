@@ -8,7 +8,7 @@ namespace Attendance_Time_tracking_System.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public List<Roles> Roles { get; set; } = new List<Roles>();
+        public virtual List<Roles> Roles { get; set; } = new List<Roles>();
     }
 }
 

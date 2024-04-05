@@ -1,4 +1,5 @@
 ﻿using Attendance_Time_tracking_System.Validations;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -30,13 +31,13 @@ namespace Attendance_Time_tracking_System.Models
         [Range(5, 30, ErrorMessage = "minus shouldn't exseed 30 degree")]
         public int NextMinus { get; set; } 
         [ForeignKey("TrackNavigation")]
-        public int TrackId { get; set; }
+        public virtual int TrackId { get; set; }
         [ForeignKey("IntakeNavigation")]
-        public int IntakeID { get; set; }
+        public virtual int IntakeID { get; set; }
         [ForeignKey("TrackId")]
-        public Track TrackNavigation { get; set; }
+        public virtual Track TrackNavigation { get; set; }
         [ForeignKey("IntakeID")]
-        public Intake IntakeNavigation { get; set; }
+        public virtual Intake IntakeNavigation { get; set; }
 
     }
 }
