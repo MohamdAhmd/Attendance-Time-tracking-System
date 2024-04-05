@@ -37,7 +37,7 @@ namespace Attendance_Time_tracking_System.Repos
        
         public void AddInstructor(Instructor instructor)
         {
-            instructor.roles.Add(new Roles { Role = "Instructor" });
+            instructor.roles.Add(new Roles {  RoleId= 3 });
             db.Instructors.Add(instructor);
             db.SaveChanges();
         }
