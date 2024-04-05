@@ -9,5 +9,11 @@ namespace Attendance_Time_tracking_System.Repos
         {
             this.db = db;
         }
+
+        public List<Intake> GetAllIntakes()
+        {
+            var model = db.Intakes.ToList();
+            return model;
+        }
     }
 }
