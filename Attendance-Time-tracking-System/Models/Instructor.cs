@@ -9,6 +9,6 @@ namespace Attendance_Time_tracking_System.Models
         public DateTime? HireDate { get; set; }
 
         public virtual List<WorksIn> works { get; set; } = new List<WorksIn>();
-        public virtual Track? track { get; set; }
+        public virtual Track? supervisor { get; set; } 
     }
 }

@@ -26,6 +26,7 @@ namespace Attendance_Time_tracking_System
             {
                 //"Data Source=tcp:ititeam.database.windows.net,1433;Initial Catalog=Attendance;User ID=sqladmin@pdsqlproject;Password=Admin12345;Connect Timeout=1200"
                 optionBuilder.UseSqlServer(connectionstring);
+                optionBuilder.UseLazyLoadingProxies();
             });
 
             builder.Services.AddScoped<IAttendRepo, AttendRepo>();

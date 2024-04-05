@@ -12,10 +12,12 @@ namespace Attendance_Time_tracking_System.Models
         public string? Status { get; set; }
         public string? PermissionType {  get; set; }
         public string? PermissionBody { get; set; }
-        public string? PermissionStatus { get; set; }
-
+        //true ,  false
+        [DefaultValue(true)]
+        public bool? PermissionStatus { get; set; } = true;
+        [ForeignKey("UserId")]
         public virtual User UserNavigation { get; set; }
-
+        [ForeignKey("DayId")]
         public virtual Days DaysNavigation { get; set; }
     }
 }

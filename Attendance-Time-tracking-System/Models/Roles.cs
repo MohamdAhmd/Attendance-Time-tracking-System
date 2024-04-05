@@ -5,10 +5,15 @@ namespace Attendance_Time_tracking_System.Models
     public class Roles
     {
         [ForeignKey("UserNavigation")]
-        public int UserId { get; set; }
+        public virtual int UserId { get; set; }
 
         //role can be (Student, Instructor, Supervisor, Security, Student_affairs, Admin)
-        public string Role { get; set; }
+        [ForeignKey("RoleNavigation")]
+        public virtual int RoleId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual User UserNavigation { get; set; }
+        [ForeignKey("RoleId")]
+        public virtual RoleId RoleNavigation { get; set; }
 
         public virtual User UserNavigation { get; set; }
     } 

@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.fa-solid.fa-user-minus:hover,
+.fa-solid.fa-user-pen:hover {
+    font-size: 24px;
+}
