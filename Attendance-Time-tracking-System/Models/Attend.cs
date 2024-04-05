@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Attendance_Time_tracking_System.Models
 {
@@ -9,13 +11,18 @@ namespace Attendance_Time_tracking_System.Models
         [ForeignKey("DaysNavigation")]
         public int DayId { get; set; }
         public DateTime? Time { get; set; }
+        //(Late , Absent , Present)
         public string? Status { get; set; }
+        [MaxLength(1)]
+        //L : Late  ,,,,, A : Absent
         public string? PermissionType {  get; set; }
         public string? PermissionBody { get; set; }
-        public string? PermissionStatus { get; set; }
-
+        //true ,  false
+        [DefaultValue(true)]
+        public bool? PermissionStatus { get; set; } = true;
+        [ForeignKey("UserId")]
         public User UserNavigation { get; set; }
-
+        [ForeignKey("DayId")]
         public Days DaysNavigation { get; set; }
     }
 }
