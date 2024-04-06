@@ -25,7 +25,7 @@ namespace Attendance_Time_tracking_System.Models
         public virtual DbSet<TrackDays> TrackDays { get; set; }
         public virtual DbSet<WorksIn> worksIns { get; set; }
         public virtual DbSet<RoleId> RoleIds { get; set; }
-
+        public virtual DbSet<Permission> Permissions { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -107,7 +107,10 @@ namespace Attendance_Time_tracking_System.Models
                 entity.Property(e => e.status).HasDefaultValue(true);
             });
 
-
+            modelBuilder.Entity<Permission>(entity =>
+            {
+                entity.HasKey(e => new { e.day, e.StudentId });
+            });
 
             base.OnModelCreating(modelBuilder);
         }
