@@ -67,10 +67,7 @@ namespace Attendance_Time_tracking_System.Models
                 entity.HasKey(e => new {e.UserId , e.DayId });
             });
 
-            modelBuilder.Entity<Days>(entity =>
-            {
-                entity.Property(e=>e.Status).HasDefaultValue("offline");
-            });
+            
 
 
             modelBuilder.Entity<IntakeProgram>(entity =>
