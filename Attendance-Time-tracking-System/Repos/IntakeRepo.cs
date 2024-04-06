@@ -61,5 +61,11 @@ namespace Attendance_Time_tracking_System.Repos
             db.IntakesProgram.Add(newdata);
             db.SaveChanges();
         }
+
+        public List<Intake> GetAllIntakes()
+        {
+            var model = db.Intakes.ToList();
+            return model;
+        }
     }
 }

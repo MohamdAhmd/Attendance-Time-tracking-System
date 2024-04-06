@@ -9,6 +9,7 @@
 </head>
 <body>
 
+
     <div class="page-container d-flex ">
         <aside>
             <h1>Admin Control</h1>
@@ -17,7 +18,7 @@
                 <li><a asp-controller="Instructor" asp-action="Index" class="@ViewData["InstructorsActive"]">Instructors</a></li>
                 <li><a  asp-controller="Account" asp-action="Logout" class="@ViewData["LogOutActive"]">LogOut</a></li>
             </ul>
-           @* <img class="circle" src="~/images/circles.png" /> *@
+            <img class="circle" src="~/images/circles.png" /> 
         </aside>
         <div class="dynamic-section">
             @RenderBody()
@@ -32,4 +33,4 @@
     @RenderSection("scripts", required: false)
 
 </body>
-</html>
+</html> 
