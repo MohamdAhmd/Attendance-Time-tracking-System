@@ -1,94 +1,57 @@
 ﻿@model Employee
 @{
     ViewData["Title"] = "Create";
-    List<Roles> Roles = ViewBag.Role as List<Roles>;
-
-    SelectList RolsList = new SelectList(Roles);
-
+    List<RoleId> Roles = ViewBag.Role;
 }
-
-<h1>Create Employee</h1>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create </title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Employee</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-width: 500px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .text-danger {
+            color: #dc3545;
+        }
+    </style>
+
+
 </head>
 <body>
     <div class="container mt-5">
+        <h1>Create Employee</h1>
         <form method="post" asp-action="Create" asp-controller="Employee">
-      
-            @if(ViewBag.ErrorMsg != null)
+            @if (ViewBag.ErrorMsg != null)
             {
-                <div class=" alert alert-danger">@ViewBag.ErrorMsg</div>
+                <div class="alert alert-danger">@ViewBag.ErrorMsg</div>
             }
-
-            @* @Html.Partial("partialView", Model) *@
+            @Html.Partial("partialView", Model)
             <div class="form-group">
-                <label asp-for="F_name"></label>
-                <input asp-for="F_name" class="form-control" />
-                <span asp-validation-for="F_name" class="text-denger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="L_name"></label>
-                <input asp-for="L_name" class="form-control"  />
-                <span asp-validation-for="L_name" class="text-danger"></span>
-            </div>
+                <label for="roles">Roles:</label>
+                <select id="roles" name="roles" class="form-select" aria-label="Default select example" asp-for="roles">
+                    @foreach (var item in Roles)
+                    {
+                        <option value="@item.Id">@item.Name</option>
 
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+                    }
+                </select>
 
-            <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Salary"></label>
-                <input asp-for="Salary" class="form-control" />
-                <span asp-validation-for="Salary" class="text-danger"></span>
-            </div> 
-            
-            <div class="form-group">
-                <label asp-for="phone"></label>
-                <input asp-for="phone" class="form-control" />
-                <span asp-validation-for="phone" class="text-danger"></span>
-            </div>
-
-            @* 
-            <select class="form-select" aria-label="Default select example" asp-for="roles">
-
-                @foreach (var item in Roles)
-               {
-                @if (item.Role == "Student_affairs" || item.Role == "Security")
-                {
-                   <option value="">item.Role</option>
-
-                }
-           </select> *@
-
-
-
-            <div class="form-group">
-            <select class="form-control" aria-label="Default select example" asp-for="roles" asp-items="RolsList">
-                <option value="">-- Select Role --</option>
-            </select>
-            </div>
-
-            
-            <button type="submit" class="btn btn-primary">Create</button>
-            <a href="/Employee/Index" class="btn btn-info">Back</a>
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a href="/Employee/Index" class="btn btn-info">Back</a>
         </form>
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </body>
 </html>

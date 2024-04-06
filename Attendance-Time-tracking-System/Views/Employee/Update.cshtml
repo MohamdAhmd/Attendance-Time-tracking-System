@@ -1,9 +1,11 @@
 ﻿@model Employee
 @{
     ViewData["Title"] = "Update";
+    List<RoleId> Roles = ViewBag.Role;
+
 }
 
-<h1>Create Employee</h1>
+<h1>Update Employee </h1>
 
 <!DOCTYPE html>
 <html>
@@ -20,47 +22,21 @@
             {
                 <div class=" alert alert-danger">@ViewBag.ErrorMsg</div>
             }
-
-    
+            @Html.Partial("partialView", Model)
             <div class="form-group">
-                <label asp-for="F_name"></label>
-                <input asp-for="F_name" class="form-controle" value="@Model.F_name" />
-                <span asp-validation-for="F_name" class="text-denger"></span>
+                <label for="roles">Roles:</label>
+                <select id="roles" name="roles" class="form-select" aria-label="Default select example" asp-for="roles">
+                    @foreach (var item in Roles)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+
+                    }
+                </select>
             </div>
 
-            <div class="form-group">
-                <label asp-for="L_name"></label>
-                <input asp-for="L_name" class="form-control" value="@Model.L_name" />
-                <span asp-validation-for="L_name" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" value="@Model.Email" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" value="@Model.Password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Salary"></label>
-                <input asp-for="Salary" class="form-control" value="@Model.Salary" />
-                <span asp-validation-for="Salary" class="text-danger"></span>
-            </div>
-
-@* 
-            <select class="form-select" aria-label="Default select example" asp-for="roles">
-                <option selected>Select Role</option>
-                <option value="">Student_Affairs</option>
-                <option value="">Security</option>
-            </select> *@
-
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary">Create</button>
             <a href="/Employee/Index" class="btn btn-info">Back</a>
+
         </form>
     </div>
 
