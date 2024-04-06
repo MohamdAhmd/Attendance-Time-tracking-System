@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Attendance_Time_tracking_System</RootNamespace>
   </PropertyGroup>
@@ -12,9 +12,11 @@
     <Content Remove="Metadata\**" />
     <EmbeddedResource Remove="Metadata\**" />
     <None Remove="Metadata\**" />
+    <Folder Include="Validations\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.3" />

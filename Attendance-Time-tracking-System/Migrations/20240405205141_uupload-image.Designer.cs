@@ -4,6 +4,7 @@ using Attendance_Time_tracking_System.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Time_tracking_System.Migrations
 {
     [DbContext(typeof(dbContext))]
-    partial class dbContextModelSnapshot : ModelSnapshot
+    [Migration("20240405205141_uupload-image")]
+    partial class uuploadimage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,11 +43,8 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("StatusOut")
-                        .HasColumnType("bit");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Time")
                         .HasColumnType("datetime2");
@@ -66,6 +66,12 @@ namespace Attendance_Time_tracking_System.Migrations
 
                     b.Property<DateTime>("Day")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("offline");
 
                     b.HasKey("Id");
 
@@ -143,13 +149,13 @@ namespace Attendance_Time_tracking_System.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("RoleIds");
                 });
@@ -219,12 +225,6 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Lecture3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartPeriod")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DayId", "TrackId");
@@ -342,6 +342,7 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasDefaultValue(250);
 
                     b.Property<string>("GraduationDegree")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("GraduationYear")
@@ -367,6 +368,7 @@ namespace Attendance_Time_tracking_System.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("IntakeID");
