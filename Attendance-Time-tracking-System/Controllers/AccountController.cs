@@ -28,6 +28,18 @@ namespace Attendance_Time_tracking_System.Controllers
             
             return View();
         }
+        /*
+            var userIdClaim = parseInt(User.FindFirst("UserId"));
+
+            if (userIdClaim != null)
+            {
+                // Access the value of the "UserId" claim
+                string userId = userIdClaim.Value;
+                // Use userId as needed
+            }
+    
+         */
+
         [HttpPost]
         public async Task<IActionResult> login(LoginVM loginVM)
         {
@@ -43,6 +55,7 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             Claim claim1 = new Claim(ClaimTypes.Name, user.F_name + " " + user.L_name);
             Claim claim2 = new Claim(ClaimTypes.Email, user.Email);
+            Claim claim3 = new Claim("UserId", user.Id.ToString());      
             List<Claim> claims = new List<Claim>();
 
             List<string> loginroles = new List<string>();
@@ -56,6 +69,7 @@ namespace Attendance_Time_tracking_System.Controllers
 
             claimsIdentity1.AddClaim(claim1);
             claimsIdentity1.AddClaim(claim2);
+            claimsIdentity1.AddClaim(claim3);
             claimsIdentity1.AddClaims(claims);
 
             ClaimsPrincipal claimsPrincipal1 = new ClaimsPrincipal();
