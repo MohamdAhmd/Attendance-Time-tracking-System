@@ -11,11 +11,13 @@
     <Compile Remove="Metadata\**" />
     <Content Remove="Metadata\**" />
     <EmbeddedResource Remove="Metadata\**" />
+    <Folder Include="wwwroot\js\Security\" />
     <None Remove="Metadata\**" />
     <Folder Include="Validations\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.3" />

@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "Security";
+}
+
+@section Style{
+    <style>
+
+        table {
+            border-spacing: 1;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+        table thead tr {
+            height: 60px;
+            background: #36304a;
+            color:white;
+        }
+        table  tr td{
+            margin-left:10px;
+            padding:10px;
+        }
+    </style>
+}
+
+<div>
+    <div class="btn-group mt-5" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+        <label class="btn btn-outline-primary" for="btnradio1">Employees</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btnradio2">Instructors</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btnradio3">Students</label>
+    </div>
+</div>
+<div class="d-flex justify-content-center mt-2">
+<table >
+    <thead>
+        <tr>
+            <td>name</td>
+            <td>Attend</td>
+            <td>Leave</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ahmed</td>
+            <td>
+                 <div class="form-check form-switch">
+                    <input class="form-check-input attend" type="checkbox" checked/>
+                </div>
+            </td>
+            <td>
+                <div class="form-check form-switch">
+                    <input class="form-check-input leave" type="checkbox" disabled/>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            $(".attend").each(function () {
+                var att = $(this);
+                if (att.prop("checked")) {
+                    var leaveCheckbox = att.closest("tr").find(".leave");
+                    leaveCheckbox.prop("disabled", false);
+                }
+            });
+
+            $(".attend").on("change", function () {
+                var att = $(this);
+                var leaveCheckbox = att.closest("tr").find(".leave");
+                if (att.prop("checked")) {
+                    leaveCheckbox.prop("disabled", false);
+                }
+                else {
+                    leaveCheckbox.prop("checked", false);
+                    leaveCheckbox.prop("disabled", true);
+                }
+            });
+        });
+    </script>
+}

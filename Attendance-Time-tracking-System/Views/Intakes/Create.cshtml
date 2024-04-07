@@ -1,0 +1,14 @@
+﻿@model IntakeViewModel
+
+<form asp-controller="Intakes" method="post">
+    <label asp-for="IntakeName"></label>
+    <input asp-for="IntakeName" />
+    <span asp-validation-for="IntakeName"></span>
+    
+    <label asp-for="ProgramName"></label>
+    <input asp-for="ProgramName" />
+    <span asp-validation-for="ProgramName"></span>
+
+    <br /> <br />
+    <input type="submit" class="btn btn-primary" value="Create" />
+</form>

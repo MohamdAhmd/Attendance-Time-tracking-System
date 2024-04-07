@@ -39,6 +39,8 @@ namespace Attendance_Time_tracking_System.Models
 
         public bool User_Status { get; set; } = true;
 
+        public string? image { get; set; }
+
         //this is for validation
 
         [NotMapped]

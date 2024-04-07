@@ -12,14 +12,9 @@ namespace Attendance_Time_tracking_System.Models
         public int DayId { get; set; }
         public DateTime? Time { get; set; }
         //(Late , Absent , Present)
-        public string? Status { get; set; }
-        [MaxLength(1)]
-        //L : Late  ,,,,, A : Absent
-        public string? PermissionType {  get; set; }
-        public string? PermissionBody { get; set; }
-        //true ,  false
-        [DefaultValue(true)]
-        public bool? PermissionStatus { get; set; } = true;
+        public bool Status { get; set; }
+        public bool StatusOut {  get; set; }
+
         [ForeignKey("UserId")]
         public User UserNavigation { get; set; }
         [ForeignKey("DayId")]

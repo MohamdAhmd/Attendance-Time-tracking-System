@@ -1,0 +1,38 @@
+﻿@model IEnumerable<IntakeViewModel>
+
+
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Intake Name</th>
+            <th>Program Name</th>
+            <th>Student Number</th>
+            <!-- Add more table headers for other properties -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var intake in Model)
+        {
+            <tr>
+                <td>@intake.IntakeName</td>
+                <td>
+                    @intake.ProgramName
+                </td>
+                <td>@intake.stdNo</td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Intakes" asp-route-id="@intake.IntakeId" >
+                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<br />
+<br />
+<br />
+
+<a asp-action="Create" asp-controller="Intakes" class="btn btn-info add-Intake" >Add</a>
