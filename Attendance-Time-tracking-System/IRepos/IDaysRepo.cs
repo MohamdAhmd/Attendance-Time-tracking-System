@@ -2,5 +2,7 @@
 {
     public interface IDaysRepo
     {
+        public Days GetTheDayId();
+
     }
 }

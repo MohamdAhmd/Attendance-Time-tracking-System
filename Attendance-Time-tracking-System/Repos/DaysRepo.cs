@@ -9,5 +9,11 @@ namespace Attendance_Time_tracking_System.Repos
         {
             db = _db; 
         }
+
+        public Days GetTheDayId()
+        {
+            var model = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today);
+            return model;
+        }
     }
 }

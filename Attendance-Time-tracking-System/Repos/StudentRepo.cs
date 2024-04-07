@@ -46,5 +46,50 @@
             var model = db.Students.Where(x=>x.User_Status==true).FirstOrDefault(s => s.Id == id);
             return model;
         }
+
+        public bool changeattendance(int userId, bool value)
+        {
+            try
+            {
+                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today).Id;
+                var UserAttendance = db.Attends.FirstOrDefault(x => x.DayId == dayID && x.UserId == userId);
+                var NumberOfAbsenceDays = db.Attends.Where(x => x.UserId == userId && x.DayId != dayID && x.Status==false).Count();
+                if (UserAttendance != null)
+                {
+
+                    UserAttendance.Status = value;
+                    UserAttendance.Time = DateTime.Now;
+                    if (value == false) { UserAttendance.StatusOut = false; }
+                }
+                else
+                {
+                    var userattend = new Attend
+                    {
+                        UserId = userId,
+                        DayId = dayID,
+                        Time = DateTime.Now,
+                        Status = value,
+                        StatusOut = false
+                    };
+                    db.Attends.Add(userattend);
+                }
+
+                if (value)
+                {
+                    
+                }
+
+                if (db.SaveChanges() > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
     }
 }

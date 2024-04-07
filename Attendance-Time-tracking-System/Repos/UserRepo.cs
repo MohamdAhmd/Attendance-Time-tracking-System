@@ -34,5 +34,93 @@ namespace Attendance_Time_tracking_System.Repos
                 return !db.Users.Any(x => x.Email == Email && x.Id != Id);
             }
         }
+    
+        public List<AttendanceList> GetAllUsersWithRole(int value)
+        {
+            var exist = db.Days.Any(x=>x.Day.Date==DateTime.Today);
+            var dayID = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today).Id;
+            var users = db.Users.Include(x=>x.roles).Include(x=>x.attends)
+                        .Where(x=>x.roles.Any(y=>y.RoleId==value)&&x.User_Status==true && exist)
+                        .Select(x=>new AttendanceList
+                                { f_name= x.F_name,
+                                  l_name= x.L_name,
+                                  id = x.Id,
+                                  attendpresent = x.attends.FirstOrDefault(y=>y.DayId==dayID).Status,
+                                  attendleave = x.attends.FirstOrDefault(y => y.DayId == dayID).StatusOut
+                        }).ToList();
+            return users;
+        }
+
+
+        public bool changeattendance (int userId , bool value)
+        {
+            try
+            {
+                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today).Id;
+                var UserAttendance = db.Attends.FirstOrDefault(x => x.DayId == dayID && x.UserId == userId);
+                if (UserAttendance != null)
+                {
+                    
+                    UserAttendance.Status = value;
+                    UserAttendance.Time = DateTime.Now;
+                    if (value==false) { UserAttendance.StatusOut = false; }
+                }
+                else
+                {
+                    var userattend = new Attend
+                    {
+                        UserId = userId,
+                        DayId = dayID,
+                        Time = DateTime.Now,
+                        Status = value,
+                        StatusOut = false
+                    };
+                    db.Attends.Add(userattend);
+                }
+                if (db.SaveChanges() > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public bool ChangeLeaveAttendance(int userId , bool value)
+        {
+            try
+            {
+                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today).Id;
+                var UserAttendance = db.Attends.FirstOrDefault(x => x.DayId == dayID && x.UserId == userId);
+                if (UserAttendance != null)
+                {
+                    UserAttendance.StatusOut = value;
+                }
+                else
+                {
+                    var userattend = new Attend
+                    {
+                        UserId = userId,
+                        DayId = dayID,
+                        Time = DateTime.Now,
+                        Status = true,
+                        StatusOut = value
+                    };
+                    db.Attends.Add(userattend);
+                }
+                if (db.SaveChanges() > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }
