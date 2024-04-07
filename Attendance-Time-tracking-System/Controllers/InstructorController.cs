@@ -31,12 +31,16 @@ namespace Attendance_Time_tracking_System.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            var roles = db.RoleIds.ToList();
+            var tracks = db.Tracks.ToList();
+            ViewBag.Roles = roles;
+            ViewBag.Tracks = tracks;
             return View(instructorRepo.GetInstructorById(id));
         }
         [HttpPost]
-        public IActionResult Edit(Instructor instructor)
+        public IActionResult Edit(Instructor instructor, int? id)
         {
-            instructorRepo.UpdateInstructor(instructor);
+            instructorRepo.UpdateInstructor(instructor,id);
             return RedirectToAction("Index");
         }
         public IActionResult Delete(int id)
