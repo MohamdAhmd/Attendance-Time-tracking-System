@@ -7,7 +7,7 @@ namespace Attendance_Time_tracking_System.IRepos
         public Instructor GetInstructorById(int id);
         public List<InstructorViewModel> GetAllInstructors();
         public void AddInstructor(Instructor instructor);
-        public void UpdateInstructor(Instructor instructor);
+        public void UpdateInstructor(Instructor instructor,int? id);
         public void DeleteInstructor(Instructor instructor);
     }
 }
