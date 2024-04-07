@@ -7,10 +7,12 @@ namespace Attendance_Time_tracking_System.Repos
     public class InstructorRepo : IInstructorRepo
     {
         readonly dbContext db;
+       
         public InstructorRepo(dbContext _db)
         {
             db = _db;
         }
+        
         public List<InstructorViewModel> GetAllInstructors()
         {
             var Instructors = (from user in db.Users
@@ -23,6 +25,7 @@ namespace Attendance_Time_tracking_System.Repos
                                                                  Password = user.Password,
                                                                  Salary = instructor.Salary,
                                                                  HireDate = instructor.HireDate, 
+                                                                 
                                                                 
 
                                                              }).ToList();
@@ -42,9 +45,14 @@ namespace Attendance_Time_tracking_System.Repos
             db.Instructors.Add(instructor);
             db.SaveChanges();
         }
-        public void UpdateInstructor(Instructor instructor)
+        public void UpdateInstructor(Instructor instructor,int? id)
         {
+           // var track=db
+
+           //instructor.supervisor= db.Instructors.FirstOrDefault(i => i.Id == id);
+            
             db.Instructors.Update(instructor);
+            
             db.SaveChanges();
         }
         public void DeleteInstructor(Instructor instructor)

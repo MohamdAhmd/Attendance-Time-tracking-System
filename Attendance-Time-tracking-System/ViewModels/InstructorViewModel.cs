@@ -9,5 +9,10 @@
         public int Salary { get; set; }
         public DateTime? HireDate { get; set; }
         public bool Status { get; set; }
+        public int TrackId { get; set; }
+        public string TrackName { get; set; }
+        public int RoleId { get; set; }
+        public string RoleName { get; set; }
+
     }
 }
