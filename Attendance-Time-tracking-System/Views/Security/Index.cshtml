@@ -117,7 +117,6 @@
                     var datavalue = trvalue.getAttribute("data-id");
                     if (event.target.checked) {
                         trvalue.querySelector("input[type='checkbox'].leave").disabled = false;
-                        event.target.disabled = true;
                         attend(parseInt(datavalue) ,true)
                     }
                     else {
@@ -131,6 +130,7 @@
                     let trvalue = target.closest("tr");
                     var datavalue = trvalue.getAttribute("data-id");
                     if (event.target.checked) {
+                        trvalue.querySelector("input[type='checkbox'].attend").disabled = true;
                         event.target.disabled = true;
                         leave(parseInt(datavalue), true);
                     }
@@ -175,11 +175,10 @@
                                 let attenddisaplead = "";
                                 let leavecheck = "checked";
                                 let disapled = "";
-                                if (item.attendpresent == true ) { attenddisaplead = "disabled" }
-                                if (item.attendpresent == null || item.attendpresent == false) { attendcheck = "", disapled = "disabled" }
+                                if (item.attendpresent == null || item.attendpresent == false) { attendcheck = "" }
                                 if (item.attendleave == null || item.attendleave == false) { leavecheck = "" }
-                                if (item.attendleave == true) { disapled = "disabled" }
-                                if (item.status != null) { attenddisaplead = "disabled"; disapled = "disabled" }
+                                if (item.attendleave == true) { disapled = "disabled"; attenddisaplead = "disabled" }
+                                if (item.status == "Absent") { attenddisaplead = "disabled"; disapled = "disabled" }
 
                                 let rows =
                                     `<tr data-id=${item.id}>
