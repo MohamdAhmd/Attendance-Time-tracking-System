@@ -7,6 +7,7 @@
         public bool changeattendance(int userId, bool value);
         public List<AttendanceList> GetAllUsersWithRole(int? value, string daystatus);
         public bool PutAllStudentsInAttendanceTable(string daystatus);
+        public bool ChangeAllStudentToLate(int[] ids);
 
 
     }

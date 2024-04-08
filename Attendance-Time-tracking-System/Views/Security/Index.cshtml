@@ -169,16 +169,17 @@
                         }
                         else {
                             $.each(data, function (i, item) {
+
                                 ListOfIds.push(item.id);
                                 let attendcheck = "checked";
                                 let attenddisaplead = "";
                                 let leavecheck = "checked";
                                 let disapled = "";
-                                if (item.attendpresent == true || item.status != null) { attenddisaplead = "disabled" }
+                                if (item.attendpresent == true ) { attenddisaplead = "disabled" }
                                 if (item.attendpresent == null || item.attendpresent == false) { attendcheck = "", disapled = "disabled" }
                                 if (item.attendleave == null || item.attendleave == false) { leavecheck = "" }
                                 if (item.attendleave == true) { disapled = "disabled" }
-
+                                if (item.status != null) { attenddisaplead = "disabled"; disapled = "disabled" }
 
                                 let rows =
                                     `<tr data-id=${item.id}>
@@ -243,7 +244,11 @@
                 });
             }
 
+            //take all late
             $("#TakeAllLate").on("click", function () {
+                let user = document.querySelector("input[type='radio'][name='btnradio']:checked");
+                let userval = user.value;
+                console.log(userval);
                 Swal.fire({
                     icon: "question",
                     title: "Do you want to save the changes?",
@@ -251,13 +256,31 @@
                     confirmButtonText: "Save",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire("Saved!", "", "success");
+                        MakeAllLate(ListOfIds , userval);
                     } else if (result.isDismissed) {
                         Swal.fire("Changes are not saved", "", "error");
                     }
                 });
             });
 
+            //ajax take all late
+            function MakeAllLate(Listofids , userType){
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("TakeAllLate")',
+                    dataType: 'json',
+                    data: { value: Listofids,
+                            userType: userType },
+                    success: function (data) {
+                        Swal.fire("operation Done Successfully!", "", "success");
+                        loadtable(userType);
+                        console.log("table loaded");
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire("No items to save", "", "info");
+                    }
+                });
+            }
 
 
 

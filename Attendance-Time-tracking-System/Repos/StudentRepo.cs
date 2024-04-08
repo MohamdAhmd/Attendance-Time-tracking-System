@@ -177,5 +177,29 @@ namespace Attendance_Time_tracking_System.Repos
 
                 return false;
         }
+    
+        public bool ChangeAllStudentToLate(int[] ids)
+        {
+            var todaydate = DateTime.Now.Date;
+            var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate)?.Id;
+            if(dayID != null)
+            {
+                var attendance = db.Attends.Where(x => x.attendstatus == null && x.DayId == dayID).ToList();
+                foreach (var item in ids)
+                {
+                    attendance.FirstOrDefault(x => x.UserId == item).attendstatus = "Absent";
+                    var student = db.Students.FirstOrDefault(x => x.Id == item);
+                    if (student != null)
+                    {
+                        student.Grade -= havePermission(item) ? student.NextMinus / 2 : student.NextMinus;
+                        student.NextMinus += addminus(student.AbsenceDays.Value);
+                        student.AbsenceDays += 1;
+                    }
+                }
+                if (db.SaveChanges() > 0) { return true; }
+                else { return false; }
+            }
+            return false;
+        }
     }
 }

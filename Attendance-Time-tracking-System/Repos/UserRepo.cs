@@ -187,5 +187,22 @@ namespace Attendance_Time_tracking_System.Repos
             return false;
         }
     
+
+        public bool ChangeAllToLate(int[] ids)
+        {
+            var todaydate = DateTime.Now.Date;
+            var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate)?.Id;
+            if (dayID != null)
+            {
+                var attendance = db.Attends.Where(x=>x.attendstatus==null && x.DayId==dayID).ToList();
+                foreach (var item in ids)
+                {
+                    attendance.FirstOrDefault(x => x.UserId == item).attendstatus = "Absent";
+                }
+                if (db.SaveChanges() > 0) { return true; }
+                else { return false; }
+            }
+            return false;
+        }
     }
 }

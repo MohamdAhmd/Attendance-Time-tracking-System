@@ -11,6 +11,7 @@
         public bool changeattendance(int userId, bool value ,int usertype);
         public bool ChangeLeaveAttendance(int userId, bool value);
         public bool PutAllUsersInAttendanceTable();
+        public bool ChangeAllToLate(int[] ids);
 
 
     }

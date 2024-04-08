@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json.Linq;
 using System.CodeDom;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
@@ -24,23 +25,6 @@ namespace Attendance_Time_tracking_System.Controllers
             return View();
         }
 
-        public IActionResult SetCookie()
-        {
-            try
-            {
-                // Set the cookie with the name "id" and value "cookie"
-                Response.Cookies.Append("id", "cookie", new CookieOptions()
-                {
-                    Expires = DateTime.Now.AddMinutes(10)
-                });
-
-                return Ok("Cookie set successfully.");
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message); 
-            }
-        }
-
         [HttpPost]
         public IActionResult GetUsers(int value)
         {
@@ -48,9 +32,6 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 
                 if (value != 2)
-                
-                
-                
                 {
                     var users = userRepo.GetAllUsersWithRole(value);
                     return Json(users);
@@ -105,11 +86,20 @@ namespace Attendance_Time_tracking_System.Controllers
             }
         }
 
-        public IActionResult datatable()
+        public IActionResult TakeAllLate (int[] value ,  int userType)
         {
-            return View();
+            if (userType != 2 && value.Length>0)
+            {
+               return  userRepo.ChangeAllToLate(value) ? Ok(new { success = true }) : StatusCode(500, "Internal server error.");
+            }
+            else if(value.Length>0) 
+            {
+                return studentRepo.ChangeAllStudentToLate(value) ? Ok(new { success = true }) : StatusCode(500, "Internal server error.");
+            }
+            return StatusCode(500,"No items to save");
         }
-    
+
+
 
     }
 }
