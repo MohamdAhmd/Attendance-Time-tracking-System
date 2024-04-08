@@ -38,5 +38,11 @@ namespace Attendance_Time_tracking_System.Repos
             db.Days.Update(day);
             db.SaveChanges();
         }
+
+        public Days GetTheDayId()
+        {
+            var model = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today);
+            return model;
+        }
     }
 }
