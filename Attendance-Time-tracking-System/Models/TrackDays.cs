@@ -9,12 +9,13 @@ namespace Attendance_Time_tracking_System.Models
         public int DayId { get; set; }
         [ForeignKey("TrackNavigation")]
         public int TrackId { get; set; }
+
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartPeriod { get; set; }
 
         //online offline
         public string Status { get; set; }
-
         public string? Lecture1 { get; set; }
         public string? Lecture2 { get; set; }
         public string? Lecture3 { get; set; }
