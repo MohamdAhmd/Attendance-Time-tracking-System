@@ -5,6 +5,7 @@
 }
 
 @section Style{
+
     <style>
 
         table {
@@ -26,22 +27,46 @@
             margin-left:10px;
             padding:10px;
         }
+        #floatingTextarea{
+            border-radius:5%;
+            margin-right:10px;
+        }
+        #topdiv{
+            display:flex;
+            justify-content : space-between;
+            align-items : end;
+        }
+        #topdiv>div:nth-child(2){
+            flex-basis :30%;
+        }
     </style>
 }
-
 <div>
-    <div class="btn-group mt-5" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-        <label class="btn btn-outline-primary" for="btnradio1">Employees</label>
-
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-        <label class="btn btn-outline-primary" for="btnradio2">Instructors</label>
-
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-        <label class="btn btn-outline-primary" for="btnradio3">Students</label>
-    </div>
+    <button class="btn btn-danger" id="TakeAllLate">take all late </button>
 </div>
-<div class="d-flex justify-content-center mt-2">
+<div id="topdiv" class="mt-5">
+    <div class="btn-group  " role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value=5>
+        <label class="btn btn-outline-primary" for="btnradio1" >Security</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" value=6 checked>
+        <label class="btn btn-outline-primary" for="btnradio4">Student Affairs</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" value=3>
+        <label class="btn btn-outline-primary" for="btnradio2" data-id=3>Instructors</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value=2>
+        <label class="btn btn-outline-primary" for="btnradio3" data-id=2>Students</label>
+    </div>
+    <div >
+        <label class="form-label" for="searchInput">Search</label>
+        <input type="text" class="form-control" placeholder="search" id="searchInput"></input>
+    </div>
+
+</div>
+
+
+<div id="dataTable" class="d-flex justify-content-center mt-2">
 <table >
     <thead>
         <tr>
@@ -51,46 +76,215 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>ahmed</td>
-            <td>
-                 <div class="form-check form-switch">
-                    <input class="form-check-input attend" type="checkbox" checked/>
-                </div>
-            </td>
-            <td>
-                <div class="form-check form-switch">
-                    <input class="form-check-input leave" type="checkbox" disabled/>
-                </div>
-            </td>
-        </tr>
+       
+        
     </tbody>
 </table>
 </div>
+<div>@DateTime.Now</div>
+<div id="addedin"></div>
+
+
+
+
+
 
 @section scripts {
     <script>
         $(document).ready(function () {
+            loadtable(6);
 
-            $(".attend").each(function () {
-                var att = $(this);
-                if (att.prop("checked")) {
-                    var leaveCheckbox = att.closest("tr").find(".leave");
-                    leaveCheckbox.prop("disabled", false);
+            //the Ids that shows to user
+            var ListOfIds = [];
+            //search
+            $('#searchInput').on('input', function () {
+                var searchText = $(this).val().toLowerCase();
+                $('#dataTable tbody tr').each(function () {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.includes(searchText)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+            
+            //buttons
+            document.querySelector("table tbody").addEventListener("click",function(event){
+                let target = event.target;
+                if (target.matches("input[type='checkbox'].attend")) {
+                    let trvalue = target.closest("tr");
+                    var datavalue = trvalue.getAttribute("data-id");
+                    if (event.target.checked) {
+                        trvalue.querySelector("input[type='checkbox'].leave").disabled = false;
+                        event.target.disabled = true;
+                        attend(parseInt(datavalue) ,true)
+                    }
+                    else {
+                        trvalue.querySelector("input[type='checkbox'].leave").checked = false;
+                        trvalue.querySelector("input[type='checkbox'].leave").disabled = true;
+                        attend(parseInt(datavalue), false)
+                    }
                 }
+
+                if (target.matches("input[type='checkbox'].leave")) {
+                    let trvalue = target.closest("tr");
+                    var datavalue = trvalue.getAttribute("data-id");
+                    if (event.target.checked) {
+                        event.target.disabled = true;
+                        leave(parseInt(datavalue), true);
+                    }
+                    else{
+                        leave(parseInt(datavalue), false);
+                    }
+                }
+            })
+            
+            $("input[type='radio'][name='btnradio']").on("change", function () {
+                let radio = $(this);
+                let radiovalue = parseInt(radio.prop("value"));
+                console.log(radiovalue);
+
+                loadtable(radiovalue);
             });
 
-            $(".attend").on("change", function () {
-                var att = $(this);
-                var leaveCheckbox = att.closest("tr").find(".leave");
-                if (att.prop("checked")) {
-                    leaveCheckbox.prop("disabled", false);
-                }
-                else {
-                    leaveCheckbox.prop("checked", false);
-                    leaveCheckbox.prop("disabled", true);
-                }
+            //load table
+            function loadtable(radiovalue){
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetUsers")',
+                    dataType: 'json',
+                    data: { value: radiovalue },
+                    success: function (data) {
+                        $("table tbody tr").remove();
+                        ListOfIds = [];
+                        //if the day wasn't there in the table
+                        if (Object.keys(data).length === 0) {
+                            let rows = `<tr>
+                                            <td colspan="3" class="text-center">
+                                                Today is OFF
+                                            </td>
+                                        </tr>`
+                            $("table tbody").append(rows);
+                        }
+                        else {
+                            $.each(data, function (i, item) {
+
+                                ListOfIds.push(item.id);
+                                let attendcheck = "checked";
+                                let attenddisaplead = "";
+                                let leavecheck = "checked";
+                                let disapled = "";
+                                if (item.attendpresent == true ) { attenddisaplead = "disabled" }
+                                if (item.attendpresent == null || item.attendpresent == false) { attendcheck = "", disapled = "disabled" }
+                                if (item.attendleave == null || item.attendleave == false) { leavecheck = "" }
+                                if (item.attendleave == true) { disapled = "disabled" }
+                                if (item.status != null) { attenddisaplead = "disabled"; disapled = "disabled" }
+
+                                let rows =
+                                    `<tr data-id=${item.id}>
+                                            <td>${item.f_name} ${item.l_name}</td>
+                                            <td>
+                                                    <div class="form-check form-switch">
+                                                    <input class="form-check-input attend" type="checkbox" ${attendcheck} ${attenddisaplead}/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input leave" type="checkbox" ${disapled} ${leavecheck}/>
+                                                </div>
+                                            </td>
+                                        </tr>`
+                                $("table tbody").append(rows);
+
+                            });
+                        }
+                    },
+                    error: function () {
+                        console.log("error");
+                    }
+                });
+            }
+            
+            //take attendance
+            function attend(userId, value) {
+                let val = document.querySelector("input[type='radio'][name='btnradio']:checked");
+                console.log(parseInt(val.value));
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("changeAttendstatus")',
+                    dataType: 'json',
+                    data: { userId: userId, value: value, usertype: val.value },
+                    success: function (data) {
+                        console.log("operation done successfuly")
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("sattus text : ", xhr.statusText);
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+
+            //take leave
+            function leave(userId , value){
+                let val = document.querySelector("input[type='radio'][name='btnradio']:checked");
+                console.log(parseInt(val.value));
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("changeLeavingstatus")',
+                    dataType: 'json',
+                    data: { userId: userId, value: value, usertype: val.value },
+                    success: function (data) {
+                        console.log("operation done successfuly")
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("sattus text : ", xhr.statusText);
+                        alert(xhr.statusText);
+                    }
+                });
+            }
+
+            //take all late
+            $("#TakeAllLate").on("click", function () {
+                let user = document.querySelector("input[type='radio'][name='btnradio']:checked");
+                let userval = user.value;
+                console.log(userval);
+                Swal.fire({
+                    icon: "question",
+                    title: "Do you want to save the changes?",
+                    showCancelButton: true,
+                    confirmButtonText: "Save",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        MakeAllLate(ListOfIds , userval);
+                    } else if (result.isDismissed) {
+                        Swal.fire("Changes are not saved", "", "error");
+                    }
+                });
             });
-        });
+
+            //ajax take all late
+            function MakeAllLate(Listofids , userType){
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("TakeAllLate")',
+                    dataType: 'json',
+                    data: { value: Listofids,
+                            userType: userType },
+                    success: function (data) {
+                        Swal.fire("operation Done Successfully!", "", "success");
+                        loadtable(userType);
+                        console.log("table loaded");
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire("No items to save", "", "info");
+                    }
+                });
+            }
+
+
+
+            
+        });//end of ready
     </script>
 }

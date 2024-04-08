@@ -27,7 +27,7 @@ namespace Attendance_Time_tracking_System.Models
         [ForeignKey("ProgramID")]
         public Program ProgramNavigation { get; set; }
         #nullable restore
-
+        public List<TrackDays> trackDays { get; set; } = new List<TrackDays>();
         public List<Student> Students { get; set; } = new List<Student>();
         public List<WorksIn> Works { get; set; } = new List<WorksIn>();
     }
