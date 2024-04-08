@@ -1,5 +1,7 @@
 ﻿using Castle.Components.DictionaryAdapter;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json.Linq;
 using System.CodeDom;
 
@@ -14,10 +16,29 @@ namespace Attendance_Time_tracking_System.Controllers
 
             this.userRepo = userRepo;
             this.studentRepo = studentRepo;
+            this.userRepo.PutAllUsersInAttendanceTable();
+            this.studentRepo.PutAllStudentsInAttendanceTable("offline");
         }
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult SetCookie()
+        {
+            try
+            {
+                // Set the cookie with the name "id" and value "cookie"
+                Response.Cookies.Append("id", "cookie", new CookieOptions()
+                {
+                    Expires = DateTime.Now.AddMinutes(10)
+                });
+
+                return Ok("Cookie set successfully.");
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message); 
+            }
         }
 
         [HttpPost]
@@ -25,6 +46,7 @@ namespace Attendance_Time_tracking_System.Controllers
         {
             try
             {
+                
                 if (value != 2)
                 
                 
@@ -53,7 +75,7 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 if (usertype == 5 || usertype == 6 || usertype==3)
                 {
-                    bool change = userRepo.changeattendance(userId, value);
+                    bool change = userRepo.changeattendance(userId, value , usertype);
                     return change ? Ok(new { success = true }) : StatusCode(500, "Internal server error.");
                 }
                 else if(usertype == 2)

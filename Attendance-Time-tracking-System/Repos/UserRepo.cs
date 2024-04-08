@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Attendance_Time_tracking_System.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
@@ -54,8 +55,9 @@ namespace Attendance_Time_tracking_System.Repos
                                 f_name = x.F_name,
                                 l_name = x.L_name,
                                 id = x.Id,
-                                attendpresent = x.attends.FirstOrDefault(y => y.DayId == dayID).Status,
-                                attendleave = x.attends.FirstOrDefault(y => y.DayId == dayID).StatusOut
+                                attendpresent = x.attends.FirstOrDefault(y => y.DayId == dayID && x.Id == y.UserId).Status,
+                                attendleave = x.attends.FirstOrDefault(y => y.DayId == dayID && x.Id == y.UserId).StatusOut,
+                                status = x.attends.FirstOrDefault(y => y.DayId == dayID && x.Id == y.UserId).attendstatus
                             }).ToList();
                 return users;
             }
@@ -66,11 +68,12 @@ namespace Attendance_Time_tracking_System.Repos
         }
 
 
-        public bool changeattendance (int userId , bool value)
+        public bool changeattendance (int userId , bool value ,int usertype)
         {
             try
             {
                 var todaydate = DateTime.Now.Date;
+                DateTime todayat915 = Latedate(usertype);
 
 
                 var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate).Id;
@@ -81,6 +84,8 @@ namespace Attendance_Time_tracking_System.Repos
                     UserAttendance.Status = value;
                     UserAttendance.Time = DateTime.Now;
                     if (value==false) { UserAttendance.StatusOut = false; }
+                    if(DateTime.Now > todayat915) { UserAttendance.attendstatus = "Late"; }
+                    else if(DateTime.Now <= todayat915){ UserAttendance.attendstatus = "OnTime"; }
                 }
                 else
                 {
@@ -90,8 +95,11 @@ namespace Attendance_Time_tracking_System.Repos
                         DayId = dayID,
                         Time = DateTime.Now,
                         Status = value,
-                        StatusOut = false
+                        StatusOut = false,
+                        
                     };
+                    if (DateTime.Now > todayat915) { userattend.attendstatus = "Late"; }
+                    else if (DateTime.Now <= todayat915) { userattend.attendstatus = "OnTime"; }
                     db.Attends.Add(userattend);
                 }
                 if (db.SaveChanges() > 0)
@@ -141,5 +149,43 @@ namespace Attendance_Time_tracking_System.Repos
                 throw;
             }
         }
+    
+        public DateTime Latedate(int usertype)
+        {
+            DateTime todaydate;
+            if(usertype != 3)
+            {
+                todaydate = DateTime.Today.AddHours(8);
+            }
+            else
+            {
+                todaydate = DateTime.Today.AddHours(9).AddMinutes(15); 
+            }
+            return todaydate;
+        }
+        
+        public bool PutAllUsersInAttendanceTable()
+        {
+            var users = db.Users.Include(x => x.roles).Include(x=>x.attends)
+                .Where(x=> x.roles != null && x.roles.Any() && x.User_Status)
+                .Where(x => !x.roles.Any(y => y.RoleId == 2 || y.RoleId == 1 )  ).ToList();
+
+            var todaydate = DateTime.Now.Date;
+            var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate)?.Id;
+            if (dayID != null) {
+                var attendsToAdd = users
+                    .Where(x=>!x.attends.Any(y=>y.DayId==dayID &&y.UserId==x.Id))
+                    .Select(user => new Attend { UserId = user.Id, DayId = dayID.Value, Status = false, StatusOut = false }).ToList();
+
+                db.Attends.AddRange(attendsToAdd);
+                if (db.SaveChanges() > 0)
+                {
+                    return true;
+                }
+                else { return false; }
+            }
+            return false;
+        }
+    
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Attendance_Time_tracking_System.Migrations;
+using Attendance_Time_tracking_System.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Time_tracking_System.Repos
 {
@@ -62,8 +64,9 @@ namespace Attendance_Time_tracking_System.Repos
                     f_name = x.F_name,
                     l_name = x.L_name,
                     id = x.Id,
-                    attendpresent = x.attends.FirstOrDefault(y => y.DayId == dayID).Status,
-                    attendleave = x.attends.FirstOrDefault(y => y.DayId == dayID).StatusOut
+                    attendpresent = x.attends.FirstOrDefault(y => y.DayId == dayID && x.Id==y.UserId).Status,
+                    attendleave = x.attends.FirstOrDefault(y => y.DayId == dayID && x.Id == y.UserId).StatusOut,
+                    status = x.attends.FirstOrDefault(y=>y.DayId == dayID && x.Id == y.UserId).attendstatus
                 }).ToList();
 
 
@@ -85,9 +88,9 @@ namespace Attendance_Time_tracking_System.Repos
                 var StartDateOfToday = db.TrackDays.Where(x=>x.DayId == dayID && x.TrackId== usertrack).FirstOrDefault()?.StartPeriod ??
                     DateTime.Today.Add(new TimeSpan(9, 0, 0));
 
-                if (value && DateTime.Now > StartDateOfToday.AddMinutes(15)&&UserAttendance.Time == null)
+                if (value && DateTime.Now > StartDateOfToday.AddMinutes(15)&&UserAttendance?.Time == null)
                 {
-                    student.Grade -= student.NextMinus;
+                    student.Grade -= havePermission(userId)? student.NextMinus/2 : student.NextMinus;
                     student.NextMinus += addminus(student.AbsenceDays.Value);
                     student.AbsenceDays += 1;
                 }
@@ -99,6 +102,8 @@ namespace Attendance_Time_tracking_System.Repos
                     UserAttendance.Status = value;
                     UserAttendance.Time = DateTime.Now;
                     if (value == false) { UserAttendance.StatusOut = false; }
+                    if(DateTime.Now > StartDateOfToday.AddMinutes(15)) { UserAttendance.attendstatus = "Late"; }
+                    else if(DateTime.Now <= StartDateOfToday.AddMinutes(15)) { UserAttendance.attendstatus = "OnTime"; }
                 }
                 else
                 {
@@ -110,9 +115,10 @@ namespace Attendance_Time_tracking_System.Repos
                         Status = value,
                         StatusOut = false
                     };
+                    if (DateTime.Now > StartDateOfToday.AddMinutes(15)) { userattend.attendstatus = "Late"; }
+                    else if (DateTime.Now <= StartDateOfToday.AddMinutes(15)) { userattend.attendstatus = "OnTime"; }
                     db.Attends.Add(userattend);
                 }
-
 
                 if (db.SaveChanges() > 0)
                 {
@@ -133,6 +139,43 @@ namespace Attendance_Time_tracking_System.Repos
             return 0;
         }
 
+        public bool havePermission(int id)
+        {
+            var todaysdate = DateTime.Now.Date;
+            var permission = db.Permissions.FirstOrDefault(x => x.StudentId == id && x.PermissionStatus == "Accepted" && x.day == todaysdate);
+            if (permission == null)
+            {
+                return false;
+            }
+            return true;
+        }
        
+
+        public bool PutAllStudentsInAttendanceTable(string daystatus )
+        {
+            var todaydate = DateTime.Now.Date;
+            var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate)?.Id;
+
+            var students = db.Students.Include(x => x.attends).Include(x => x.roles).Include(x => x.TrackNavigation).ThenInclude(y => y.trackDays)
+                            .Where(x => x.roles != null && x.roles.Any() && x.User_Status && x.status == "Accepted")
+                            .Where(x => x.TrackNavigation.trackDays.Any(td => td.DayId == dayID && td.TrackId == x.TrackId && td.Status == daystatus))
+                            .ToList();
+
+            if (dayID != null)
+            {
+                var attendsToAdd = students
+                    .Where(x => !x.attends.Any(y => y.DayId == dayID && y.UserId == x.Id))
+                    .Select(user => new Attend { UserId = user.Id, DayId = dayID.Value, Status = false, StatusOut = false }).ToList();
+
+                db.Attends.AddRange(attendsToAdd);
+                if (db.SaveChanges() > 0)
+                {
+                    return true;
+                }
+                else { return false; }
+            }
+
+                return false;
+        }
     }
 }

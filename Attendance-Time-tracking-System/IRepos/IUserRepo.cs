@@ -8,8 +8,10 @@
 
         public List<User> GetAllUsers();
         public List<AttendanceList> GetAllUsersWithRole(int value);
-        public bool changeattendance(int userId, bool value);
+        public bool changeattendance(int userId, bool value ,int usertype);
         public bool ChangeLeaveAttendance(int userId, bool value);
+        public bool PutAllUsersInAttendanceTable();
+
 
     }
 }

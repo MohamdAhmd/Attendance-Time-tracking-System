@@ -7,5 +7,7 @@
         public int id { get; set; }
         public bool? attendpresent { get; set; } = false;
         public bool? attendleave { get; set; } = false;
+        //Late ,  Absent , OnTime
+        public string? status { get; set; }
     }
 }

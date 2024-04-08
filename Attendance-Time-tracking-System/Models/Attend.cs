@@ -14,6 +14,8 @@ namespace Attendance_Time_tracking_System.Models
         //(Late , Absent , Present)
         public bool Status { get; set; }
         public bool StatusOut {  get; set; }
+        //Late ,  Absent , OnTime
+        public string? attendstatus {  get; set; }
 
         [ForeignKey("UserId")]
         public User UserNavigation { get; set; }

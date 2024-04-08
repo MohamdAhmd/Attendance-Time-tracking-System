@@ -41,7 +41,9 @@
         }
     </style>
 }
-
+<div>
+    <button class="btn btn-danger" id="TakeAllLate">take all late </button>
+</div>
 <div id="topdiv" class="mt-5">
     <div class="btn-group  " role="group" aria-label="Basic radio toggle button group">
         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value=5>
@@ -92,7 +94,9 @@
         $(document).ready(function () {
             loadtable(6);
 
-
+            //the Ids that shows to user
+            var ListOfIds = [];
+            //search
             $('#searchInput').on('input', function () {
                 var searchText = $(this).val().toLowerCase();
                 $('#dataTable tbody tr').each(function () {
@@ -104,7 +108,8 @@
                     }
                 });
             });
-
+            
+            //buttons
             document.querySelector("table tbody").addEventListener("click",function(event){
                 let target = event.target;
                 if (target.matches("input[type='checkbox'].attend")) {
@@ -112,6 +117,7 @@
                     var datavalue = trvalue.getAttribute("data-id");
                     if (event.target.checked) {
                         trvalue.querySelector("input[type='checkbox'].leave").disabled = false;
+                        event.target.disabled = true;
                         attend(parseInt(datavalue) ,true)
                     }
                     else {
@@ -125,6 +131,7 @@
                     let trvalue = target.closest("tr");
                     var datavalue = trvalue.getAttribute("data-id");
                     if (event.target.checked) {
+                        event.target.disabled = true;
                         leave(parseInt(datavalue), true);
                     }
                     else{
@@ -132,7 +139,7 @@
                     }
                 }
             })
-
+            
             $("input[type='radio'][name='btnradio']").on("change", function () {
                 let radio = $(this);
                 let radiovalue = parseInt(radio.prop("value"));
@@ -141,6 +148,7 @@
                 loadtable(radiovalue);
             });
 
+            //load table
             function loadtable(radiovalue){
                 $.ajax({
                     type: "POST",
@@ -149,7 +157,7 @@
                     data: { value: radiovalue },
                     success: function (data) {
                         $("table tbody tr").remove();
-
+                        ListOfIds = [];
                         //if the day wasn't there in the table
                         if (Object.keys(data).length === 0) {
                             let rows = `<tr>
@@ -159,21 +167,25 @@
                                         </tr>`
                             $("table tbody").append(rows);
                         }
+                        else {
+                            $.each(data, function (i, item) {
+                                ListOfIds.push(item.id);
+                                let attendcheck = "checked";
+                                let attenddisaplead = "";
+                                let leavecheck = "checked";
+                                let disapled = "";
+                                if (item.attendpresent == true || item.status != null) { attenddisaplead = "disabled" }
+                                if (item.attendpresent == null || item.attendpresent == false) { attendcheck = "", disapled = "disabled" }
+                                if (item.attendleave == null || item.attendleave == false) { leavecheck = "" }
+                                if (item.attendleave == true) { disapled = "disabled" }
 
-                        $.each(data, function (i, item) {
 
-                            let attendcheck = "checked";
-                            let leavecheck = "checked";
-                            let disapled = ""
-                            if (item.attendpresent == null || item.attendpresent == false) { attendcheck = "", disapled = "disabled" }
-                            if (item.attendleave == null || item.attendleave == false) { leavecheck = "" }
-
-                            let rows =
-                                `<tr data-id=${item.id}>
+                                let rows =
+                                    `<tr data-id=${item.id}>
                                             <td>${item.f_name} ${item.l_name}</td>
                                             <td>
                                                     <div class="form-check form-switch">
-                                                    <input class="form-check-input attend" type="checkbox" ${attendcheck}/>
+                                                    <input class="form-check-input attend" type="checkbox" ${attendcheck} ${attenddisaplead}/>
                                                 </div>
                                             </td>
                                             <td>
@@ -182,16 +194,18 @@
                                                 </div>
                                             </td>
                                         </tr>`
-                            $("table tbody").append(rows);
+                                $("table tbody").append(rows);
 
-                        });
+                            });
+                        }
                     },
                     error: function () {
                         console.log("error");
                     }
                 });
             }
-
+            
+            //take attendance
             function attend(userId, value) {
                 let val = document.querySelector("input[type='radio'][name='btnradio']:checked");
                 console.log(parseInt(val.value));
@@ -210,6 +224,7 @@
                 });
             }
 
+            //take leave
             function leave(userId , value){
                 let val = document.querySelector("input[type='radio'][name='btnradio']:checked");
                 console.log(parseInt(val.value));
@@ -228,7 +243,25 @@
                 });
             }
 
+            $("#TakeAllLate").on("click", function () {
+                Swal.fire({
+                    icon: "question",
+                    title: "Do you want to save the changes?",
+                    showCancelButton: true,
+                    confirmButtonText: "Save",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire("Saved!", "", "success");
+                    } else if (result.isDismissed) {
+                        Swal.fire("Changes are not saved", "", "error");
+                    }
+                });
+            });
 
+
+
+
+            
         });//end of ready
     </script>
 }
