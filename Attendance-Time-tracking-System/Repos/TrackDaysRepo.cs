@@ -11,30 +11,32 @@ namespace Attendance_Time_tracking_System.Repos
             this.db = db;
         }
 
-        public void AddDay(TrackDays trackDays)
+        public void AddTrackDay(TrackDays trackDays)
         {
             db.TrackDays.Add(trackDays);
             db.SaveChanges();
         }
 
-        public void DeleteDay(int id)
+        public void DeleteTrackDay(int id)
         {
             var trackDays = db.TrackDays.FirstOrDefault(t => t.DayId == id);
             db.TrackDays.Remove(trackDays);
             db.SaveChanges();
         }
 
-        public IEnumerable<TrackDays> GetAllDays()
+        public IEnumerable<TrackDays> GetAllTrackDays()
         {
             return db.TrackDays.Include(t => t.DayNavigation).Include(t => t.TrackNavigation).ToList();
         }
 
-        public TrackDays GetDayById(int id)
+        public TrackDays GetTrackDayById(int dayId, int trackId)
         {
-            return db.TrackDays.Include(t => t.DayNavigation).Include(t => t.TrackNavigation).FirstOrDefault(t => t.DayId == id);
+            //return db.TrackDays.Include(t => t.DayNavigation).Include(t => t.TrackNavigation).FirstOrDefault(t => t.DayId == id);
+
+            return db.TrackDays.Include(t => t.DayNavigation).Include(t => t.TrackNavigation).FirstOrDefault(t => t.DayId == dayId && t.TrackId == trackId);
         }
 
-        public void UpdateDay(TrackDays trackDays)
+        public void UpdateTrackDay(TrackDays trackDays)
         { 
             db.TrackDays.Update(trackDays);
             db.SaveChanges();

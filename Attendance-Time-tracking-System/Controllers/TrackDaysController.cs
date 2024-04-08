@@ -25,18 +25,17 @@ namespace Attendance_Time_tracking_System.Controllers
         public async Task<IActionResult> Index()
         {
             
-            return View(trackDaysRepo.GetAllDays());
+            return View(trackDaysRepo.GetAllTrackDays());
         }
 
         // GET: TrackDays/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? dayId, int? trackId)
         {
-            if (id == null)
+            if(dayId == null || trackId == null)
             {
                 return NotFound();
             }
-
-           var trackDays = trackDaysRepo.GetDayById(id.Value);
+            var trackDays = trackDaysRepo.GetTrackDayById(dayId.Value, trackId.Value);
             if (trackDays == null)
             {
                 return NotFound();
@@ -63,31 +62,27 @@ namespace Attendance_Time_tracking_System.Controllers
         {
             if (ModelState.IsValid)
             {
-                trackDaysRepo.AddDay(trackDays);
+                trackDaysRepo.AddTrackDay(trackDays);
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["DayId"] = new SelectList(_context.Days, "Id", "Id", trackDays.DayId);
-            //ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name", trackDays.TrackId);
             ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
             ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
             return View(trackDays);
         }
 
         // GET: TrackDays/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? dayId, int? trackId)
         {
-            if (id == null)
+            
+            if (dayId == null || trackId == null)
             {
                 return NotFound();
             }
-
-            var trackDays = trackDaysRepo.GetDayById(id.Value);
+            var trackDays = trackDaysRepo.GetTrackDayById(dayId.Value, trackId.Value);
             if (trackDays == null)
             {
                 return NotFound();
             }
-            //ViewData["DayId"] = new SelectList(_context.Days, "Id", "Id", trackDays.DayId);
-            //ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name", trackDays.TrackId);
             ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
             ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
             return View(trackDays);
@@ -98,9 +93,9 @@ namespace Attendance_Time_tracking_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DayId,TrackId,StartPeriod,Status,Lecture1,Lecture2,Lecture3")] TrackDays trackDays)
+        public async Task<IActionResult> Edit(int dayId, int trackId, [Bind("DayId,TrackId,StartPeriod,Status,Lecture1,Lecture2,Lecture3")] TrackDays trackDays)
         {
-            if (id != trackDays.DayId)
+            if (dayId != trackDays.DayId || trackId != trackDays.TrackId)
             {
                 return NotFound();
             }
@@ -109,8 +104,7 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 try
                 {
-                    
-                    trackDaysRepo.UpdateDay(trackDays);
+                    trackDaysRepo.UpdateTrackDay(trackDays);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,22 +119,19 @@ namespace Attendance_Time_tracking_System.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["DayId"] = new SelectList(_context.Days, "Id", "Id", trackDays.DayId);
-            //ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name", trackDays.TrackId);
             ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
             ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
             return View(trackDays);
         }
-
         // GET: TrackDays/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+        public async Task<IActionResult> Delete(int? dayId, int? trackId)
+        {    
+            if (dayId == null || trackId == null)
             {
                 return NotFound();
             }
-                
-            var trackDays = trackDaysRepo.GetDayById(id.Value);
+   
+            var trackDays = trackDaysRepo.GetTrackDayById(dayId.Value, trackId.Value);
             if (trackDays == null)
             {
                 return NotFound();
@@ -152,20 +143,19 @@ namespace Attendance_Time_tracking_System.Controllers
         // POST: TrackDays/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int dayId, int trackId)
         {
-
-            var trackDays = trackDaysRepo.GetDayById(id);
+            var trackDays = trackDaysRepo.GetTrackDayById(dayId, trackId);
             if (trackDays != null)
-            { 
-                trackDaysRepo.DeleteDay(id);
+            {
+                trackDaysRepo.DeleteTrackDay(dayId);
             }
             return RedirectToAction(nameof(Index));
         }
 
         private bool TrackDaysExists(int id)
         {
-            return trackDaysRepo.GetDayById(id) != null;
+            return trackDaysRepo.GetAllTrackDays().Any(e => e.DayId == id);
         }
     }
 }
