@@ -102,8 +102,9 @@ namespace Attendance_Time_tracking_System.Repos
                     UserAttendance.Status = value;
                     UserAttendance.Time = DateTime.Now;
                     if (value == false) { UserAttendance.StatusOut = false; }
-                    if(DateTime.Now > StartDateOfToday.AddMinutes(15)) { UserAttendance.attendstatus = "Late"; }
+                    if(DateTime.Now > StartDateOfToday.AddMinutes(15)){  UserAttendance.attendstatus = "Late";}
                     else if(DateTime.Now <= StartDateOfToday.AddMinutes(15)) { UserAttendance.attendstatus = "OnTime"; }
+                    UserAttendance.StudentDegreeAtMoment = student.Grade;
                 }
                 else
                 {
@@ -113,7 +114,8 @@ namespace Attendance_Time_tracking_System.Repos
                         DayId = dayID,
                         Time = DateTime.Now,
                         Status = value,
-                        StatusOut = false
+                        StatusOut = false,
+                        StudentDegreeAtMoment = student.Grade
                     };
                     if (DateTime.Now > StartDateOfToday.AddMinutes(15)) { userattend.attendstatus = "Late"; }
                     else if (DateTime.Now <= StartDateOfToday.AddMinutes(15)) { userattend.attendstatus = "OnTime"; }
@@ -187,7 +189,9 @@ namespace Attendance_Time_tracking_System.Repos
                 var attendance = db.Attends.Where(x => x.attendstatus == null && x.DayId == dayID).ToList();
                 foreach (var item in ids)
                 {
-                    attendance.FirstOrDefault(x => x.UserId == item).attendstatus = "Absent";
+                    var attend = attendance.FirstOrDefault(x => x.UserId == item);
+                        attend.attendstatus = "Absent";
+                    
                     var student = db.Students.FirstOrDefault(x => x.Id == item);
                     if (student != null)
                     {
@@ -195,6 +199,7 @@ namespace Attendance_Time_tracking_System.Repos
                         student.NextMinus += addminus(student.AbsenceDays.Value);
                         student.AbsenceDays += 1;
                     }
+                    attend.StudentDegreeAtMoment = student.Grade;
                 }
                 if (db.SaveChanges() > 0) { return true; }
                 else { return false; }
