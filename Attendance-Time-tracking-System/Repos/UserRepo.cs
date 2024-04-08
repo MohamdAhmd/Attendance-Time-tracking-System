@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace Attendance_Time_tracking_System.Repos
@@ -37,18 +38,31 @@ namespace Attendance_Time_tracking_System.Repos
     
         public List<AttendanceList> GetAllUsersWithRole(int value)
         {
-            var exist = db.Days.Any(x=>x.Day.Date==DateTime.Today);
-            var dayID = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today).Id;
-            var users = db.Users.Include(x=>x.roles).Include(x=>x.attends)
-                        .Where(x=>x.roles.Any(y=>y.RoleId==value)&&x.User_Status==true && exist)
-                        .Select(x=>new AttendanceList
-                                { f_name= x.F_name,
-                                  l_name= x.L_name,
-                                  id = x.Id,
-                                  attendpresent = x.attends.FirstOrDefault(y=>y.DayId==dayID).Status,
-                                  attendleave = x.attends.FirstOrDefault(y => y.DayId == dayID).StatusOut
-                        }).ToList();
-            return users;
+            try
+            {
+
+                var todaydate = DateTime.Now.Date;
+
+                var exist = db.Days.Any(x => x.Day.Date == todaydate);
+                var dayyy = db.Days.Where(x => x.Day.Date == todaydate).ToList();
+                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate)?.Id ?? 0;
+
+                var users = db.Users.Include(x => x.roles).Include(x => x.attends)
+                            .Where(x => x.roles.Any(y => y.RoleId == value) && x.User_Status == true && exist)
+                            .Select(x => new AttendanceList
+                            {
+                                f_name = x.F_name,
+                                l_name = x.L_name,
+                                id = x.Id,
+                                attendpresent = x.attends.FirstOrDefault(y => y.DayId == dayID).Status,
+                                attendleave = x.attends.FirstOrDefault(y => y.DayId == dayID).StatusOut
+                            }).ToList();
+                return users;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
 
 
@@ -56,7 +70,10 @@ namespace Attendance_Time_tracking_System.Repos
         {
             try
             {
-                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today).Id;
+                var todaydate = DateTime.Now.Date;
+
+
+                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate).Id;
                 var UserAttendance = db.Attends.FirstOrDefault(x => x.DayId == dayID && x.UserId == userId);
                 if (UserAttendance != null)
                 {
@@ -93,7 +110,9 @@ namespace Attendance_Time_tracking_System.Repos
         {
             try
             {
-                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today).Id;
+                var todaydate = DateTime.Now.Date;
+
+                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate).Id;
                 var UserAttendance = db.Attends.FirstOrDefault(x => x.DayId == dayID && x.UserId == userId);
                 if (UserAttendance != null)
                 {

@@ -43,6 +43,7 @@ namespace Attendance_Time_tracking_System.Models
             modelBuilder.Entity<Student>(entity => 
             {
                 entity.Property(e => e.Grade).HasDefaultValue(250);
+                entity.Property(e => e.AbsenceDays).HasDefaultValue(0);
             });
             modelBuilder.Entity<Instructor>(entity =>
             {

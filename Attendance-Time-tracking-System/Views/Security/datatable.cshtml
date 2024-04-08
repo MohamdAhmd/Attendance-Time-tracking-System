@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "datatable";
+    Layout = "Security";
+}
+@section Style{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+}
+
+<table id="table_id">
+    <thead>
+        <tr>
+            <th>Col1</th>
+            <th>Col2</th>
+            <th>Col3</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>data-1a</td>
+            <td>data-1b</td>
+            <td>data-1c</td>
+        </tr>
+        <tr>
+            <td>data-2a</td>
+            <td>data-2b</td>
+            <td>data-2c</td>
+        </tr>
+        <tr>
+            <td>data-3a</td>
+            <td>data-3b</td>
+            <td>data-3c</td>
+        </tr>
+        <tr>
+            <td>data-4a</td>
+            <td>data-4b</td>
+            <td>data-4c</td>
+        </tr>
+        .....
+    </tbody>
+</table>
+
+@section scripts{
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+
+       <script>
+        $(document).ready(function () {
+            $('#table_id').DataTable();
+        });
+    </script>
+}

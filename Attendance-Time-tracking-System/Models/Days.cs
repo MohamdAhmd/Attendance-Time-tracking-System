@@ -9,7 +9,7 @@ namespace Attendance_Time_tracking_System.Models
         
         public DateTime Day { get; set; }
 
-        public  List<Attend> attends { get; set; } = new List<Attend>();
-        public  List<TrackDays> trackDays { get; set; } = new List<TrackDays>();
+        public List<Attend> attends { get; set; } = new List<Attend>();
+        public List<TrackDays> trackDays { get; set; } = new List<TrackDays>();
     }
 }

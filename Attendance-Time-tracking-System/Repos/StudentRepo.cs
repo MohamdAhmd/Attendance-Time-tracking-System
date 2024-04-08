@@ -1,4 +1,6 @@
-﻿namespace Attendance_Time_tracking_System.Repos
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Attendance_Time_tracking_System.Repos
 {
     public class StudentRepo :IStudentRepo
     {
@@ -16,21 +18,16 @@
                 {
                     throw new ArgumentNullException();
                 }
-                //int saved = 0;
                 student.User_Status = true;
                 student.status = "Pending";
                 student.Grade = 250;
                 student.NextMinus = 0;
                 student.roles.Add(new Roles { RoleId = 2 });
-
+                student.AbsenceDays = 0;
                 db.Students.Add(student);
                 var done = db.SaveChanges();
 
-                //if (done > 0)
-                //{
-                //    db.Roles.Add(new Roles { UserId = student.Id, RoleId = 2 });
-                //    saved = db.SaveChanges();
-                //}
+              
                 return done;
             }
             catch (Exception ex)
@@ -43,17 +40,59 @@
 
         public Student GetStudentById(int id)
         {
-            var model = db.Students.Where(x=>x.User_Status==true).FirstOrDefault(s => s.Id == id);
+            var model = db.Students.Where(x=>x.User_Status==true).Include(x=>x.TrackNavigation).FirstOrDefault(s => s.Id == id);
             return model;
         }
+
+        public List<AttendanceList> GetAllUsersWithRole(int? value ,string daystatus)
+        {
+
+            var todaydate = DateTime.Now.Date;
+
+            var exist = db.Days.Any(x => x.Day.Date == todaydate);
+            var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate)?.Id;
+      
+            var students = db.Students.Include(x=>x.attends).
+                Include(x=>x.TrackNavigation).
+                ThenInclude(y=>y.trackDays).
+                Where(x=>x.User_Status == true && exist &&x.status=="Accepted" 
+                && x.TrackNavigation.trackDays.Any(td => td.DayId == dayID && td.Status == daystatus)).
+                Select(x=> new AttendanceList
+                {
+                    f_name = x.F_name,
+                    l_name = x.L_name,
+                    id = x.Id,
+                    attendpresent = x.attends.FirstOrDefault(y => y.DayId == dayID).Status,
+                    attendleave = x.attends.FirstOrDefault(y => y.DayId == dayID).StatusOut
+                }).ToList();
+
+
+            return students;
+        }
+
 
         public bool changeattendance(int userId, bool value)
         {
             try
             {
-                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today).Id;
+                var todaydate = DateTime.Now.Date;
+
+
+                var dayID = db.Days.FirstOrDefault(x => x.Day.Date == todaydate).Id;
                 var UserAttendance = db.Attends.FirstOrDefault(x => x.DayId == dayID && x.UserId == userId);
-                var NumberOfAbsenceDays = db.Attends.Where(x => x.UserId == userId && x.DayId != dayID && x.Status==false).Count();
+                var student = GetStudentById(userId);
+                var usertrack = student.TrackId;
+                var StartDateOfToday = db.TrackDays.Where(x=>x.DayId == dayID && x.TrackId== usertrack).FirstOrDefault()?.StartPeriod ??
+                    DateTime.Today.Add(new TimeSpan(9, 0, 0));
+
+                if (value && DateTime.Now > StartDateOfToday.AddMinutes(15)&&UserAttendance.Time == null)
+                {
+                    student.Grade -= student.NextMinus;
+                    student.NextMinus += addminus(student.AbsenceDays.Value);
+                    student.AbsenceDays += 1;
+                }
+                
+
                 if (UserAttendance != null)
                 {
 
@@ -74,10 +113,6 @@
                     db.Attends.Add(userattend);
                 }
 
-                if (value)
-                {
-                    
-                }
 
                 if (db.SaveChanges() > 0)
                 {
@@ -91,5 +126,13 @@
             }
         }
 
+        public int addminus(int numbr)
+        {
+            if (numbr % 3 == 0 && numbr / 3 <= 6)
+                return 5;
+            return 0;
+        }
+
+       
     }
 }

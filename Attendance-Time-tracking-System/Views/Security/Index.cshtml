@@ -5,6 +5,7 @@
 }
 
 @section Style{
+
     <style>
 
         table {
@@ -26,11 +27,23 @@
             margin-left:10px;
             padding:10px;
         }
+        #floatingTextarea{
+            border-radius:5%;
+            margin-right:10px;
+        }
+        #topdiv{
+            display:flex;
+            justify-content : space-between;
+            align-items : end;
+        }
+        #topdiv>div:nth-child(2){
+            flex-basis :30%;
+        }
     </style>
 }
 
-<div>
-    <div class="btn-group mt-5" role="group" aria-label="Basic radio toggle button group">
+<div id="topdiv" class="mt-5">
+    <div class="btn-group  " role="group" aria-label="Basic radio toggle button group">
         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value=5>
         <label class="btn btn-outline-primary" for="btnradio1" >Security</label>
 
@@ -43,8 +56,15 @@
         <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value=2>
         <label class="btn btn-outline-primary" for="btnradio3" data-id=2>Students</label>
     </div>
+    <div >
+        <label class="form-label" for="searchInput">Search</label>
+        <input type="text" class="form-control" placeholder="search" id="searchInput"></input>
+    </div>
+
 </div>
-<div class="d-flex justify-content-center mt-2">
+
+
+<div id="dataTable" class="d-flex justify-content-center mt-2">
 <table >
     <thead>
         <tr>
@@ -54,43 +74,36 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>ahmed</td>
-            <td>
-                 <div class="form-check form-switch">
-                    <input class="form-check-input attend" type="checkbox" checked/>
-                </div>
-            </td>
-            <td>
-                <div class="form-check form-switch">
-                    <input class="form-check-input leave" type="checkbox" disabled/>
-                </div>
-            </td>
-        </tr>
+       
         
     </tbody>
 </table>
 </div>
-
+<div>@DateTime.Now</div>
 <div id="addedin"></div>
+
+
+
+
+
 
 @section scripts {
     <script>
         $(document).ready(function () {
             loadtable(6);
 
-            // $(".attend").on("change", function () {
-            //     var att = $(this);
-            //     var leaveCheckbox = att.closest("tr").find(".leave");
-            //     if (att.prop("checked")) {
-            //         leaveCheckbox.prop("disabled", false);
-            //     }
-            //     else {
-            //         leaveCheckbox.prop("checked", false);
-            //         leaveCheckbox.prop("disabled", true);
-            //     }
-            // });
 
+            $('#searchInput').on('input', function () {
+                var searchText = $(this).val().toLowerCase();
+                $('#dataTable tbody tr').each(function () {
+                    var rowText = $(this).text().toLowerCase();
+                    if (rowText.includes(searchText)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
 
             document.querySelector("table tbody").addEventListener("click",function(event){
                 let target = event.target;

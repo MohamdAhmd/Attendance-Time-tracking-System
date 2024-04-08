@@ -8,11 +8,12 @@ namespace Attendance_Time_tracking_System.Controllers
     public class SecurityController : Controller
     {
         readonly IUserRepo userRepo;
-        public SecurityController(IUserRepo userRepo)
+        readonly IStudentRepo studentRepo;
+        public SecurityController(IUserRepo userRepo, IStudentRepo studentRepo)
         {
 
             this.userRepo = userRepo;
-
+            this.studentRepo = studentRepo;
         }
         public IActionResult Index()
         {
@@ -22,11 +23,28 @@ namespace Attendance_Time_tracking_System.Controllers
         [HttpPost]
         public IActionResult GetUsers(int value)
         {
-           
-            var users = userRepo.GetAllUsersWithRole(value);
+            try
+            {
+                if (value != 2)
                 
-            return Json(users);
-            
+                
+                
+                {
+                    var users = userRepo.GetAllUsersWithRole(value);
+                    return Json(users);
+                }
+                else if(value==2)
+                {
+                    var users = studentRepo.GetAllUsersWithRole(value, "offline");
+                    return Json(users);
+                }
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
         }
         [HttpPost]
         public IActionResult changeAttendstatus(int userId , bool value , int usertype)
@@ -37,6 +55,11 @@ namespace Attendance_Time_tracking_System.Controllers
                 {
                     bool change = userRepo.changeattendance(userId, value);
                     return change ? Ok(new { success = true }) : StatusCode(500, "Internal server error.");
+                }
+                else if(usertype == 2)
+                {
+                    bool change = studentRepo.changeattendance(userId,value);
+                    return change ? Ok(new { success = true }) : StatusCode(500, "Internal server error");
                 }
                 return RedirectToAction("Index");
             }
@@ -59,6 +82,12 @@ namespace Attendance_Time_tracking_System.Controllers
                 return StatusCode(500, ex.Message); 
             }
         }
+
+        public IActionResult datatable()
+        {
+            return View();
+        }
+    
 
     }
 }
