@@ -24,7 +24,6 @@ namespace Attendance_Time_tracking_System.Controllers
         // GET: TrackDays
         public async Task<IActionResult> Index()
         {
-            
             return View(trackDaysRepo.GetAllTrackDays());
         }
 
