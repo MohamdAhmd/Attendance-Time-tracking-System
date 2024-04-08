@@ -39,15 +39,15 @@
             background-color: #fff;
         }
 
-        .container header {
-            font-size: 22px;
-            font-weight: 600;
-            color: #333;
-        }
+            .container header {
+                font-size: 22px;
+                font-weight: 600;
+                color: #333;
+            }
 
-        .container form {
-            margin-top: 30px;
-        }
+            .container form {
+                margin-top: 30px;
+            }
 
         form .field, .select, textarea, option {
             margin-bottom: 20px;
@@ -99,18 +99,18 @@
             margin: 25px 0 6px;
         }
 
-        .button input {
-            color: #fff;
-            font-size: 16px;
-            font-weight: 400;
-            background-color: #4070f4;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+            .button input {
+                color: #fff;
+                font-size: 16px;
+                font-weight: 400;
+                background-color: #4070f4;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
 
-        .button input:hover {
-            background-color: #0e4bf1;
-        }
+                .button input:hover {
+                    background-color: #0e4bf1;
+                }
 
         span {
             color: red;
@@ -120,13 +120,13 @@
 <body>
     <div class="container">
         <header>Permission Form</header>
-        <form asp-action="Create" asp-controller="Permission" method="post">
+        <form asp-action="Edit" asp-controller="Permission" method="post">
             <div class="field">
                 <label asp-for="PermissionType">Permission Type <span>*</span></label>
                 <div class="input-field">
                     <select name="PermissionType" id="select" class="select" asp-for="PermissionType">
                         <option value="Late">Late</option>
-                        <option value="absent" >Absent</option>
+                        <option value="absent">Absent</option>
                     </select>
                 </div>
             </div>

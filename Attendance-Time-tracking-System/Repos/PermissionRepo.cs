@@ -31,6 +31,20 @@ namespace Attendance_Time_tracking_System.Repos
             db.Permissions.Add(newPermission);
             db.SaveChanges();
         }
+
+        public Permission GetPermissionByDate(string _date)
+        {
+            DateTime date = DateTime.Parse(_date); // Get only the date part
+
+            DateTime startDateTime = date;
+            DateTime endDateTime = startDateTime.AddMinutes(1); // Adding 100 milliseconds to get the end datetime
+
+            var permissions = db.Permissions
+                .FirstOrDefault(p => p.day >= startDateTime && p.day < endDateTime);
+
+            return permissions;
+        }
+
         public void edit(Permission _P1) { }
         public void delete(string _date) {
             DateTime date = DateTime.Parse(_date); // Get only the date part

@@ -3,6 +3,7 @@
     public interface IPermissionRepo
     {
         public List<Permission> GetPermissions();
+        public Permission GetPermissionByDate(string _date);
         public void create(Permission _P1);
         public void edit(Permission _P1);
         public void delete(string date);

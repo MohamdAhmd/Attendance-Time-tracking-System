@@ -97,7 +97,14 @@
                     <td>@item.day</td>
                     <td>@item.PermissionType</td>
                     <td> <span></span> @item.PermissionStatus</td>
-                    <td><box-icon type='solid' name='edit'></box-icon></td>
+
+                        <td>
+                            <!-- Create a link to the Delete action with the date as a query parameter -->
+                            <a href="@Url.Action("Edit", "Permission", new { date = item.day })">
+                                <box-icon type='solid' name='edit'></box-icon>
+                            </a>
+                        </td>
+
                         <td>
                             <!-- Create a link to the Delete action with the date as a query parameter -->
                             <a href="@Url.Action("Delete", "Permission", new { date = item.day })">
@@ -106,6 +113,7 @@
                         </td>
 
 
+                    @* <td><box-icon type='solid' name='edit'></box-icon></td> *@
                     @* <td><box-icon name='trash'></box-icon></td> *@
                 </tr>                    
                 }

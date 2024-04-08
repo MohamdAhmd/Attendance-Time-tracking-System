@@ -41,5 +41,15 @@ namespace Attendance_Time_tracking_System.Controllers
            return RedirectToAction("Index");
         }
 
+        public IActionResult Edit(string date)
+        {
+            if (date == null)
+                return BadRequest();
+            var permissionData = PermissionRepo.GetPermissionByDate(date);
+            if(permissionData == null)
+                return NotFound();
+            return View(permissionData);
+        }
+
     }
 }
