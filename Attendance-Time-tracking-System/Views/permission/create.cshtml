@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Permission;
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -38,15 +39,15 @@
             background-color: #fff;
         }
 
-            .container header {
-                font-size: 22px;
-                font-weight: 600;
-                color: #333;
-            }
+        .container header {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+        }
 
-            .container form {
-                margin-top: 30px;
-            }
+        .container form {
+            margin-top: 30px;
+        }
 
         form .field, .select, textarea, option {
             margin-bottom: 20px;
@@ -98,18 +99,18 @@
             margin: 25px 0 6px;
         }
 
-            .button input {
-                color: #fff;
-                font-size: 16px;
-                font-weight: 400;
-                background-color: #4070f4;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
+        .button input {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 400;
+            background-color: #4070f4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-                .button input:hover {
-                    background-color: #0e4bf1;
-                }
+        .button input:hover {
+            background-color: #0e4bf1;
+        }
 
         span {
             color: red;
@@ -119,27 +120,25 @@
 <body>
     <div class="container">
         <header>Permission Form</header>
-        <form>
-
+        <form asp-action="Create" asp-controller="Permission" method="post">
             <div class="field">
-                <label for="select">Permission Type <span>*</span></label>
+                <label asp-for="PermissionType">Permission Type <span>*</span></label>
                 <div class="input-field">
-                    <select name="select" id="select" class="select">
+                    <select name="PermissionType" id="select" class="select" asp-for="PermissionType">
                         <option value="Late">Late</option>
-                        <option value="Appcent">Appcent</option>
+                        <option value="Appcent" >Appcent</option>
                     </select>
                 </div>
             </div>
 
 
             <div class="field">
-                <label for="textarea">Permission Reason <span>*</span></label>
+                <label asp-for="PermissionBody">Permission Reason <span>*</span></label>
                 <div class="input-field">
-                    <textarea id="myTextarea" cols="45" rows="5"></textarea>
+                    <textarea name="PermissionBody" id="textarea" cols="45" rows="5" asp-for="PermissionBody"></textarea>
                 </div>
 
-                <span class="error">
-                    <p id="error-text"></p>
+                <span asp-validation-for="PermissionBody" class="error" id="error-text">
                 </span>
             </div>
 
@@ -161,16 +160,14 @@
 <script>
     const form = document.querySelector("form")
 
-    // Calling Funtion on Form Sumbit
+    // Calling Function on Form Submit
     form.addEventListener("submit", (e) => {
-        e.preventDefault(); //preventing form submitting
-        var textareaValue = document.getElementById('myTextarea').value.trim();
+        e.preventDefault(); // preventing form submitting
+        var textareaValue = document.getElementById('textarea').value.trim();
         var errorMsg = document.getElementById('error-text');
-        var error = document.getElementsByClassName('error')[0];
 
-        var regex = /^[a-zA-Z][^\d\s]/; // Matches strings that start with a letter and not a digit or space
+        var regex = /^[a-zA-Z]/; // Matches strings that start with a letter
         var errorMessage = '';
-
 
         if (textareaValue === '') {
             errorMsg.innerText = 'Textarea cannot be empty';
@@ -178,6 +175,10 @@
             errorMsg.innerText = 'Textarea must have at least 9 characters';
         } else if (!regex.test(textareaValue)) {
             errorMsg.innerText = 'Textarea must start with a letter';
+        } else {
+            // Clear error message if validation passes
+            errorMsg.innerText = '';
+            form.submit(); // Submit the form if validation passes
         }
     })
 </script>

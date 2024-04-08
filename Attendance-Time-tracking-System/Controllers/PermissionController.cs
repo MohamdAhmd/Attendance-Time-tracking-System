@@ -15,18 +15,31 @@ namespace Attendance_Time_tracking_System.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        } 
+            return View(PermissionRepo.GetPermissions());
+        }
+        [HttpGet]
         public IActionResult Create ()
         {
             return View();
         }
-        
+
         [HttpPost]
-        public IActionResult create([FromBody]Permission _p)
+        public IActionResult Create(Permission _p)
         {
-            PermissionRepo.create(_p);
-            return Json("Permission Added Successfully");
+            if (ModelState.IsValid) // Check if model state is valid
+            {
+                PermissionRepo.create(_p);
+                return RedirectToAction("Index");
+            }
+            // If model state is not valid, return the view with validation errors
+            return View(_p);
         }
+
+       public IActionResult Delete(string date)
+        {
+           PermissionRepo.delete(date);
+           return RedirectToAction("Index");
+        }
+
     }
 }

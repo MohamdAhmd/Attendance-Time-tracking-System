@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Permission>;
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!DOCTYPE html>
@@ -48,8 +49,25 @@
         padding: 10px;
     }
 
-        
-</style>
+    .add {
+        width: 15vw;
+        height: 6vh;
+        border: none;
+        border-radius: 25px;
+        display: flex;
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: rgba(43, 43, 247, 0.884);
+        color: white;
+    }
+
+    .add a {
+        text-decoration: none;
+        color: white;
+        display: flex;
+    }
+
+    </style>
 
 
 
@@ -57,8 +75,11 @@
 </head>
 <body>
     <div class="container">
-        <div class="activity">
-            <span class="text">Recent Permission</span>
+        <div class="add" >
+            <a asp-action="Create" asp-controller="Permission">
+            <p>New Permission</p>
+                <box-icon class="plus" name='plus-circle'></box-icon>
+            </a>
         </div>
 
         <table>
@@ -70,27 +91,24 @@
             <th> Delete </th>
             </thead>
             <tbody>
+                @foreach(var item in Model)
+                {
                 <tr>
-                    <td>2024-11-21</td>
-                    <td>Late</td>
-                    <td> <span></span> Pending</td>
+                    <td>@item.day</td>
+                    <td>@item.PermissionType</td>
+                    <td> <span></span> @item.PermissionStatus</td>
                     <td><box-icon type='solid' name='edit'></box-icon></td>
-                    <td><box-icon name='trash'></box-icon></td>
-                </tr>
-                <tr>
-                    <td>2024-11-21</td>
-                    <td>Late</td>
-                    <td>Pending</td>
-                    <td><box-icon type='solid' name='edit'></box-icon></td>
-                    <td><box-icon name='trash'></box-icon></td>
-                </tr>
-                <tr>
-                    <td>2024-11-21</td>
-                    <td>Late</td>
-                    <td>Pending</td>
-                    <td><box-icon type='solid' name='edit'></box-icon></td>
-                    <td><box-icon name='trash'></box-icon></td>
-                </tr>
+                        <td>
+                            <!-- Create a link to the Delete action with the date as a query parameter -->
+                            <a href="@Url.Action("Delete", "Permission", new { date = item.day })">
+                                <box-icon name='trash'></box-icon>
+                            </a>
+                        </td>
+
+
+                    @* <td><box-icon name='trash'></box-icon></td> *@
+                </tr>                    
+                }
             </tbody>
     </div>
     </table>

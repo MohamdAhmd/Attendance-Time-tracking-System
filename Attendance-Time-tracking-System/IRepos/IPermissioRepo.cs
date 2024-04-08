@@ -2,9 +2,10 @@
 {
     public interface IPermissionRepo
     {
+        public List<Permission> GetPermissions();
         public void create(Permission _P1);
         public void edit(Permission _P1);
-        public void delete(Permission _P1);
+        public void delete(string date);
 
     }
 }
