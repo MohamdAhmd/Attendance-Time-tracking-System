@@ -8,5 +8,6 @@
         public void edit(Permission _P1);
         public void delete(string date);
 
+        public List<StdPermissionVM> StdPermissions();
     }
 }

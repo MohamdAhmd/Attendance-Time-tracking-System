@@ -1,7 +1,9 @@
 ﻿@model Permission;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string testDate = Model.day.ToString();
 }
+
 
 
 <!DOCTYPE html>
@@ -142,7 +144,9 @@
                 </span>
             </div>
 
-
+ @*            <input type="date" value="2024-03-02" name="test" ></input> *@
+            <label asp-for="day" hidden></label>
+            <input name="day" type="text" value="@testDate" hidden/>
 
             <div class="input-field button">
                 <input type="submit" value="Submit Now" />

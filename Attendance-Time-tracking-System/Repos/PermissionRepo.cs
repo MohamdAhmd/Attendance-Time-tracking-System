@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Attendance_Time_tracking_System.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -45,7 +47,6 @@ namespace Attendance_Time_tracking_System.Repos
             return permissions;
         }
 
-        public void edit(Permission _P1) { }
         public void delete(string _date) {
             DateTime date = DateTime.Parse(_date); // Get only the date part
 
@@ -58,6 +59,34 @@ namespace Attendance_Time_tracking_System.Repos
 
             db.RemoveRange(permissions);
             db.SaveChanges();
+        }
+
+
+        public void edit(Permission _P1) {
+            var permissionData = GetPermissionByDate(_P1.day.ToString());
+            permissionData.PermissionBody = _P1.PermissionBody;
+            permissionData.PermissionType = _P1.PermissionType;
+            db.SaveChanges();
+        }
+
+        public List<StdPermissionVM> StdPermissions()
+        {
+            var supervisorId = 7;
+            var permissions = db.Permissions
+                        .Include(p => p.StudentNavigation)
+                        .ThenInclude(s => s.TrackNavigation)
+                        .ThenInclude(t => t.InstructorNavigation)
+                        .Where(p => p.StudentNavigation.TrackNavigation.InstructorNavigation.Id == supervisorId)
+                        .Select(p => new StdPermissionVM
+                        {
+                            PermissionInfo = p,
+                            Fname = p.StudentNavigation.F_name,
+                            Lname = p.StudentNavigation.L_name 
+                        })
+                        .ToList();
+
+
+            return permissions;
         }
 
     }

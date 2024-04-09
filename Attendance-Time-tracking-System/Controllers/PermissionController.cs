@@ -50,6 +50,23 @@ namespace Attendance_Time_tracking_System.Controllers
                 return NotFound();
             return View(permissionData);
         }
+        [HttpPost]
+        public IActionResult Edit(Permission permission)
+        {
+
+            if (ModelState.IsValid)
+            {
+                PermissionRepo.edit(permission);
+                return RedirectToAction("index");
+            }
+            return View(permission);
+        }
+
+        public IActionResult studentPermissions()
+        {
+            var data = PermissionRepo.StdPermissions();
+            return View("Permissions",data);
+        }
 
     }
 }
