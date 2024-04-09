@@ -8,6 +8,7 @@
         public void AddTrack(Track track);
         public void UpdateTrack(Track track);
         public void DeleteTrack(int id);
+        public List<Track> GetAllTracksForSuperVisor(int Superid);
 
 
     }
