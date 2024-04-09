@@ -48,6 +48,7 @@ namespace Attendance_Time_tracking_System
             builder.Services.AddScoped<ITrackDaysRepo, TrackDaysRepo>();
             builder.Services.AddScoped<IWorksInRepo, WorksInRepo>();
             builder.Services.AddScoped<IBlobRepo, BlobRepo>();
+            builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
 
             //end of connections
             //////////////////////////////////////////////////
