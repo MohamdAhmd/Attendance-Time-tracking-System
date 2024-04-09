@@ -12,7 +12,7 @@ namespace Attendance_Time_tracking_System.Repos
         public void AddProgram(Models.Program program)
         {
             db.Programs.Add(program);
-            db.SaveChanges();
+            db.SaveChanges();   
         }
 
         public void DeleteProgram(int id)

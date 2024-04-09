@@ -1,11 +1,12 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -26,7 +27,7 @@
 
                 <div class="text logo-text">
                     <span class="name">ITI</span>
-                    <span class="profession">Security</span>
+                    <span class="profession">Student Affairs</span>
                 </div>
             </div>
 
@@ -37,31 +38,31 @@
             <div class="menu">
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="#">
+                        <a asp-action="index" asp-controller="StudentAffairs">
                             <i class='bx bx-home-alt icon'></i>
                             <span class="text nav-text">Attendance</span>
                         </a>
                     </li>
 
                     @* <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-bar-chart-alt-2 icon'></i>
-                            <span class="text nav-text">Link 1</span>
-                        </a>
+                    <a href="#">
+                    <i class='bx bx-bar-chart-alt-2 icon'></i>
+                    <span class="text nav-text">Link 1</span>
+                    </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-bell icon'></i>
-                            <span class="text nav-text">Link 2</span>
-                        </a>
+                    <a href="#">
+                    <i class='bx bx-bell icon'></i>
+                    <span class="text nav-text">Link 2</span>
+                    </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-pie-chart-alt icon'></i>
-                            <span class="text nav-text">Link 3</span>
-                        </a>
+                    <a href="#">
+                    <i class='bx bx-pie-chart-alt icon'></i>
+                    <span class="text nav-text">Link 3</span>
+                    </a>
                     </li> *@
                 </ul>
             </div>
@@ -95,7 +96,7 @@
         <div class="text">
             @RenderBody()
         </div>
-        
+
     </section>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -109,3 +110,4 @@
 
 </body>
 </html>
+
