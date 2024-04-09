@@ -42,5 +42,11 @@ namespace Attendance_Time_tracking_System.Repos
             db.Tracks.Update(track);
             db.SaveChanges();
         }
+
+
+        public List<Track> GetAllTracksForSuperVisor(int Superid)
+        {
+            return db.Tracks.Where(x=>x.SupervisorID== Superid).ToList();
+        }
     }
 }
