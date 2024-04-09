@@ -1,0 +1,186 @@
+﻿@model Permission;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email and Password Validation</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            position: relative;
+            max-width: 370px;
+            width: 100%;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .container header {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .container form {
+            margin-top: 30px;
+        }
+
+        form .field, .select, textarea, option {
+            margin-bottom: 20px;
+        }
+
+        form .input-field, .select, textarea, option {
+            position: relative;
+            height: 55px;
+            width: 100%;
+        }
+
+        .input-field input, .select, textarea, option {
+            height: 100%;
+            width: 100%;
+            outline: none;
+            border: none;
+            border-radius: 8px;
+            padding: 0 15px;
+            border: 1px solid #d1d1d1;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .invalid input {
+            border-color: #d93025;
+        }
+
+        .field .error {
+            display: flex;
+            align-items: center;
+            margin-top: 6px;
+            color: #d93025;
+            font-size: 13px;
+            display: block;
+        }
+
+        .invalid .error {
+            display: flex;
+        }
+
+        .error .error-icon {
+            margin-right: 6px;
+            font-size: 15px;
+        }
+
+        .button {
+            margin: 25px 0 6px;
+        }
+
+        .button input {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 400;
+            background-color: #4070f4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button input:hover {
+            background-color: #0e4bf1;
+        }
+
+        span {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>Permission Form</header>
+        <form asp-action="Create" asp-controller="Permission" method="post">
+            <div class="field">
+                <label asp-for="PermissionType">Permission Type <span>*</span></label>
+                <div class="input-field">
+                    <select name="PermissionType" id="select" class="select" asp-for="PermissionType">
+                        <option value="Late">Late</option>
+                        <option value="absent" >Absent</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="field">
+                <label asp-for="PermissionBody">Permission Reason <span>*</span></label>
+                <div class="input-field">
+                    <textarea name="PermissionBody" id="textarea" cols="45" rows="5" asp-for="PermissionBody"></textarea>
+                </div>
+
+                <span asp-validation-for="PermissionBody" class="error" id="error-text">
+                </span>
+            </div>
+
+
+
+            <div class="input-field button">
+                <input type="submit" value="Submit Now" />
+            </div>
+
+        </form>
+    </div>
+
+</body>
+</html>
+
+
+
+<!-- JavaScript -->
+<script>
+    const form = document.querySelector("form")
+
+    // Calling Function on Form Submit
+    form.addEventListener("submit", (e) => {
+        e.preventDefault(); // preventing form submitting
+        var textareaValue = document.getElementById('textarea').value.trim();
+        var errorMsg = document.getElementById('error-text');
+
+        var regex = /^[a-zA-Z]/; // Matches strings that start with a letter
+        var errorMessage = '';
+
+        if (textareaValue === '') {
+            errorMsg.innerText = 'Textarea cannot be empty';
+        } else if (textareaValue.length < 9) {
+            errorMsg.innerText = 'Textarea must have at least 9 characters';
+        } else if (!regex.test(textareaValue)) {
+            errorMsg.innerText = 'Textarea must start with a letter';
+        } else {
+            // Clear error message if validation passes
+            errorMsg.innerText = '';
+            form.submit(); // Submit the form if validation passes
+        }
+    })
+</script>
+
+
