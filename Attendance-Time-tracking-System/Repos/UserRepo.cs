@@ -102,6 +102,12 @@ namespace Attendance_Time_tracking_System.Repos
                     else if (DateTime.Now <= todayat915) { userattend.attendstatus = "OnTime"; }
                     db.Attends.Add(userattend);
                 }
+                if (value == false)
+                {
+                    UserAttendance.attendstatus = null;
+                    UserAttendance.Time = null;
+                }
+
                 if (db.SaveChanges() > 0)
                 {
                     return true;

@@ -178,7 +178,9 @@
                                 if (item.attendpresent == null || item.attendpresent == false) { attendcheck = "" }
                                 if (item.attendleave == null || item.attendleave == false) { leavecheck = "" }
                                 if (item.attendleave == true) { disapled = "disabled"; attenddisaplead = "disabled" }
-                                if (item.status == "Absent") { attenddisaplead = "disabled"; disapled = "disabled" }
+                                // if (item.status == "Absent") { attenddisaplead = "disabled"; disapled = "disabled" }
+                                if (radiovalue == 2 && (item.status == "Late" || item.status == "Absent"))
+                                { attenddisaplead = "disabled"; disapled = "disabled" }
 
                                 let rows =
                                     `<tr data-id=${item.id}>

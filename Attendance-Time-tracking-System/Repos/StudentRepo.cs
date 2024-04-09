@@ -122,6 +122,12 @@ namespace Attendance_Time_tracking_System.Repos
                     db.Attends.Add(userattend);
                 }
 
+                if(value == false)
+                {
+                    UserAttendance.attendstatus = null;
+                    UserAttendance.Time = null;
+                }
+
                 if (db.SaveChanges() > 0)
                 {
                     return true;
