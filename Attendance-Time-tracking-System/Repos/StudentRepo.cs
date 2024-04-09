@@ -88,7 +88,7 @@ namespace Attendance_Time_tracking_System.Repos
                 var StartDateOfToday = db.TrackDays.Where(x=>x.DayId == dayID && x.TrackId== usertrack).FirstOrDefault()?.StartPeriod ??
                     DateTime.Today.Add(new TimeSpan(9, 0, 0));
 
-                if (value && DateTime.Now > StartDateOfToday.AddMinutes(15)&&UserAttendance?.Time == null)
+                if (value && DateTime.Now > StartDateOfToday.AddMinutes(15))
                 {
                     student.Grade -= havePermission(userId)? student.NextMinus/2 : student.NextMinus;
                     student.NextMinus += addminus(student.AbsenceDays.Value);
@@ -120,6 +120,12 @@ namespace Attendance_Time_tracking_System.Repos
                     if (DateTime.Now > StartDateOfToday.AddMinutes(15)) { userattend.attendstatus = "Late"; }
                     else if (DateTime.Now <= StartDateOfToday.AddMinutes(15)) { userattend.attendstatus = "OnTime"; }
                     db.Attends.Add(userattend);
+                }
+
+                if(value == false)
+                {
+                    UserAttendance.attendstatus = null;
+                    UserAttendance.Time = null;
                 }
 
                 if (db.SaveChanges() > 0)
