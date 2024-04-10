@@ -67,6 +67,14 @@ namespace Attendance_Time_tracking_System.Controllers
             var data = PermissionRepo.StdPermissions();
             return View("Permissions",data);
         }
+        
+        public IActionResult ChangeStatus(string date, string status)
+        {
+            PermissionRepo.ChangeStatus(date,status);
+            return RedirectToAction("studentPermissions");
+        }
+
+
 
     }
 }

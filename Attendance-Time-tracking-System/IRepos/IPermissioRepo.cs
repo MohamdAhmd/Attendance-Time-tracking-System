@@ -7,6 +7,7 @@
         public void create(Permission _P1);
         public void edit(Permission _P1);
         public void delete(string date);
+        public void ChangeStatus(string date, string status);
 
         public List<StdPermissionVM> StdPermissions();
     }
