@@ -114,14 +114,14 @@ namespace Attendance_Time_tracking_System.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Register(Student student)
+        public async Task<IActionResult> Register(Student student,IFormFile personalimage)
         {
             ViewBag.AllTracks = trackRepo.GetAllTracks();
             ViewBag.AllIntakes = intakeRepo.GetAllIntakes();
 
             try
             {
-                if (studentRepo.AddStudent(student) > 0)
+                if (await studentRepo.AddStudent(student, personalimage) > 0)
                 {
                     return RedirectToAction("login");
                 }

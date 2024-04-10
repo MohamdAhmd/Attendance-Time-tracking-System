@@ -7,12 +7,15 @@ namespace Attendance_Time_tracking_System.Repos
     public class StudentRepo :IStudentRepo
     {
         readonly dbContext db;
-        public StudentRepo(dbContext db)
+        readonly IBlobRepo blobRepo;
+        public StudentRepo(dbContext db, IBlobRepo blobRepo)
         {
+
             this.db = db;
+            this.blobRepo = blobRepo;
         }
 
-        public int AddStudent(Student student)
+        public async Task<int> AddStudent(Student student,IFormFile personalimage)
         {
             try
             {
@@ -26,6 +29,7 @@ namespace Attendance_Time_tracking_System.Repos
                 student.NextMinus = 0;
                 student.roles.Add(new Roles { RoleId = 2 });
                 student.AbsenceDays = 0;
+                student.image = await blobRepo.AddingImage(personalimage);
                 db.Students.Add(student);
                 var done = db.SaveChanges();
 
