@@ -5,15 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/Security/Security.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.min.css" />
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="~/css/_style.css">
     @RenderSection("Style", required: false)
 
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+
 
 </head>
 <body>
@@ -26,7 +25,7 @@
 
                 <div class="text logo-text">
                     <span class="name">ITI</span>
-                    <span class="profession">Security</span>
+                    <span class="profession">Mohamed Ahmed</span>
                 </div>
             </div>
 
@@ -39,36 +38,37 @@
                     <li class="nav-link" style="padding-left:0px;">
                         <a href="#">
                             <i class='bx bx-home-alt icon'></i>
-                            <span class="text nav-text">Attendance</span>
+                            <span class="text nav-text">Dashboard</span>
                         </a>
                     </li>
 
-                    @* <li class="nav-link">
+                    <li class="nav-link" style="padding-left:0px;">
                         <a href="#">
                             <i class='bx bx-bar-chart-alt-2 icon'></i>
                             <span class="text nav-text">Link 1</span>
                         </a>
                     </li>
-
-                    <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-bell icon'></i>
-                            <span class="text nav-text">Link 2</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link">
+                    @if (User.IsInRole("Supervisor"))
+                    {
+                        <li class="nav-link" style="padding-left:0px;">
+                            <a asp-action="SupervisorShowStudetnsDegrees" asp-controller="instructor">
+                                <i class='bx bx-bell icon'></i>
+                                <span class="text nav-text">Show Students</span>
+                            </a>
+                        </li>
+                    }
+                    <li class="nav-link" style="padding-left:0px;">
                         <a href="#">
                             <i class='bx bx-pie-chart-alt icon'></i>
                             <span class="text nav-text">Link 3</span>
                         </a>
-                    </li> *@
-                </ul>
+                    </li>
+                </ul> 
             </div>
 
             <div class="bottom-content">
                 <li class="">
-                    <a asp-action="logout" asp-controller="Security"  >
+                    <a asp-action="logout" asp-controller="instructor">
                         <i class='bx bx-log-out icon'></i>
                         <span class="text nav-text">Logout</span>
                     </a>
@@ -94,8 +94,6 @@
     <section class="home">
         <div class="text">
             @RenderBody()
-        </div>
-        
     </section>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -106,6 +104,6 @@
     <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
     <script src="~/js/security/security.js"></script>
     @RenderSection("scripts", required: false)
-
 </body>
 </html>
+

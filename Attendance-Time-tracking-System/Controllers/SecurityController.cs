@@ -1,4 +1,6 @@
 ﻿using Castle.Components.DictionaryAdapter;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -8,6 +10,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+    [Authorize(Roles = "Security")]
     public class SecurityController : Controller
     {
         readonly IUserRepo userRepo;
@@ -98,8 +101,11 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             return StatusCode(500,"No items to save");
         }
-
-
+        public async Task<IActionResult> logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("index","home");
+        }
 
     }
 }

@@ -77,5 +77,10 @@ namespace Attendance_Time_tracking_System.Controllers
             return StatusCode(500, "No items to save");
         }
 
+
+        public IActionResult showlayout()
+        {
+            return View("_Layout");
+        }
     }
 }

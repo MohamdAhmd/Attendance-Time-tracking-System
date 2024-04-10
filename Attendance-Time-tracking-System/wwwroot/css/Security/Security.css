@@ -158,6 +158,14 @@ header .image-text .profession {
     transition: var(--tran-05);
 }
 
+
+.menu .menu-links{
+    padding-left:0px;
+}
+#menu-links {
+    padding-left: 0;
+}
+
 body.dark .sidebar header .toggle {
     color: var(--text-color);
 }
@@ -203,9 +211,17 @@ body.dark .sidebar header .toggle {
     transition: var(--tran-03);
 }
 
-    .sidebar li a:hover {
-        background-color: var(--primary-color);
-    }
+.menu-links ul{
+    padding-left : 0;
+}
+
+.nav-link{
+    padding : 0;
+}
+
+.sidebar li a:hover {
+    background-color: var(--primary-color);
+}
 
         .sidebar li a:hover .icon,
         .sidebar li a:hover .text {
