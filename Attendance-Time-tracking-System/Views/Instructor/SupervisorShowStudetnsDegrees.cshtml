@@ -52,7 +52,7 @@
         <form class="row gy-2 gx-3 align-items-center" asp-controller="instructor" asp-action="SupervisorShowStudetnsDegrees" method="post">
             <div class="col-3 offset-1">
         <label class="visually-hidden" for="autoSizingInput">Name</label>
-        <input type="date" class="form-control" id="autoSizingInput" placeholder="Jane Doe" name="choosendate">
+        <input type="date" class="form-control" id="autoSizingInput" value=""  name="choosendate">
       </div>
         <div class="col-2">
             <label class="visually-hidden" for="autoSizingInput1">Name</label>
@@ -119,7 +119,12 @@
             document.getElementById('autoSizingInput').addEventListener('change', function () {
                 var selectedDate = new Date(this.value);
                 var currentDate = new Date();
-                if (selectedDate > currentDate) {
+
+                selectedDate.setHours(0, 0, 0, 0);
+                currentDate.setHours(0, 0, 0, 0);
+                console.log(selectedDate, currentDate);
+                //remove || selectedDate.getTime() === currentDate.getTime() to work on todays date
+                if (selectedDate > currentDate || selectedDate.getTime() === currentDate.getTime()) {
                     document.getElementById('submitButton').disabled = true;
                     Swal.fire("Choose a date in the past", "", "error");
                 } else {

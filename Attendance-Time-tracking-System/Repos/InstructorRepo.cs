@@ -81,7 +81,9 @@ namespace Attendance_Time_tracking_System.Repos
                                     {
                                         Fullname = x.F_name + " "+x.L_name,
                                         attendance = x.attends.FirstOrDefault(y=>y.DayId==dayexist && y.UserId==x.Id).attendstatus ?? "Absent",
-                                        grade = x.attends.FirstOrDefault(y => y.DayId == dayexist && y.UserId == x.Id).StudentDegreeAtMoment ?? 250,
+                                        
+                                        grade = x.attends.FirstOrDefault(y => y.DayId == dayexist && y.UserId == x.Id).StudentDegreeAtMoment ??
+                                        x.attends.OrderByDescending(y=>y.StudentDegreeAtMoment).LastOrDefault(y=>y.DayId<=dayexist && y.UserId==x.Id).StudentDegreeAtMoment ?? 250,//250,
                                         trackname = x.TrackNavigation.Name
                                     }).ToList();
                 return allstudents;
