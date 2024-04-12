@@ -28,6 +28,18 @@ namespace Attendance_Time_tracking_System.Controllers
             
             return View();
         }
+        /*
+            var userIdClaim = parseInt(User.FindFirst("UserId"));
+
+            if (userIdClaim != null)
+            {
+                // Access the value of the "UserId" claim
+                string userId = userIdClaim.Value;
+                // Use userId as needed
+            }
+    
+         */
+
         [HttpPost]
         public async Task<IActionResult> login(LoginVM loginVM)
         {
@@ -43,6 +55,7 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             Claim claim1 = new Claim(ClaimTypes.Name, user.F_name + " " + user.L_name);
             Claim claim2 = new Claim(ClaimTypes.Email, user.Email);
+            Claim claim3 = new Claim("UserId", user.Id.ToString());      
             List<Claim> claims = new List<Claim>();
 
             List<string> loginroles = new List<string>();
@@ -56,6 +69,7 @@ namespace Attendance_Time_tracking_System.Controllers
 
             claimsIdentity1.AddClaim(claim1);
             claimsIdentity1.AddClaim(claim2);
+            claimsIdentity1.AddClaim(claim3);
             claimsIdentity1.AddClaims(claims);
 
             ClaimsPrincipal claimsPrincipal1 = new ClaimsPrincipal();
@@ -69,7 +83,7 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             else if (loginroles.Contains("Instructor"))
             {
-                return RedirectToAction("Instructor", "Account");
+                return RedirectToAction("SupervisorShowStudetnsDegrees", "Instructor");
             }
             else if(loginroles.Contains("Student"))
             {
@@ -86,10 +100,11 @@ namespace Attendance_Time_tracking_System.Controllers
                 }
                 return RedirectToAction("Student", "Account");
             }
-            else
+            else if (loginroles.Contains("Security"))
             {
-                return RedirectToAction("Employee", "Account");
+                return RedirectToAction("index", "Security");
             }
+            return RedirectToAction("login");
         }
 
         public IActionResult Register()
@@ -99,14 +114,14 @@ namespace Attendance_Time_tracking_System.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Register(Student student)
+        public async Task<IActionResult> Register(Student student,IFormFile personalimage)
         {
             ViewBag.AllTracks = trackRepo.GetAllTracks();
             ViewBag.AllIntakes = intakeRepo.GetAllIntakes();
 
             try
             {
-                if (studentRepo.AddStudent(student) > 0)
+                if (await studentRepo.AddStudent(student, personalimage) > 0)
                 {
                     return RedirectToAction("login");
                 }

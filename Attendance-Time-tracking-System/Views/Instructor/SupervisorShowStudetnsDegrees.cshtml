@@ -1,0 +1,136 @@
+﻿@model IEnumerable<ShowStudentsSupervisor>
+@{
+    ViewData["Title"] = "SupervisorShowStudetnsDegrees";
+    Layout = "Instructor";
+
+    var AllTracks = (List<Track>)ViewBag.alltracks;
+    var list = new SelectList(AllTracks, "Id", "Name");
+}
+
+@section Style {
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.css" />
+    <style>
+        div{
+            font-size:20px;
+        }
+        table {
+            border-spacing: 1;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+            table thead tr {
+                height: 60px;
+                background: #36304a;
+                color: white;
+            }
+
+            table tr td {
+                margin-left: 10px;
+                padding: 10px;
+            }
+
+            button[type='submit']{
+            background-color: #36304a;
+            color:white;
+            }
+
+        button[type='submit']:hover{
+            color:white;
+        }
+    </style>
+}
+
+<div class="container-fluid mt-5">
+    @if (list.Count() > 0)
+    {
+        <form class="row gy-2 gx-3 align-items-center" asp-controller="instructor" asp-action="SupervisorShowStudetnsDegrees" method="post">
+            <div class="col-3 offset-1">
+        <label class="visually-hidden" for="autoSizingInput">Name</label>
+        <input type="date" class="form-control" id="autoSizingInput" placeholder="Jane Doe" name="choosendate">
+      </div>
+        <div class="col-2">
+            <label class="visually-hidden" for="autoSizingInput1">Name</label>
+            <select asp-items="list" class="form-control" name="SelectedTrack"></select>
+        </div>
+            <div class="col-auto">
+                    <button type="submit" id="submitButton" class="btn ">Show</button>
+            </div>       
+        </form>
+    }
+    else
+    {
+        <h1>You Are A sperVisor over any track</h1>
+    }
+</div>
+
+@* class="table table-striped  table-light table-borderd" *@
+<div class="mt-5 row" >
+    <div class="col-10 offset-1 table-style">
+        <table id="example"  style="width:100%; ">
+        <thead>
+            <tr>
+                <td>Student Name</td>
+                <td>Degree</td>
+                <td>Status of Day</td>
+                <td>track Name</td>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model.Count()>0)
+            {
+                @foreach(var item in Model)
+                {                  
+                    <tr>
+                        <td>@item.Fullname</td>
+                        <td>@item.grade</td>
+                        <td>@item.attendance</td>
+                        <td>@item.trackname</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No stdents here</td>
+                </tr>   
+            }
+        </tbody>
+    </table>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.js"></script>
+    <script>
+        $(document).ready(function () {
+            // new DataTable('#example');
+
+            document.getElementById('autoSizingInput').addEventListener('change', function () {
+                var selectedDate = new Date(this.value);
+                var currentDate = new Date();
+                if (selectedDate > currentDate) {
+                    document.getElementById('submitButton').disabled = true;
+                    Swal.fire("Choose a date in the past", "", "error");
+                } else {
+                    document.getElementById('submitButton').disabled = false;
+                }
+            });
+
+
+        });//end of document ready
+
+
+
+    </script>
+}

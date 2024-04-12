@@ -1,16 +1,19 @@
 ﻿using Attendance_Time_tracking_System.Models;
 using Attendance_Time_tracking_System.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Attendance_Time_tracking_System.Repos
 {
     public class InstructorRepo : IInstructorRepo
     {
         readonly dbContext db;
+       
         public InstructorRepo(dbContext _db)
         {
             db = _db;
         }
+        
         public List<InstructorViewModel> GetAllInstructors()
         {
             var Instructors = (from user in db.Users
@@ -23,6 +26,7 @@ namespace Attendance_Time_tracking_System.Repos
                                                                  Password = user.Password,
                                                                  Salary = instructor.Salary,
                                                                  HireDate = instructor.HireDate, 
+                                                                 
                                                                 
 
                                                              }).ToList();
@@ -42,9 +46,14 @@ namespace Attendance_Time_tracking_System.Repos
             db.Instructors.Add(instructor);
             db.SaveChanges();
         }
-        public void UpdateInstructor(Instructor instructor)
+        public void UpdateInstructor(Instructor instructor,int? id)
         {
+           // var track=db
+
+           //instructor.supervisor= db.Instructors.FirstOrDefault(i => i.Id == id);
+            
             db.Instructors.Update(instructor);
+            
             db.SaveChanges();
         }
         public void DeleteInstructor(Instructor instructor)
@@ -53,5 +62,33 @@ namespace Attendance_Time_tracking_System.Repos
             db.SaveChanges();
         }
 
+
+        public List<ShowStudentsSupervisor> SuperVisorStudent(int supervisorid ,DateOnly day , int SelectedTrack)
+        {
+            DateTime daydate = new DateTime (day.Year, day.Month, day.Day);
+            var choosendate = daydate.Date;
+
+            var trackid = db.Tracks.FirstOrDefault(x => x.SupervisorID == supervisorid && x.Id==SelectedTrack)?.Id;
+            var dayexist = db.Days.FirstOrDefault(x => x.Day.Date == choosendate)?.Id;
+            var dayexistintrack = db.TrackDays.Any(x => x.TrackId == trackid && x.DayId == dayexist);
+
+
+            if(trackid!=null && dayexist!=null && dayexistintrack)
+            {
+                var allstudents = db.Students.Include(x => x.attends).Include(x=>x.TrackNavigation)
+                                    .Where(x => x.TrackId == trackid)
+                                    .Select(x => new ShowStudentsSupervisor
+                                    {
+                                        Fullname = x.F_name + " "+x.L_name,
+                                        attendance = x.attends.FirstOrDefault(y=>y.DayId==dayexist && y.UserId==x.Id).attendstatus ?? "Absent",
+                                        grade = x.attends.FirstOrDefault(y => y.DayId == dayexist && y.UserId == x.Id).StudentDegreeAtMoment ?? 250,
+                                        trackname = x.TrackNavigation.Name
+                                    }).ToList();
+                return allstudents;
+            }
+
+            List<ShowStudentsSupervisor> one = new List<ShowStudentsSupervisor>();
+            return one;
+        }
     }
 }

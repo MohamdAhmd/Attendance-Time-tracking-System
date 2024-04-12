@@ -28,7 +28,8 @@ namespace Attendance_Time_tracking_System.Models
         // status can be  (Pending, Accepted, Rejected, Fired)
         public string status { get; set; } = "Pending";
         [Range(5, 30, ErrorMessage = "minus shouldn't exseed 30 degree")]
-        public int NextMinus { get; set; } 
+        public int NextMinus { get; set; }
+        public int? AbsenceDays { get; set; } = 0;
         [ForeignKey("TrackNavigation")]
         public int TrackId { get; set; }
         [ForeignKey("IntakeNavigation")]
@@ -37,6 +38,8 @@ namespace Attendance_Time_tracking_System.Models
         public Track TrackNavigation { get; set; }
         [ForeignKey("IntakeID")]
         public Intake IntakeNavigation { get; set; }
+
+        public List<Permission> Permissions { get; set; } = new List<Permission>();
 
     }
 }

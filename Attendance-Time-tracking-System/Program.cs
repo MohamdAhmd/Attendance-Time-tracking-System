@@ -33,7 +33,7 @@ namespace Attendance_Time_tracking_System
                 //"Data Source=tcp:ititeam.database.windows.net,1433;Initial Catalog=Attendance;User ID=sqladmin@pdsqlproject;Password=Admin12345;Connect Timeout=1200"
                 optionBuilder.UseSqlServer(connectionstring);
             });
-
+            builder.Services.AddScoped<IBlobRepo, BlobRepo>();
             builder.Services.AddScoped<IAttendRepo, AttendRepo>();
             builder.Services.AddScoped<IUserRepo, UserRepo>();
             builder.Services.AddScoped<IDaysRepo, DaysRepo>();
@@ -47,7 +47,7 @@ namespace Attendance_Time_tracking_System
             builder.Services.AddScoped<ITrackRepo, TrackRepo>();
             builder.Services.AddScoped<ITrackDaysRepo, TrackDaysRepo>();
             builder.Services.AddScoped<IWorksInRepo, WorksInRepo>();
-            builder.Services.AddScoped<IBlobRepo, BlobRepo>();
+            builder.Services.AddScoped<IPermissionRepo, PermissionRepo>();
 
             //end of connections
             //////////////////////////////////////////////////

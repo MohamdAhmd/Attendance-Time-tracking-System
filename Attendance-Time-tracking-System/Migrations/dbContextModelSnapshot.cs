@@ -30,24 +30,20 @@ namespace Attendance_Time_tracking_System.Migrations
                     b.Property<int>("DayId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PermissionBody")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("PermissionStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PermissionType")
-                        .HasMaxLength(1)
-                        .HasColumnType("nvarchar(1)");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<bool>("StatusOut")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("StudentDegreeAtMoment")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("Time")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("attendstatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "DayId");
 
@@ -107,6 +103,30 @@ namespace Attendance_Time_tracking_System.Migrations
                     b.HasIndex("ProgramId");
 
                     b.ToTable("IntakesProgram");
+                });
+
+            modelBuilder.Entity("Attendance_Time_tracking_System.Models.Permission", b =>
+                {
+                    b.Property<DateTime>("day")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PermissionBody")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PermissionStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PermissionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("day", "StudentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("Attendance_Time_tracking_System.Models.Program", b =>
@@ -331,6 +351,11 @@ namespace Attendance_Time_tracking_System.Migrations
                 {
                     b.HasBaseType("Attendance_Time_tracking_System.Models.User");
 
+                    b.Property<int?>("AbsenceDays")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<string>("Faculty")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -414,6 +439,17 @@ namespace Attendance_Time_tracking_System.Migrations
                     b.Navigation("ProgramNavigation");
                 });
 
+            modelBuilder.Entity("Attendance_Time_tracking_System.Models.Permission", b =>
+                {
+                    b.HasOne("Attendance_Time_tracking_System.Models.Student", "StudentNavigation")
+                        .WithMany("Permissions")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudentNavigation");
+                });
+
             modelBuilder.Entity("Attendance_Time_tracking_System.Models.Roles", b =>
                 {
                     b.HasOne("Attendance_Time_tracking_System.Models.RoleId", "RoleNavigation")
@@ -461,7 +497,7 @@ namespace Attendance_Time_tracking_System.Migrations
                         .IsRequired();
 
                     b.HasOne("Attendance_Time_tracking_System.Models.Track", "TrackNavigation")
-                        .WithMany()
+                        .WithMany("trackDays")
                         .HasForeignKey("TrackId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -578,6 +614,8 @@ namespace Attendance_Time_tracking_System.Migrations
                     b.Navigation("Students");
 
                     b.Navigation("Works");
+
+                    b.Navigation("trackDays");
                 });
 
             modelBuilder.Entity("Attendance_Time_tracking_System.Models.User", b =>
@@ -590,6 +628,11 @@ namespace Attendance_Time_tracking_System.Migrations
             modelBuilder.Entity("Attendance_Time_tracking_System.Models.Instructor", b =>
                 {
                     b.Navigation("works");
+                });
+
+            modelBuilder.Entity("Attendance_Time_tracking_System.Models.Student", b =>
+                {
+                    b.Navigation("Permissions");
                 });
 #pragma warning restore 612, 618
         }
