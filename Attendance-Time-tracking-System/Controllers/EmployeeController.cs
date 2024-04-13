@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
@@ -14,13 +15,14 @@ namespace Attendance_Time_tracking_System.Controllers
         }
         public IActionResult Index()
         {
+
             var model = employeeRepo.GetAll();
             return View(model);
         }
 
         public IActionResult Create()
         {
-            ViewBag.Role = db.Roles.ToList();
+            ViewBag.Role = db.RoleIds.Where(a => a.Id == 5 || a.Id == 6).ToList();
             return View();
 
         }
@@ -28,6 +30,8 @@ namespace Attendance_Time_tracking_System.Controllers
         [HttpPost]
         public IActionResult Create(Employee emp)
         {
+            var x = Request.Form["roles"];
+            emp.roles = new List<Roles> { new Roles() { RoleId = int.Parse(x) } };
 
             if (employeeRepo.IsEmailExist(emp.Email))
             {
@@ -52,11 +56,15 @@ namespace Attendance_Time_tracking_System.Controllers
 
         public IActionResult Update(int id)
         {
+
             if (id == 0)
             {
                 return BadRequest();
             }
             var model = employeeRepo.GetById(id);
+
+            ViewBag.Role = db.RoleIds.Where(a => a.Id == 5 || a.Id == 6).ToList();
+
             if (model == null)
             {
                 return NotFound();
@@ -68,14 +76,13 @@ namespace Attendance_Time_tracking_System.Controllers
         [HttpPost]
         public IActionResult Update(Employee emp, int id)
         {
-            if (ModelState.IsValid)
-            {
-                emp.Id = id;
-                employeeRepo.Update(emp);
-                return RedirectToAction("Index");
-            }
 
-            return View(emp);
+            emp.Id = id;
+            var x = Request.Form["roles"];
+            emp.roles = new List<Roles> { new Roles() { RoleId = int.Parse(x) } };
+            employeeRepo.Update(emp);
+            return RedirectToAction("Index");
+
         }
 
     }

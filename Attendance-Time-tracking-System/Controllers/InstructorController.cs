@@ -65,20 +65,25 @@ namespace Attendance_Time_tracking_System.Controllers
         public IActionResult SupervisorShowStudetnsDegrees()
         {
             int SupervisorId = instructorid();
-            ViewBag.alltracks= trackRepo.GetAllTracksForSuperVisor(SupervisorId);
+            ViewBag.alltracks = trackRepo.GetAllTracksForSuperVisor(SupervisorId);
+            ViewBag.choosendate =  DateTime.Now.ToString("yyyy-MM-dd");
 
             var students = new List<ShowStudentsSupervisor>();
             return View(students);
         }
+
         [Authorize(Roles = "Supervisor")]
         [HttpPost]
-        public IActionResult SupervisorShowStudetnsDegrees(DateOnly choosendate , int SelectedTrack)
+        public IActionResult SupervisorShowStudetnsDegrees(DateOnly choosendate , int SelectedTrack , string DayStatus)
         {
 
             int SupervisorId = instructorid();
             ViewBag.alltracks = trackRepo.GetAllTracksForSuperVisor(SupervisorId);
+            ViewBag.choosendate = choosendate.ToString("yyyy-MM-dd");
+            ViewBag.SelectedTrack = SelectedTrack;
+            ViewBag.DayStatus = DayStatus;
 
-            var getallstudent = instructorRepo.SuperVisorStudent(SupervisorId, choosendate, SelectedTrack);
+            var getallstudent = instructorRepo.SuperVisorStudent(SupervisorId, choosendate, SelectedTrack, DayStatus);
             return View(getallstudent);
         }
 
