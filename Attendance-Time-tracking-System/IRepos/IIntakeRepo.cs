@@ -12,6 +12,7 @@ namespace Attendance_Time_tracking_System.IRepos
         public void DeleteIntake(int id);
         public void addToIntakeProgram(IntakeViewModel data);
         public List<Intake> GetAllIntakes();
+        public bool GetByName(string _name, string _ProgramName);
 
     }
 }

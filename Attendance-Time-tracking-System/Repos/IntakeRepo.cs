@@ -1,5 +1,5 @@
 ﻿using Attendance_Time_tracking_System.Models; // Add this using directive if Program class is defined in this namespace
-
+using Microsoft.EntityFrameworkCore;
 namespace Attendance_Time_tracking_System.Repos
 {
     public class IntakeRepo : IIntakeRepo
@@ -12,6 +12,7 @@ namespace Attendance_Time_tracking_System.Repos
         public List<IntakeViewModel> GetAll()
         {
             var allintakes = db.Intakes
+                .Where(i => i.status == true)
                 .Join(db.IntakesProgram, i => i.Id, inp => inp.IntakeId, (i, inp) => new { Intake = i, IntakeProgram = inp })
                 .Join(db.Programs, pair => pair.IntakeProgram.ProgramId, p => p.Id, (pair, p) => new IntakeViewModel
                 {
@@ -48,7 +49,7 @@ namespace Attendance_Time_tracking_System.Repos
         public void DeleteIntake(int id)
         {
             Intake _intake = db.Intakes.FirstOrDefault(a => a.Id == id);
-            db.Intakes.Remove(_intake);
+            _intake.status = false; 
             db.SaveChanges();
 
         }
@@ -66,6 +67,22 @@ namespace Attendance_Time_tracking_System.Repos
         {
             var model = db.Intakes.ToList();
             return model;
+        }
+
+        public bool GetByName(string _name,string _ProgramName)
+        {
+            var intake = db.Intakes
+                       .Include(i => i.intakePrograms)
+                       .ThenInclude(ip => ip.ProgramNavigation)
+                       .FirstOrDefault(i => i.Name == _name);
+            if (intake != null)
+            {
+                // If the intake exists, return the program name to which it belongs
+                var programName = intake.intakePrograms.FirstOrDefault()?.ProgramNavigation?.Name;
+                return programName == _ProgramName ? true : false;
+            }
+
+            return false;
         }
     }
 }

@@ -76,18 +76,33 @@ namespace Attendance_Time_tracking_System.Repos
                         .Include(p => p.StudentNavigation)
                         .ThenInclude(s => s.TrackNavigation)
                         .ThenInclude(t => t.InstructorNavigation)
-                        .Where(p => p.StudentNavigation.TrackNavigation.InstructorNavigation.Id == supervisorId)
+                        .Where(p => p.StudentNavigation.TrackNavigation.InstructorNavigation.Id == supervisorId &&
+                                    p.PermissionStatus == "Pending") // Add condition for PermissionStatus
                         .Select(p => new StdPermissionVM
                         {
                             PermissionInfo = p,
                             Fname = p.StudentNavigation.F_name,
-                            Lname = p.StudentNavigation.L_name 
+                            Lname = p.StudentNavigation.L_name
                         })
                         .ToList();
-
 
             return permissions;
         }
 
+
+
+        public void ChangeStatus(string date,string status)
+        {
+            var permission = GetPermissionByDate(date);
+            permission.PermissionStatus = status;
+            if(status == "Rejected")
+            {
+                var student = db.Students.FirstOrDefault(a => a.Id == permission.StudentId);
+                student.Grade -= 15;
+                db.SaveChanges();
+            }
+                db.SaveChanges();
+            
+        }
     }
 }

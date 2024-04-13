@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
@@ -38,25 +39,32 @@ namespace Attendance_Time_tracking_System.Controllers
         {
             if (!ModelState.IsValid)
                 return View("Create", data);
-
+            if (IntakeRepo.GetByName(data.IntakeName,data.ProgramName))
+            {
+                ModelState.AddModelError("IntakeName", "Intake name already exists.");
+                return View("Create", data);
+            }
             IntakeRepo.add(data);
             return RedirectToAction("index");
+
+        
         }
         [HttpPost]
         public IActionResult Edit(Intake _intake)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                IntakeRepo.UpdateIntake(_intake);
-                return RedirectToAction("Index");
+                return View(_intake);
             }
-            return View(_intake);
+            IntakeRepo.UpdateIntake(_intake);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)
         {
             IntakeRepo.DeleteIntake(id);
-            return Content("Intake Deleted Successfully");
+            return RedirectToAction("Index");
         }
+
     }
 }
