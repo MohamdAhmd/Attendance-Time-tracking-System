@@ -9,7 +9,7 @@ namespace Attendance_Time_tracking_System.IRepos
         public void AddInstructor(Instructor instructor);
         public void UpdateInstructor(Instructor instructor,int? id);
         public void DeleteInstructor(Instructor instructor);
-        public List<ShowStudentsSupervisor> SuperVisorStudent(int supervisorid, DateOnly day, int SelectedTrack);
+        public List<ShowStudentsSupervisor> SuperVisorStudent(int supervisorid, DateOnly day, int SelectedTrack , string DayStatus);
 
     }
 }
