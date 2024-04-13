@@ -79,7 +79,7 @@ namespace Attendance_Time_tracking_System.Controllers
 
             if (loginroles.Contains("Admin"))
             {
-                return RedirectToAction("showusers", "Account");
+                return RedirectToAction("Index", "Intakes");
             }
             else if (loginroles.Contains("Instructor"))
             {
@@ -101,6 +101,10 @@ namespace Attendance_Time_tracking_System.Controllers
                 return RedirectToAction("Student", "Account");
             }
             else if (loginroles.Contains("Security"))
+            {
+                return RedirectToAction("index", "Security");
+            }
+            else if (loginroles.Contains("StudentAffairs"))
             {
                 return RedirectToAction("index", "Security");
             }
