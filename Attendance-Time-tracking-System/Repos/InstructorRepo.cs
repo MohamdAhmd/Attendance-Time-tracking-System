@@ -79,9 +79,11 @@ namespace Attendance_Time_tracking_System.Repos
                                     .Where(x => x.TrackId == trackid && (DayStatus == null || x.attends.Any(x => x.attendstatus == DayStatus && x.DayId == dayexist) || (DayStatus == "Absent" && !x.attends.Any(x => x.DayId == dayexist))))
                                     .Select(x => new ShowStudentsSupervisor
                                     {
-                                        Fullname = x.F_name + " " + x.L_name,
-                                        attendance = x.attends.FirstOrDefault(y => y.DayId == dayexist && y.UserId == x.Id).attendstatus ?? "Absent",
-                                        grade = x.attends.FirstOrDefault(y => y.DayId == dayexist && y.UserId == x.Id).StudentDegreeAtMoment ?? 250,
+                                        Fullname = x.F_name + " "+x.L_name,
+                                        attendance = x.attends.FirstOrDefault(y=>y.DayId==dayexist && y.UserId==x.Id).attendstatus ?? "Absent",
+                                        
+                                        grade = x.attends.FirstOrDefault(y => y.DayId == dayexist && y.UserId == x.Id).StudentDegreeAtMoment ??
+                                        x.attends.OrderByDescending(y=>y.StudentDegreeAtMoment).LastOrDefault(y=>y.DayId<=dayexist && y.UserId==x.Id).StudentDegreeAtMoment ?? 250,//250,
                                         trackname = x.TrackNavigation.Name
                                     }).ToList();
 

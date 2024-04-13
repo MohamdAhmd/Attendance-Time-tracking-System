@@ -161,7 +161,12 @@
             document.getElementById('autoSizingInput').addEventListener('change', function () {
                 var selectedDate = new Date(this.value);
                 var currentDate = new Date();
-                if (selectedDate > currentDate) {
+
+                selectedDate.setHours(0, 0, 0, 0);
+                currentDate.setHours(0, 0, 0, 0);
+                console.log(selectedDate, currentDate);
+                //remove || selectedDate.getTime() === currentDate.getTime() to work on todays date
+                if (selectedDate > currentDate || selectedDate.getTime() === currentDate.getTime()) {
                     document.getElementById('submitButton').disabled = true;
                     Swal.fire("Choose a date in the past", "", "error");
                 } else {
