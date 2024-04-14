@@ -9,6 +9,10 @@
         public bool PutAllStudentsInAttendanceTable(string daystatus);
         public bool ChangeAllStudentToLate(int[] ids);
 
+        public List<Student> GetAllPendingStudents();
+
+        public void ChangeStatus(int stdId, string status);
+
 
     }
 }

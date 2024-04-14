@@ -13,6 +13,5 @@
         public bool PutAllUsersInAttendanceTable();
         public bool ChangeAllToLate(int[] ids);
 
-
     }
 }

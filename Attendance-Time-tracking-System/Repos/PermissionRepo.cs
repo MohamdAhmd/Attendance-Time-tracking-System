@@ -17,7 +17,8 @@ namespace Attendance_Time_tracking_System.Repos
 
         public List<Permission> GetPermissions()
         {
-            int stdId = 34;
+            //int stdId = 34;
+            int stdId = 42;
             return db.Permissions.Where(a => a.StudentId == stdId).ToList();
         }
 
@@ -25,7 +26,7 @@ namespace Attendance_Time_tracking_System.Repos
         {
             var newPermission = new Permission {
                 day = DateTime.Now,
-                StudentId = 34,
+                StudentId = 42,
                 PermissionType = _P1.PermissionType,
                 PermissionBody = _P1.PermissionBody,
                 PermissionStatus = _P1.PermissionStatus,

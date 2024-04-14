@@ -98,7 +98,7 @@ namespace Attendance_Time_tracking_System.Controllers
                     TempData["Not Found"] = "Your account have been refused";
                     return View(loginVM);
                 }
-                return RedirectToAction("Student", "Account");
+                return RedirectToAction("Index", "Permission");
             }
             else if (loginroles.Contains("Security"))
             {
