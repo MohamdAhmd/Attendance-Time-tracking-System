@@ -87,6 +87,34 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(getallstudent);
         }
 
+
+
+        //show instructor absence status
+        [Authorize(Roles = "Instructor")]
+        public IActionResult showAttendance()
+        {
+            var instid = instructorid();
+            var model = instructorRepo.ShowInstructorAbseneceDays(instid);
+            return View(model);
+        }
+        [Authorize(Roles = "Instructor")]
+        [HttpPost]
+        public IActionResult showAttendance(string SelectedStatus)
+        {
+            var instid = instructorid();
+            var model = instructorRepo.ShowInstructorAbseneceDays(instid, SelectedStatus);
+            return View(model);
+        }
+        [Authorize(Roles = "Instructor")]
+        [HttpPost]
+        public IActionResult showAttendance2(string SelectedStatus)
+        {
+            var instid = instructorid();
+            var model = instructorRepo.ShowInstructorAbseneceDays(instid, SelectedStatus);
+            return PartialView(model);
+        }
+
+        //end of show instructor absent status
         public async Task<IActionResult> logout()
         {
             await HttpContext.SignOutAsync();

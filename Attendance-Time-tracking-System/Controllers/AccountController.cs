@@ -83,7 +83,7 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             else if (loginroles.Contains("Instructor"))
             {
-                return RedirectToAction("SupervisorShowStudetnsDegrees", "Instructor");
+                return RedirectToAction("showAttendance", "Instructor");
             }
             else if(loginroles.Contains("Student"))
             {
@@ -110,7 +110,7 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             return RedirectToAction("login");
         }
-
+        //
         public IActionResult Register()
         {
             ViewBag.AllTracks = trackRepo.GetAllTracks();
