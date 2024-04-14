@@ -106,7 +106,7 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             return RedirectToAction("login");
         }
-
+        //
         public IActionResult Register()
         {
             ViewBag.AllTracks = trackRepo.GetAllTracks();
