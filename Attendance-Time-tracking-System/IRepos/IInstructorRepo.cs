@@ -11,5 +11,7 @@ namespace Attendance_Time_tracking_System.IRepos
         public void DeleteInstructor(Instructor instructor);
         public List<ShowStudentsSupervisor> SuperVisorStudent(int supervisorid, DateOnly day, int SelectedTrack , string DayStatus);
 
+        public List<UserAbsence> ShowInstructorAbseneceDays(int id, string userstatus = "Absent");
+
     }
 }
