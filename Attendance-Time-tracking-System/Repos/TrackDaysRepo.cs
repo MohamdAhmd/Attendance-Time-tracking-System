@@ -29,15 +29,22 @@ namespace Attendance_Time_tracking_System.Repos
             return db.TrackDays.Include(t => t.DayNavigation).Include(t => t.TrackNavigation).ToList();
         }
 
+      
+
         public TrackDays GetTrackDayById(int dayId, int trackId)
         {
-            //return db.TrackDays.Include(t => t.DayNavigation).Include(t => t.TrackNavigation).FirstOrDefault(t => t.DayId == id);
-
             return db.TrackDays.Include(t => t.DayNavigation).Include(t => t.TrackNavigation).FirstOrDefault(t => t.DayId == dayId && t.TrackId == trackId);
         }
 
         public void UpdateTrackDay(TrackDays trackDays)
-        { 
+        {
+
+            var existingEntity = db.Set<TrackDays>().Local.FirstOrDefault(e => e.DayId == trackDays.DayId && e.TrackId == trackDays.TrackId);
+            if (existingEntity != null)
+            {
+                db.Entry(existingEntity).State = EntityState.Detached;
+            }
+
             db.TrackDays.Update(trackDays);
             db.SaveChanges();
         }
