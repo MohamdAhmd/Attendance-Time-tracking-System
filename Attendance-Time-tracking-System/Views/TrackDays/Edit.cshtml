@@ -26,7 +26,6 @@
                 <select asp-for="Status" class="form-control">
                     <option value="Online" selected="@(Model.Status == "Online" ? "selected" : null)">Online</option>
                     <option value="Offline" selected="@(Model.Status == "Offline" ? "selected" : null)">Offline</option>
-
                 </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>

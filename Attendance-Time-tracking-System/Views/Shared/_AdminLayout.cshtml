@@ -88,7 +88,9 @@
         <div>@RenderBody()</div>
     </section>
 </body>
+
 </html>
+
 <script>
     const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
@@ -100,7 +102,7 @@
     toggle.addEventListener("click", () => {
         sidebar.classList.toggle("close");
     })
-
+    
     modeSwitch.addEventListener("click", () => {
         body.classList.toggle("dark");
 
@@ -112,4 +114,5 @@
         }
     });
 </script>
+@await RenderSectionAsync("Scripts", required: false)
 
