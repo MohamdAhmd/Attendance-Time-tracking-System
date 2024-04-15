@@ -56,19 +56,19 @@
         <form class="row gy-2 gx-3 align-items-center" asp-controller="instructor" asp-action="SupervisorShowStudetnsDegrees" method="post">
 
             <div class="col-3 offset-1">
-                <label class="visually-hidden" for="autoSizingInput">Name</label>
+                <label  for="autoSizingInput">Date</label>
                 <input type="date" class="form-control" id="autoSizingInput" name="choosendate" value="@ViewBag.choosendate">
 
             </div>
 
 
             <div class="col-2">
-                <label class="visually-hidden" for="autoSizingInput1">Name</label>
+                <label  for="autoSizingInput1">Track</label>
                 <select asp-items="list" class="form-control" name="SelectedTrack"></select>
             </div>
 
             <div class="col-2">
-                <label class="visually-hidden" for="autoSizingInput1">Name</label>
+                <label  for="autoSizingInput1">Attendance Status</label>
                 <select class="form-control" name="DayStatus">
                     <option value=""></option>
                     @if (DayStatus == "OnTime")
@@ -101,6 +101,7 @@
 
 
             <div class="col-auto">
+                <br />
                 <button type="submit" id="submitButton" class="btn ">Show</button>
             </div>
         </form>

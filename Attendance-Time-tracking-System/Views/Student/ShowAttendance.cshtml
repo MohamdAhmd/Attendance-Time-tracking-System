@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Attend>
+
+@{
+    ViewData["Title"] = "ShowAttendance";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Attendance</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+</head>
+<body>
+    <div class="container">
+        <h1>Show Attendance for <span style="color: blue">@Model.FirstOrDefault()?.UserNavigation.F_name</span>
+            <span style="color: blue">@Model.FirstOrDefault()?.UserNavigation.L_name</span>
+        </h1>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Attendance Status</th>
+                        <th>Student Degree</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var attendance in Model)
+                    {
+                        <tr>
+
+                            <td>@attendance.DaysNavigation.Day.ToString("MMM dd, yyyy")</td>
+                            <td>@(attendance.Time != null ? attendance.Time.Value.ToString("hh:mm tt") : "N/A")</td>
+                            <td>
+                                @if (attendance.attendstatus == "OnTime")
+                                {
+                                    <i class="fas text-success">OnTime </i>
+                                }
+                                else if (attendance.attendstatus == "Absent")
+                                {
+                                    <i class="fas  text-danger">Absent</i>
+                                }
+                                else
+                                {
+                                    <i class="fas text-warning">Late</i>
+                                }
+                            </td>
+                            <td>@attendance.StudentDegreeAtMoment</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -11,7 +11,6 @@
     <Compile Remove="Metadata\**" />
     <Content Remove="Metadata\**" />
     <EmbeddedResource Remove="Metadata\**" />
-    <Folder Include="Views\Student\" />
     <Folder Include="wwwroot\js\Security\" />
     <None Remove="Metadata\**" />
     <Folder Include="Validations\" />
