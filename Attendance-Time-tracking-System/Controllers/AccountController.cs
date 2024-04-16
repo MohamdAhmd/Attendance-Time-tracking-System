@@ -146,5 +146,10 @@ namespace Attendance_Time_tracking_System.Controllers
             List<User> users = userRepo.GetAllUsers();
             return Content(users[0].User_Status.ToString());
         }
+        public async Task<IActionResult> logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("index", "home");
+        }
     }
 }

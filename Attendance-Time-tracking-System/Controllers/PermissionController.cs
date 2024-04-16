@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
-    [Authorize(Roles = "Studetn")]
     public class PermissionController : Controller
     {
         IPermissionRepo PermissionRepo;
@@ -13,7 +12,7 @@ namespace Attendance_Time_tracking_System.Controllers
         }
         // CRUD ON Permission from student
         // 
-
+        [Authorize(Roles = "Student")]
         public IActionResult Index()
         {
             var userIdClaim = HttpContext.User.FindFirst("UserId");
@@ -22,14 +21,14 @@ namespace Attendance_Time_tracking_System.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Studetn")]
+        [Authorize(Roles = "Student")]
         public IActionResult Create ()
         {
             return View();
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Studetn")]
+        [Authorize(Roles = "Student")]
         public IActionResult Create(Permission _p)
         {
             if (ModelState.IsValid) // Check if model state is valid
@@ -43,14 +42,14 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(_p);
         }
 
-        [Authorize(Roles = "Studetn")]
+        [Authorize(Roles = "Student")]
         public IActionResult Delete(string date)
         {
            PermissionRepo.delete(date);
            return RedirectToAction("Index");
         }
 
-        //[Authorize(Roles = "Studetn")]
+        [Authorize(Roles = "Student")]
         public IActionResult Edit(string date)
         {
             if (date == null)
@@ -61,7 +60,7 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(permissionData);
         }
         [HttpPost]
-        //[Authorize(Roles = "Studetn")]
+        [Authorize(Roles = "Student")]
         public IActionResult Edit(Permission permission)
         {
 
@@ -72,7 +71,9 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             return View(permission);
         }
-        [Authorize(Roles = "Supervisro")]
+
+        [HttpGet]
+        [Authorize(Roles = "Supervisor")]
         public IActionResult studentPermissions()
         {
             var userIdClaim = HttpContext.User.FindFirst("UserId");
@@ -80,7 +81,9 @@ namespace Attendance_Time_tracking_System.Controllers
             var data = PermissionRepo.StdPermissions(id);
             return View("Permissions",data);
         }
-        [Authorize(Roles = "Supervisro")]
+
+        [HttpPost]
+        [Authorize(Roles = "Supervisor")]
         public IActionResult ChangeStatus(string date, string status)
         {
             PermissionRepo.ChangeStatus(date,status);
