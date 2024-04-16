@@ -57,10 +57,32 @@ namespace Attendance_Time_tracking_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DayId,TrackId,StartPeriod,Status,Lecture1,Lecture2,Lecture3")] TrackDays trackDays)
+        public async Task<IActionResult> Create([Bind("TrackId,StartPeriod,Status,Lecture1,Lecture2,Lecture3")] TrackDays trackDays)
         {
             if (ModelState.IsValid)
             {
+                // Check if the day exists in the database based on StartPeriod
+                var day = daysRepo.GetDayByDate(trackDays.StartPeriod);
+
+                if (day == null)
+                {
+                    // If the day does not exist, create a new day
+                    day = new Days { Day = trackDays.StartPeriod.Date };
+                    daysRepo.AddDay(day);
+                }
+
+                // Check if the schedule already exists for the selected day and track
+                var existingTrackDay = trackDaysRepo.GetTrackDayById(day.Id, trackDays.TrackId);
+                if (existingTrackDay != null)
+                {
+                    ModelState.AddModelError("", "Schedule already exists for the selected day and track.");
+                    ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
+                    ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
+                    return View(trackDays);
+                }
+
+                trackDays.DayId = day.Id;
+
                 trackDaysRepo.AddTrackDay(trackDays);
                 return RedirectToAction(nameof(Index));
             }
@@ -92,7 +114,7 @@ namespace Attendance_Time_tracking_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int dayId, int trackId, [Bind("DayId,TrackId,StartPeriod,Status,Lecture1,Lecture2,Lecture3")] TrackDays trackDays)
+        public async Task<IActionResult> Edit(int? dayId, int? trackId, [Bind("DayId,TrackId,StartPeriod,Status,Lecture1,Lecture2,Lecture3")] TrackDays trackDays)
         {
             if (dayId != trackDays.DayId || trackId != trackDays.TrackId)
             {
@@ -103,6 +125,27 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 try
                 {
+                    var day = daysRepo.GetDayByDate(trackDays.StartPeriod);
+
+                    if (day == null)
+                    {
+                        // If the day does not exist, create a new day
+                        day = new Days { Day = trackDays.StartPeriod.Date };
+                        daysRepo.AddDay(day);
+                        // Update the trackDays object with the newly created dayId
+                        trackDays.DayId = day.Id;
+                    }
+
+                    // Check if the selected day already has a schedule for the same track
+                    var existingTrackDay = trackDaysRepo.GetTrackDayById(day.Id, trackDays.TrackId);
+                    if (existingTrackDay != null && existingTrackDay.DayId != dayId)
+                    {
+                        ModelState.AddModelError("", "Schedule already exists for the selected day and track.");
+                        ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
+                        ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
+                        return View(trackDays);
+                    }
+
                     trackDaysRepo.UpdateTrackDay(trackDays);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -122,6 +165,7 @@ namespace Attendance_Time_tracking_System.Controllers
             ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
             return View(trackDays);
         }
+
         // GET: TrackDays/Delete/5
         public async Task<IActionResult> Delete(int? dayId, int? trackId)
         {    
