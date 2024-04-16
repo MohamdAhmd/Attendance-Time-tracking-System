@@ -93,5 +93,21 @@ namespace Attendance_Time_tracking_System.Repos
             List<ShowStudentsSupervisor> one = new List<ShowStudentsSupervisor>();
             return one;
         }
+    
+    
+        public List<UserAbsence> ShowInstructorAbseneceDays(int id , string userstatus="Absent")
+        {
+            var model = db.Attends.Include(x => x.DaysNavigation).Where(x => x.UserId == id)
+                            .Where(x => x.attendstatus==userstatus)
+                            .Select(x => new UserAbsence
+                            {
+                                day = DateOnly.FromDateTime(x.DaysNavigation.Day),
+                                status = userstatus
+
+                            }).ToList();
+            return model;
+        }
+    
+    
     }
 }
