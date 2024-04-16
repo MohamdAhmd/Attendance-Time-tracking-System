@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+    [Authorize(Roles = "Studetn")]
     public class PermissionController : Controller
     {
         IPermissionRepo PermissionRepo;
@@ -12,18 +14,20 @@ namespace Attendance_Time_tracking_System.Controllers
         // CRUD ON Permission from student
         // 
 
-
         public IActionResult Index()
         {
             return View(PermissionRepo.GetPermissions());
         }
+
         [HttpGet]
+        //[Authorize(Roles = "Studetn")]
         public IActionResult Create ()
         {
             return View();
         }
 
         [HttpPost]
+        //[Authorize(Roles = "Studetn")]
         public IActionResult Create(Permission _p)
         {
             if (ModelState.IsValid) // Check if model state is valid
@@ -35,12 +39,14 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(_p);
         }
 
-       public IActionResult Delete(string date)
+        [Authorize(Roles = "Studetn")]
+        public IActionResult Delete(string date)
         {
            PermissionRepo.delete(date);
            return RedirectToAction("Index");
         }
 
+        //[Authorize(Roles = "Studetn")]
         public IActionResult Edit(string date)
         {
             if (date == null)
@@ -51,6 +57,7 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(permissionData);
         }
         [HttpPost]
+        //[Authorize(Roles = "Studetn")]
         public IActionResult Edit(Permission permission)
         {
 
@@ -61,13 +68,13 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             return View(permission);
         }
-
+        [Authorize(Roles = "Supervisro")]
         public IActionResult studentPermissions()
         {
             var data = PermissionRepo.StdPermissions();
             return View("Permissions",data);
         }
-        
+        [Authorize(Roles = "Supervisro")]
         public IActionResult ChangeStatus(string date, string status)
         {
             PermissionRepo.ChangeStatus(date,status);

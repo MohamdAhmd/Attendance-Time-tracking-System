@@ -5,6 +5,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class IntakesController : Controller
     {
         IIntakeRepo IntakeRepo;

@@ -1,8 +1,10 @@
 ﻿using Attendance_Time_tracking_System.Repos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+    [Authorize(Roles = "Student-affairs")]
     public class StudentAffairsController : Controller
     {
         readonly IUserRepo userRepo;
