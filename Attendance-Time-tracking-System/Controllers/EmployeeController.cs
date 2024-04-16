@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+   [Authorize(Roles = "Admin")]
     public class EmployeeController : Controller
     {
         private IEmployeeRepo employeeRepo;
