@@ -2,53 +2,204 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Edit</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Track</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 
-<h4>Track</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            position: relative;
+            max-width: 370px;
+            width: 100%;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+            .container header {
+                font-size: 22px;
+                font-weight: 600;
+                color: #333;
+            }
+
+            .container form {
+                margin-top: 30px;
+            }
+
+        form .field, .select, textarea, option {
+            margin-bottom: 20px;
+        }
+
+        form .input-field, .select, textarea, option {
+            position: relative;
+            height: 55px;
+            width: 100%;
+        }
+
+        .input-field input[type="checkbox"], .select, textarea, option {
+            height: 100%;
+            width: auto; /* Adjust width for checkbox */
+            outline: none;
+            border: none;
+            border-radius: 8px;
+            padding: 0 15px;
+            border: 1px solid #d1d1d1;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .invalid input {
+            border-color: #d93025;
+        }
+
+        .field .error {
+            display: flex;
+            align-items: center;
+            margin-top: 6px;
+            color: #d93025;
+            font-size: 13px;
+            display: block;
+        }
+
+        .invalid .error {
+            display: flex;
+        }
+
+        .error .error-icon {
+            margin-right: 6px;
+            font-size: 15px;
+        }
+
+        .button {
+            margin: 25px 0 6px;
+        }
+
+            .button input {
+                color: #fff;
+                font-size: 16px;
+                font-weight: 400;
+                background-color: #4070f4;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+                .button input:hover {
+                    background-color: #0e4bf1;
+                }
+
+        span {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>Edit Track</header>
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="field">
+                <label asp-for="Name">Track Name <span>*</span></label>
+                <div class="input-field">
+                    <input asp-for="Name" class="form-control" id="Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
-                </label>
+            <div class="">
+                <label>Status</label>
+                <div class="">
+                    <input type="checkbox" id="Status" class="" /> <!-- Removed asp-for -->
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="SupervisorID" class="control-label"></label>
-                <select asp-for="SupervisorID" class="form-control" asp-items="ViewBag.SupervisorID"></select>
-                <span asp-validation-for="SupervisorID" class="text-danger"></span>
+            <div class="field">
+                <label asp-for="SupervisorID">Supervisor</label>
+                <div class="input-field">
+                    <select asp-for="SupervisorID" class="form-control" asp-items="ViewBag.SupervisorID"></select>
+                    <span asp-validation-for="SupervisorID" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ProgramID" class="control-label"></label>
-                <select asp-for="ProgramID" class="form-control" asp-items="ViewBag.ProgramID"></select>
-                <span asp-validation-for="ProgramID" class="text-danger"></span>
+            <div class="field">
+                <label asp-for="ProgramID">Program</label>
+                <div class="input-field">
+                    <select asp-for="ProgramID" class="form-control" asp-items="ViewBag.ProgramID"></select>
+                    <span asp-validation-for="ProgramID" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Capacity" class="control-label"></label>
-                <input asp-for="Capacity" class="form-control" />
-                <span asp-validation-for="Capacity" class="text-danger"></span>
+            <div class="field">
+                <label asp-for="Capacity">Capacity <span>*</span></label>
+                <div class="input-field">
+                    <input asp-for="Capacity" class="form-control" />
+                    <span asp-validation-for="Capacity" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
+            <div class="error"></div>
+            <div class="input-field button">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <!-- JavaScript to set checkbox value -->
+    <script>
+        const form = document.querySelector("form");
+
+        // Set checkbox value based on model's status
+        const statusCheckbox = document.getElementById("Status");
+        statusCheckbox.checked = @Model.Status.ToString().ToLower();
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const nameValue = document.getElementById("Name").value.trim();
+            const statusValue = document.getElementById("Status").checked;
+            const supervisorIDValue = document.getElementById("SupervisorID").value.trim();
+            const programIDValue = document.getElementById("ProgramID").value.trim();
+            const capacityValue = document.getElementById("Capacity").value.trim();
+            const errorMsg = document.querySelector(".error");
+
+            if (nameValue === "") {
+                errorMsg.innerText = "Track Name cannot be empty";
+            } else if (supervisorIDValue === "") {
+                errorMsg.innerText = "Supervisor cannot be empty";
+            } else if (programIDValue === "") {
+                errorMsg.innerText = "Program cannot be empty";
+            } else if (capacityValue === "") {
+                errorMsg.innerText = "Capacity cannot be empty";
+            } else {
+                errorMsg.innerText = "";
+                form.submit();
+            }
+        });
+    </script>
+</body>
+</html>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

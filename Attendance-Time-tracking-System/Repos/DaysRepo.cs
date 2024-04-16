@@ -44,5 +44,11 @@ namespace Attendance_Time_tracking_System.Repos
             var model = db.Days.FirstOrDefault(x => x.Day.Date == DateTime.Today);
             return model;
         }
+
+        public Days GetDayByDate(DateTime date)
+        {
+            return db.Days.FirstOrDefault(d => d.Day.Date == date.Date);
+            
+        }
     }
 }

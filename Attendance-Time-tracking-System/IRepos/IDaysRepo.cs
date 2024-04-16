@@ -9,5 +9,7 @@
         public void DeleteDay(int id);
         public Days GetTheDayId();
 
+        //GetDayByDate
+        public Days GetDayByDate(DateTime date);
     }
 }

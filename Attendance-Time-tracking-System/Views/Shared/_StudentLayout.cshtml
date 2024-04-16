@@ -37,32 +37,10 @@
 
         <div class="menu-bar">
             <div class="menu">
-                <ul class="menu-links" style="padding-left:0px;">
                     <li class="nav-link" style="padding-left:0px;">
-                        <a href="@Url.Action("Index", "Intakes")">
-                            <i class='bx bx-home-alt icon'></i>
-                            <span class="text nav-text">Intakes</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link" style="padding-left:0px;">
-                        <a href="@Url.Action("Index", "Programs")">
-                            <i class='bx bx-bar-chart-alt-2 icon'></i>
-                            <span class="text nav-text">Programs</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link" style="padding-left:0px;">
-                        <a href="@Url.Action("Index", "Tracks")">
-                            <i class='bx bx-bell icon'></i>
-                            <span class="text nav-text">Tracks</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link" style="padding-left:0px;">
-                        <a href="@Url.Action("Index", "Employee")">
+                    <a href="@Url.Action("ShowAttendance", "Student")">
                             <i class='bx bx-user icon'></i>
-                            <span class="text nav-text">Employees</span>
+                            <span class="text nav-text">Show Attendance</span>
                         </a>
                     </li>
                 </ul>
@@ -70,24 +48,11 @@
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="@Url.Action("logout", "instructor")">
+                    <a href="@Url.Action("logout", "Student")">
                         <i class='bx bx-log-out icon'></i>
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
-
-@*                 <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
- *@
             </div>
         </div>
 
@@ -97,9 +62,7 @@
         <div>@RenderBody()</div>
     </section>
 </body>
-
 </html>
-
 <script>
     const body = document.querySelector('body'),
         sidebar = body.querySelector('nav'),
@@ -111,7 +74,7 @@
     toggle.addEventListener("click", () => {
         sidebar.classList.toggle("close");
     })
-    
+
     modeSwitch.addEventListener("click", () => {
         body.classList.toggle("dark");
 
@@ -123,5 +86,4 @@
         }
     });
 </script>
-@await RenderSectionAsync("Scripts", required: false)
 

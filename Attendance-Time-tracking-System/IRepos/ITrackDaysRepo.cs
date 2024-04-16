@@ -7,5 +7,6 @@
         public void AddTrackDay(TrackDays trackDays);
         public void UpdateTrackDay(TrackDays trackDays);
         public void DeleteTrackDay(int id);
+        
     }
 }

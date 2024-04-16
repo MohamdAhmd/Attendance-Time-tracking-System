@@ -2,58 +2,150 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/dist/boxicons.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <title>Tracks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InstructorNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProgramNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InstructorNavigation.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProgramNavigation.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        body {
+            min-height: 100vh !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        table {
+            width: 60vw;
+            overflow-y: auto;
+            padding: 5px;
+            margin: 10px auto;
+            text-align: center;
+            background-color: rgb(255, 248, 248);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-collapse: collapse;
+            border-radius: 25px;
+            border: none;
+        }
+
+        td {
+            padding: 10px;
+            border-top: 3px solid rgb(155, 155, 155);
+        }
+
+        th {
+            padding: 10px;
+        }
+
+        .add {
+            width: 15vw;
+            height: 6vh;
+            border: none;
+            border-radius: 25px;
+            display: flex;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: rgba(43, 43, 247, 0.884);
+            color: white;
+        }
+
+            .add a {
+                text-decoration: none;
+                color: white;
+                display: flex;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="add">
+            <a asp-action="Create" asp-controller="Tracks">
+                <p>New Track</p>
+                <box-icon class="plus" name='plus-circle'></box-icon>
+            </a>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Capacity)
+                    </th>
+                    <th>
+                        Instructor
+                    </th>
+                    <th>
+                        Program
+                    </th>
+                    <th>
+                        Edit Track
+                    </th>
+                    <th>
+                        Track details
+                    </th>
+                    <th>
+                        Delete Track
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Capacity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InstructorNavigation.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProgramNavigation.Name)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">
+                                <box-icon type='solid' name='edit'></box-icon>
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">
+                                <box-icon type='solid' name='detail'></box-icon>
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@item.Id">
+                                <box-icon type='solid' name='trash'></box-icon>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
