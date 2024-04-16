@@ -16,7 +16,9 @@ namespace Attendance_Time_tracking_System.Controllers
 
         public IActionResult Index()
         {
-            return View(PermissionRepo.GetPermissions());
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+            return View(PermissionRepo.GetPermissions(id));
         }
 
         [HttpGet]
@@ -32,7 +34,9 @@ namespace Attendance_Time_tracking_System.Controllers
         {
             if (ModelState.IsValid) // Check if model state is valid
             {
-                PermissionRepo.create(_p);
+                var userIdClaim = HttpContext.User.FindFirst("UserId");
+                int id = int.Parse(userIdClaim.Value);
+                PermissionRepo.create(_p,id);
                 return RedirectToAction("Index");
             }
             // If model state is not valid, return the view with validation errors
@@ -71,7 +75,9 @@ namespace Attendance_Time_tracking_System.Controllers
         [Authorize(Roles = "Supervisro")]
         public IActionResult studentPermissions()
         {
-            var data = PermissionRepo.StdPermissions();
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+            var data = PermissionRepo.StdPermissions(id);
             return View("Permissions",data);
         }
         [Authorize(Roles = "Supervisro")]
