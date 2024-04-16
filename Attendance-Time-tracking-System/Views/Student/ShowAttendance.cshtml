@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Attend>
 
 @{
+    Layout = "_StudentLayout";
     ViewData["Title"] = "ShowAttendance";
 }
 
@@ -16,12 +17,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>Show Attendance for <span style="color: blue">@Model.FirstOrDefault()?.UserNavigation.F_name</span>
+        <h3>Show Attendance for <span style="color: blue">@Model.FirstOrDefault()?.UserNavigation.F_name</span>
             <span style="color: blue">@Model.FirstOrDefault()?.UserNavigation.L_name</span>
-        </h1>
+        </h3>
 
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover">
+        <div class="table-responsive-sm">
+            <table class="table table-bordered  table-hover align-items-center">
                 <thead class="thead-dark">
                     <tr>
                         <th>Day</th>

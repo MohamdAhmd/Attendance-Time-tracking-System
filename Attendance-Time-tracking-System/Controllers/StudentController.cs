@@ -1,6 +1,7 @@
 ﻿using Attendance_Time_tracking_System.Migrations;
 using Attendance_Time_tracking_System.Models;
 using Attendance_Time_tracking_System.Repos;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,12 @@ namespace Attendance_Time_tracking_System.Controllers
 
             return View(model);       
 
+        }
+
+        public async Task<IActionResult> logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("index", "home");
         }
     }
 }
