@@ -35,20 +35,6 @@
         <div class="menu-bar">
             <div class="menu">
                 <ul class="menu-links" style="padding-left:0px;">
-
-                    <li class="nav-link" style="padding-left:0px;">
-                        <a asp-action="showAttendance" asp-controller="instructor">
-                            <i class='bx bx-home-alt icon'></i>
-                            <span class="text nav-text">Show Degrees</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link" style="padding-left:0px;">
-                        <a href="#">
-                            <i class='bx bx-bar-chart-alt-2 icon'></i>
-                            <span class="text nav-text">Link 1</span>
-                        </a>
-                    </li>
                     @if (User.IsInRole("Supervisor"))
                     {
                         <li class="nav-link" style="padding-left:0px;">
@@ -64,13 +50,34 @@
                                 <span class="text nav-text">Permissions</span>
                             </a>
                         </li>
-                    }
+                    }else{
+                    <li class="nav-link" style="padding-left:0px;">
+                        <a asp-action="showAttendance" asp-controller="instructor">
+                            <i class='bx bx-home-alt icon'></i>
+                            <span class="text nav-text">Attendance</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link" style="padding-left:0px;">
+                        <a href="#">
+                            <i class='bx bx-bar-chart-alt-2 icon'></i>
+                            <span class="text nav-text">Link 1</span>
+                        </a>
+                    </li>
+
                     <li class="nav-link" style="padding-left:0px;">
                         <a href="#">
                             <i class='bx bx-pie-chart-alt icon'></i>
-                            <span class="text nav-text">Link 3</span>
+                            <span class="text nav-text">Link 2</span>
                         </a>
                     </li>
+
+                    }
+
+
+
+
+
                 </ul> 
             </div>
 

@@ -85,6 +85,10 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 return RedirectToAction("showAttendance", "Instructor");
             }
+            else if (loginroles.Contains("Supervisor"))
+            {
+                return RedirectToAction("SupervisorShowStudetnsDegrees", "Instructor");
+            }
             else if(loginroles.Contains("Student"))
             {
                 var student = studentRepo.GetStudentById(user.Id);
@@ -104,9 +108,9 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 return RedirectToAction("index", "Security");
             }
-            else if (loginroles.Contains("StudentAffairs"))
+            else if (loginroles.Contains("Student-affairs"))
             {
-                return RedirectToAction("index", "Security");
+                return RedirectToAction("index", "StudentAffairs");
             }
             return RedirectToAction("login");
         }
