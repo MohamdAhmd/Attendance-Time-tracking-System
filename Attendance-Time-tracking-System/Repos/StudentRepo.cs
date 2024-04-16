@@ -217,8 +217,23 @@ namespace Attendance_Time_tracking_System.Repos
             return false;
         }
 
+        public List<Student> GetAllPendingStudents()
+        {
+            return db.Students.Where(std => std.status == "Pending").ToList();
+        }
 
-
+        public void ChangeStatus(int stdId, string status)
+        {
+            var student = GetStudentById(stdId);
+            student.status = status;
+            if (status == "Rejected")
+            {
+                var std = db.Users.FirstOrDefault(a => a.Id == stdId);
+                db.Remove(std);
+                db.SaveChanges();
+            }
+            db.SaveChanges();
+        }
 
     }
 }

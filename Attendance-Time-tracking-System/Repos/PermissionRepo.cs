@@ -1,8 +1,4 @@
-﻿using Attendance_Time_tracking_System.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Time_tracking_System.Repos
 {
@@ -15,17 +11,17 @@ namespace Attendance_Time_tracking_System.Repos
         }
 
 
-        public List<Permission> GetPermissions()
+        public List<Permission> GetPermissions(int id)
         {
-            int stdId = 34;
-            return db.Permissions.Where(a => a.StudentId == stdId).ToList();
+            //int id = 34;
+            return db.Permissions.Where(a => a.StudentId == id).ToList();
         }
 
-        public void create(Permission _P1)
+        public void create(Permission _P1,int id)
         {
             var newPermission = new Permission {
                 day = DateTime.Now,
-                StudentId = 34,
+                StudentId = id,
                 PermissionType = _P1.PermissionType,
                 PermissionBody = _P1.PermissionBody,
                 PermissionStatus = _P1.PermissionStatus,
@@ -69,9 +65,9 @@ namespace Attendance_Time_tracking_System.Repos
             db.SaveChanges();
         }
 
-        public List<StdPermissionVM> StdPermissions()
+        public List<StdPermissionVM> StdPermissions(int superId)
         {
-            var supervisorId = 7;
+            var supervisorId = superId;
             var permissions = db.Permissions
                         .Include(p => p.StudentNavigation)
                         .ThenInclude(s => s.TrackNavigation)
