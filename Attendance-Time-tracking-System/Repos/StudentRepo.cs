@@ -46,5 +46,9 @@
             var model = db.Students.Where(x=>x.User_Status==true).FirstOrDefault(s => s.Id == id);
             return model;
         }
+        public void AddBulkStudents(List<Student> students)
+        {
+           
+        }
     }
 }
