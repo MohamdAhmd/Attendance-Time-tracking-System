@@ -5,17 +5,26 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Attendance_Time_tracking_System.IRepos;
+
+
 
 namespace Attendance_Time_tracking_System.Controllers
 {
     [Authorize(Roles = "Student")]
     public class StudentController : Controller
     {
-        readonly dbContext db;
-       
-        public StudentController(dbContext _db )
+        private readonly dbContext db;
+        private readonly IStudentRepo studentRepo;
+
+        public StudentController(dbContext _db, IStudentRepo _studentRepo)
         {
-            db= _db;
+            db = _db;
+            studentRepo = _studentRepo;
         }
         public IActionResult ShowAttendance()
         {
@@ -37,20 +46,6 @@ namespace Attendance_Time_tracking_System.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("index", "home");
         }
-    }
-}
-using Microsoft.AspNetCore.Mvc;
-using OfficeOpenXml;
-
-namespace Attendance_Time_tracking_System.Controllers
-{
-    public class StudentController : Controller
-    {
-        private readonly IStudentRepo studentRepo;
-        public StudentController(IStudentRepo _studentRepo)
-        {
-            studentRepo = _studentRepo;
-        }
         public IActionResult Index()
         {
             return View();
@@ -65,6 +60,7 @@ namespace Attendance_Time_tracking_System.Controllers
         public IActionResult AddBulkStudents(IFormFile excelFile)
         {
             int studentAdded = 0;
+
             try
             {
                 if (excelFile == null || excelFile.Length == 0)
@@ -99,14 +95,14 @@ namespace Attendance_Time_tracking_System.Controllers
                             string lName = worksheet.Cells[row, 4].Value?.ToString();
                             int? phone = Convert.ToInt32(worksheet.Cells[row, 5].Value);
                             bool userStatus = Convert.ToBoolean(worksheet.Cells[row, 6].Value);
-                            string image = worksheet.Cells[row, 7].Value?.ToString();
+                            string imagePath = worksheet.Cells[row, 7].Value?.ToString();
                             string faculty = worksheet.Cells[row, 8].Value?.ToString();
                             string university = worksheet.Cells[row, 9].Value?.ToString();
                             string specialization = worksheet.Cells[row, 10].Value?.ToString();
                             string st = worksheet.Cells[row, 11].Value?.ToString();
                             int _studentGraduationYear = int.Parse(st);
                             DateTime graduationYear = new DateTime(_studentGraduationYear, 1, 1);
-                           // DateTime graduationYear = Convert.ToDateTime(worksheet.Cells[row, 10].Value);
+                            // DateTime graduationYear = Convert.ToDateTime(worksheet.Cells[row, 10].Value);
                             int grade = Convert.ToInt32(worksheet.Cells[row, 12].Value);
                             string status = worksheet.Cells[row, 13].Value?.ToString();
                             int nextMinus = Convert.ToInt32(worksheet.Cells[row, 14].Value);
@@ -123,6 +119,7 @@ namespace Attendance_Time_tracking_System.Controllers
                                 L_name = lName,
                                 phone = phone,
                                 User_Status = userStatus,
+                                image = imagePath,
                                 Faculty = faculty,
                                 University = university,
                                 specialization = specialization,
@@ -134,21 +131,26 @@ namespace Attendance_Time_tracking_System.Controllers
                                 IntakeID = intakeId,
                                 GraduationDegree = graduationDegree
                             };
-
-                            // Add the student to the repository or database
-                            studentRepo.AddStudent(s);
-
+                            studentRepo.AddStudent(s,null);
                             studentAdded++;
-                        }
-                    }
-                }
+                          
 
-                return Ok($"Students uploaded successfully.\nNumber of Students Added: {studentAdded}");
+
+
+
+                        }
+                        }
+                    
+
+                    return Ok($"Students uploaded successfully.\nNumber of Students Added: {studentAdded}");
+                }
             }
             catch (Exception ex)
             {
                 return BadRequest($"An error occurred while processing the file. Please try again later.\nNumber of Students Added: {studentAdded}");
             }
         }
+
+
     }
 }

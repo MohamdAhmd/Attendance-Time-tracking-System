@@ -15,7 +15,7 @@ namespace Attendance_Time_tracking_System.Repos
             this.blobRepo = blobRepo;
         }
 
-        public async Task<int> AddStudent(Student student,IFormFile personalimage)
+        public async Task<int> AddStudent(Student student,IFormFile? personalimage)
         {
             try
             {

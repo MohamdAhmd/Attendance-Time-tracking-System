@@ -2,7 +2,8 @@
 {
     public interface IStudentRepo
     {
-        public Task<int> AddStudent(Student student, IFormFile personalimage);
+        public Task<int> AddStudent(Student student, IFormFile? personalimage);
+        
         public Student GetStudentById(int id);
         public bool changeattendance(int userId, bool value);
         public List<AttendanceList> GetAllUsersWithRole(int? value, string daystatus);
