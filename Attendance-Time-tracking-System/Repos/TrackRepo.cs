@@ -29,6 +29,8 @@ namespace Attendance_Time_tracking_System.Repos
 
         public List<Track> GetAllTracks()
         {
+            //get all tracks for a specific supervisor
+           // return db.Tracks.Where(t => t.SupervisorID == id).ToList();
             return db.Tracks.Include(t => t.InstructorNavigation).Include(t => t.ProgramNavigation).ToList();
         }
             
@@ -47,6 +49,12 @@ namespace Attendance_Time_tracking_System.Repos
         public List<Track> GetAllTracksForSuperVisor(int Superid)
         {
             return db.Tracks.Where(x=>x.SupervisorID== Superid).ToList();
+        }
+
+        public List<Track> GetTrackBySupervisorId(int id)
+        {
+            //get all tracks for a specific supervisor
+            return db.Tracks.Where(t => t.SupervisorID == id).ToList();
         }
     }
 }
