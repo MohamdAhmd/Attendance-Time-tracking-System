@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
+
 
 namespace Attendance_Time_tracking_System.Controllers
 {
@@ -37,15 +40,7 @@ namespace Attendance_Time_tracking_System.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("index", "home");
         }
-    }
-}
-using Microsoft.AspNetCore.Mvc;
-using OfficeOpenXml;
 
-namespace Attendance_Time_tracking_System.Controllers
-{
-    public class StudentController : Controller
-    {
         private readonly IStudentRepo studentRepo;
         public StudentController(IStudentRepo _studentRepo)
         {
