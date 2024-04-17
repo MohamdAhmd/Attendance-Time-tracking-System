@@ -38,5 +38,7 @@ namespace Attendance_Time_tracking_System.Models
         [ForeignKey("IntakeID")]
         public Intake IntakeNavigation { get; set; }
 
+        public List<Permission> Permissions { get; set; } = new List<Permission>();
+
     }
 }

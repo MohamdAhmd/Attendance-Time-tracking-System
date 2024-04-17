@@ -1,5 +1,6 @@
 ﻿using Attendance_Time_tracking_System.Models;
 using Attendance_Time_tracking_System.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Time_tracking_System.Repos
 {
@@ -35,12 +36,12 @@ namespace Attendance_Time_tracking_System.Repos
         }
         public Instructor GetInstructorById(int id)
         {
-            return db.Instructors.FirstOrDefault(i => i.Id == id);
+            return db.Instructors.Include(x=>x.roles).FirstOrDefault(i => i.Id == id);
         }
        
         public void AddInstructor(Instructor instructor)
         {
-            instructor.roles.Add(new Roles {  RoleId= 3 });
+            instructor.roles.Add(new Roles { RoleId = 3 });
             db.Instructors.Add(instructor);
             db.SaveChanges();
         }
