@@ -1,6 +1,6 @@
-﻿@model IEnumerable<StdPermissionVM>;
+﻿@model IEnumerable<Student>
 @{
-    Layout = "../Instructor/Instructor";
+    Layout = "StudentAffairs";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -20,41 +20,41 @@
     <title>Document</title>
 
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
-    body {
-        min-height: 100vh !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        body {
+            min-height: 100vh !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    table {
-        width: 60vw;
-        overflow-y: auto;
-        padding: 5px;
-        margin: 10px auto;
-        text-align: center;
-        background-color: rgb(255, 248, 248);
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        border-collapse: collapse;
-        border-radius: 25px;
-    }
+        table {
+            width: 60vw;
+            overflow-y: auto;
+            padding: 5px;
+            margin: 10px auto;
+            text-align: center;
+            background-color: rgb(255, 248, 248);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-collapse: collapse;
+            border-radius: 25px;
+        }
 
-    td {
-        padding: 10px;
-        border-top: 3px solid rgb(155, 155, 155);
-    }
+        td {
+            padding: 10px;
+            border-top: 3px solid rgb(155, 155, 155);
+        }
 
-    th {
-        padding: 10px;
-    }
+        th {
+            padding: 10px;
+        }
     </style>
 
 
@@ -65,13 +65,13 @@
     <div class="container">
         @if (Model != null && Model.Any())
         {
+
             <table>
                 <thead>
-                    <th> Student Id </th>
                     <th> Full Name </th>
-                    <th> Date </th>
-                    <th> Permission </th>
-                    <th> Status </th>
+                    <th> Email </th>
+                    <th> Graduation Year </th>
+                    <th> Graduation Degree </th>
                     <th> Accept </th>
                     <th> Reject </th>
                 </thead>
@@ -79,22 +79,22 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.PermissionInfo.StudentId</td>
-                   <td>@item.Fname @item.Lname</td>
-                   <td>@item.PermissionInfo.day</td>
-                   <td>@item.PermissionInfo.PermissionBody</td>
-                   <td>@item.PermissionInfo.PermissionStatus</td>
-                    <td><input type="button" value="Accept" class="btn btn-success accept-btn" data-id="@item.PermissionInfo.day"></td>
-                    <td><input type="button" value="Reject" class="btn btn-danger reject-btn" data-id="@item.PermissionInfo.day"></td>
-                   <input name="day" type="text" value="@item.PermissionInfo.day" hidden />
-                </tr>
+                            <td>@item.F_name @item.L_name</td>
+                        <td>@item.Email</td>
+                        <td>@item.GraduationYear</td>
+                        <td>@item.GraduationDegree</td>
+                        <td><input type="button" value="Accept" class="btn btn-success accept-btn" data-id="@item.Id"></td>
+                        <td><input type="button" value="Reject" class="btn btn-danger reject-btn" data-id="@item.Id"></td>
+                        <input name="stdId" type="text" value="@item.Id" hidden />
+                    </tr>
                 }
             </tbody>
             </table>
         }
         else
         {
-            <p class="alert alert-info" style="width:60vw">There is no permission.</p>
+            <p class="alert alert-info" style="width:60vw">There is no students requests.</p>
+
         }
     </div>
 
@@ -104,29 +104,29 @@
         $(document).ready(function () {
             $(".accept-btn").click(function () {
                 var stdId = $(this).data('id');
-                changePermissionStatus(stdId, "Accepted");
+                changeStudentStatus(stdId, "Accepted");
             });
 
             $(".reject-btn").click(function () {
                 var stdId = $(this).data('id');
-                changePermissionStatus(stdId, "Rejected");
+                changeStudentStatus(stdId, "Rejected");
             });
 
 
-            function changePermissionStatus(permissionId, status) {
+            function changeStudentStatus(stdId, status) {
                 $.ajax({
                     type: "POST",
-                    url: "/Permission/ChangeStatus",
-                    data: { date: permissionId, status: status },
+                    url: "/StudentAffairs/ChangeStatus",
+                    data: { stdId: stdId, status: status},
                     success: function (result) {
                         Swal.fire({
                             title: "Good job!",
                             text: "Your updates have been saved",
                             icon: "success",
-                        }).then(()=>{
+                        }).then(() => {
                             location.reload();
                         })
-                        
+
                     },
                     error: function (error) {
                         // Handle error

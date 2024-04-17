@@ -19,12 +19,11 @@
         <header>
             <div class="image-text">
                 <span class="image">
-                    <img src="./Meubel House_Logos-05.png" alt="">
+                    <img src="~/Images/iti.png" alt="">
                 </span>
 
                 <div class="text logo-text">
                     <span class="name">ITI</span>
-                    <span class="profession">Mohamed Ahmed</span>
                 </div>
             </div>
 
@@ -34,11 +33,26 @@
         <div class="menu-bar">
             <div class="menu">
                 <ul class="menu-links" style="padding-left:0px;">
+                    @if (User.IsInRole("Supervisor"))
+                    {
+                        <li class="nav-link" style="padding-left:0px;">
+                            <a asp-action="SupervisorShowStudetnsDegrees" asp-controller="instructor">
+                                <i class='bx bx-bell icon'></i>
+                                <span class="text nav-text">Show Students</span>
+                            </a>
+                        </li>
 
+                        <li class="nav-link" style="padding-left:0px;">
+                            <a asp-action="studentPermissions" asp-controller="Permission">
+                                <i class='bx bx-message-alt-detail icon'></i>
+                                <span class="text nav-text">Permissions</span>
+                            </a>
+                        </li>
+                    }else{
                     <li class="nav-link" style="padding-left:0px;">
                         <a asp-action="showAttendance" asp-controller="instructor">
                             <i class='bx bx-home-alt icon'></i>
-                            <span class="text nav-text">Show Degrees</span>
+                            <span class="text nav-text">Attendance</span>
                         </a>
                     </li>
 
@@ -66,9 +80,16 @@
                     <li class="nav-link" style="padding-left:0px;">
                         <a href="#">
                             <i class='bx bx-pie-chart-alt icon'></i>
-                            <span class="text nav-text">Link 3</span>
+                            <span class="text nav-text">Link 2</span>
                         </a>
                     </li>
+
+                    }
+
+
+
+
+
                 </ul> 
             </div>
 
@@ -80,7 +101,7 @@
                     </a>
                 </li>
 
-                <li class="mode">
+@*                 <li class="mode">
                     <div class="sun-moon">
                         <i class='bx bx-moon icon moon'></i>
                         <i class='bx bx-sun icon sun'></i>
@@ -90,7 +111,7 @@
                     <div class="toggle-switch">
                         <span class="switch"></span>
                     </div>
-                </li>
+                </li> *@
 
             </div>
         </div>

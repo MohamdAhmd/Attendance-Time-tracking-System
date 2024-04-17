@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class IntakesController : Controller
     {
         IIntakeRepo IntakeRepo;
@@ -10,6 +13,7 @@ namespace Attendance_Time_tracking_System.Controllers
         {
             IntakeRepo = _IntakeRepo;
         }
+
         [HttpGet]
         public IActionResult Index()
         {

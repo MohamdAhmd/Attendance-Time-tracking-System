@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Permission>;
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/dist/boxicons.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <title>Document</title>a
+    <title>Document</title>
 
 
 <style>
@@ -81,45 +81,46 @@
                 <box-icon class="plus" name='plus-circle'></box-icon>
             </a>
         </div>
+        @if (Model != null && Model.Any())
+        {
+            <table>
+                <thead>
+                    <th> Date </th>
+                    <th> Type </th>
+                    <th> Status </th>
+                    <th> Edit </th>
+                    <th> Delete </th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.day</td>
+                            <td>@item.PermissionType</td>
+                            <td> <span></span> @item.PermissionStatus</td>
 
-        <table>
-            <thead>
-            <th> Date </th>
-            <th> Type </th>
-            <th> Status </th>
-            <th> Edit </th>
-            <th> Delete </th>
-            </thead>
-            <tbody>
-                @foreach(var item in Model)
-                {
-                <tr>
-                    <td>@item.day</td>
-                    <td>@item.PermissionType</td>
-                    <td> <span></span> @item.PermissionStatus</td>
+                            <td>
+                                <!-- Create a link to the Delete action with the date as a query parameter -->
+                                <a href="@Url.Action("Edit", "Permission", new { date = item.day })">
+                                    <box-icon type='solid' name='edit'></box-icon>
+                                </a>
+                            </td>
 
-                        <td>
-                            <!-- Create a link to the Delete action with the date as a query parameter -->
-                            <a href="@Url.Action("Edit", "Permission", new { date = item.day })">
-                                <box-icon type='solid' name='edit'></box-icon>
-                            </a>
-                        </td>
-
-                        <td>
-                            <!-- Create a link to the Delete action with the date as a query parameter -->
-                            <a href="@Url.Action("Delete", "Permission", new { date = item.day })">
-                                <box-icon name='trash'></box-icon>
-                            </a>
-                        </td>
-
-
-                    @* <td><box-icon type='solid' name='edit'></box-icon></td> *@
-                    @* <td><box-icon name='trash'></box-icon></td> *@
-                </tr>                    
-                }
-            </tbody>
-    </div>
-    </table>
+                            <td>
+                                <!-- Create a link to the Delete action with the date as a query parameter -->
+                                <a href="@Url.Action("Delete", "Permission", new { date = item.day })">
+                                    <box-icon name='trash'></box-icon>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+        <p class="alert alert-info" style="width:60vw">There is no permission.</p>
+        }
     </div>
 </body>
 </html>

@@ -37,18 +37,29 @@
 
         <div class="menu-bar">
             <div class="menu">
+                <ul class="menu-links" style="padding-left:0px;">
+
                     <li class="nav-link" style="padding-left:0px;">
                     <a href="@Url.Action("ShowAttendance", "Student")">
                             <i class='bx bx-user icon'></i>
                             <span class="text nav-text">Show Attendance</span>
                         </a>
                     </li>
+
+
+                    <li class="nav-link" style="padding-left:0px;">
+                        <a href="@Url.Action("Index", "Permission")">
+                            <i class='bx bx-message-alt-detail icon'></i>
+                            <span class="text nav-text">Permission</span>
+                        </a>
+                    </li>
+
                 </ul>
             </div>
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="@Url.Action("logout", "Student")">
+                    <a href="@Url.Action("logout", "Account")">
                         <i class='bx bx-log-out icon'></i>
                         <span class="text nav-text">Logout</span>
                     </a>

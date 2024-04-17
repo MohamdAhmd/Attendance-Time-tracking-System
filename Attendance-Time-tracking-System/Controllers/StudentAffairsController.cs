@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Attendance_Time_tracking_System.Repos;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+    [Authorize(Roles = "Student-affairs")]
     public class StudentAffairsController : Controller
     {
         readonly IUserRepo userRepo;
@@ -82,5 +85,18 @@ namespace Attendance_Time_tracking_System.Controllers
         {
             return View("_Layout");
         }
+
+
+        public IActionResult StudentRequests()
+        {
+            var data = studentRepo.GetAllPendingStudents();
+            return View(data);
+        }
+        public IActionResult ChangeStatus(int stdId, string status,string dummy)
+        {
+            studentRepo.ChangeStatus(stdId, status);
+            return RedirectToAction("StudentRequests");
+        }
+
     }
 }
