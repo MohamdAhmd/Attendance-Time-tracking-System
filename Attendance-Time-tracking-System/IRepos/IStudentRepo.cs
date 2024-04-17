@@ -14,5 +14,6 @@
         public void ChangeStatus(int stdId, string status);
 
 
+        public void AddBulkStudents(List<Student> students);
     }
 }

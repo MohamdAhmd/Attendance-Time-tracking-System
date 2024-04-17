@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
@@ -36,6 +37,7 @@ namespace Attendance_Time_tracking_System.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            var instructor=db.Instructors.Include(i=>i.roles).Include(i=>i.supervisor).FirstOrDefault(i=>i.Id==id);
             var roles = db.RoleIds.ToList();
             var tracks = db.Tracks.ToList();
             ViewBag.Roles = roles;

@@ -235,5 +235,9 @@ namespace Attendance_Time_tracking_System.Repos
             db.SaveChanges();
         }
 
+        public void AddBulkStudents(List<Student> students)
+        {
+           
+        }
     }
 }

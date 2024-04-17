@@ -1,0 +1,24 @@
+﻿@model IFormFile
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddBulkStudents</title>
+</head>
+<body>
+    <form action="AddBulkStudents" method="post" enctype="multipart/form-data">
+        <div>
+            <label for="file">Upload File</label>
+            <input type="file" id="file" name="excelFile" class="form-control" accept=".xlsx , .xls">
+        </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</body>
+</html>
