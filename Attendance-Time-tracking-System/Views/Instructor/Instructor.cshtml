@@ -13,8 +13,6 @@
     <link rel="stylesheet" href="~/css/security/security.css" />
     @RenderSection("Style", required: false)
 
-
-
 </head>
 <body>
     <nav class="sidebar close">
@@ -64,7 +62,21 @@
                             <span class="text nav-text">Link 1</span>
                         </a>
                     </li>
-
+                    @if (User.IsInRole("Supervisor"))
+                    {
+                        <li class="nav-link" style="padding-left:0px;">
+                            <a asp-action="SupervisorShowStudetnsDegrees" asp-controller="instructor">
+                                <i class='bx bx-bell icon'></i>
+                                <span class="text nav-text">Show Students</span>
+                            </a>
+                        </li>
+                        <li class="nav-link" style="padding-left:0px;">
+                            <a asp-action="index" asp-controller="TrackDays">
+                                <i class='bx bxs-calendar icon'></i>
+                                <span class="text nav-text">Schedule</span>
+                            </a>
+                        </li>
+                    }
                     <li class="nav-link" style="padding-left:0px;">
                         <a href="#">
                             <i class='bx bx-pie-chart-alt icon'></i>
