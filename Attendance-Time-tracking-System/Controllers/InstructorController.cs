@@ -61,7 +61,7 @@ namespace Attendance_Time_tracking_System.Controllers
         /// <returns></returns>
         /// 
 
-        [Authorize(Roles ="Supervisor")]
+        //[Authorize(Roles ="Supervisor")]
         public IActionResult SupervisorShowStudetnsDegrees()
         {
             int SupervisorId = instructorid();
@@ -72,7 +72,7 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(students);
         }
 
-        [Authorize(Roles = "Supervisor")]
+        //[Authorize(Roles = "Supervisor")]
         [HttpPost]
         public IActionResult SupervisorShowStudetnsDegrees(DateOnly choosendate , int SelectedTrack , string DayStatus)
         {
