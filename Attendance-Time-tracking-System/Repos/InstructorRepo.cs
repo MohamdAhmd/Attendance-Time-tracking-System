@@ -107,7 +107,5 @@ namespace Attendance_Time_tracking_System.Repos
                             }).ToList();
             return model;
         }
-    
-    
     }
 }

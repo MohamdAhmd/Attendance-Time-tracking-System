@@ -98,13 +98,25 @@
                             <td>@item.day</td>
                             <td>@item.PermissionType</td>
                             <td> <span></span> @item.PermissionStatus</td>
-
+                            @if (item.PermissionStatus =="Accepted")
+                            {
+                                
                             <td>
                                 <!-- Create a link to the Delete action with the date as a query parameter -->
                                 <a href="@Url.Action("Edit", "Permission", new { date = item.day })">
                                     <box-icon type='solid' name='edit'></box-icon>
                                 </a>
-                            </td>
+                                </td>
+                            }
+                            else
+                            {
+                               <td>
+                                <!-- Create a link to the Delete action with the date as a query parameter -->
+                              
+                                    <box-icon type='solid' name='edit' ></box-icon>
+                                
+                                </td>   
+                            }
 
                             <td>
                                 <!-- Create a link to the Delete action with the date as a query parameter -->

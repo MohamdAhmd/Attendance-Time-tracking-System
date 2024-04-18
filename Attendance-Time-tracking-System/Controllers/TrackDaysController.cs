@@ -6,14 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Attendance_Time_tracking_System.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+    // only supervisors can access this controller
+
+    [Authorize(Roles = "Supervisor")]
     public class TrackDaysController : Controller
     {
         ITrackDaysRepo trackDaysRepo;
         IDaysRepo daysRepo;
         ITrackRepo trackRepo;
+
         public TrackDaysController(ITrackDaysRepo trackDaysRepo, IDaysRepo daysRepo, ITrackRepo trackRepo)
         {
             this.trackDaysRepo = trackDaysRepo;
@@ -24,7 +29,9 @@ namespace Attendance_Time_tracking_System.Controllers
         // GET: TrackDays
         public async Task<IActionResult> Index()
         {
-            return View(trackDaysRepo.GetAllTrackDays());
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+           return View(trackDaysRepo.GetTrackDaysBySupervisorId(id));
         }
 
         // GET: TrackDays/Details/5
@@ -46,9 +53,13 @@ namespace Attendance_Time_tracking_System.Controllers
         // GET: TrackDays/Create
         public IActionResult Create()
         {
-         
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+            ViewData["TrackId"] = new SelectList(trackRepo.GetTrackBySupervisorId(id), "Id", "Name");
+
+
             ViewData["DayId"] = new SelectList(daysRepo.GetAllDays() , "Id", "Id");
-            ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks() , "Id", "Name");
+            //ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks() , "Id", "Name");
             return View();
         }
 
@@ -75,9 +86,14 @@ namespace Attendance_Time_tracking_System.Controllers
                 var existingTrackDay = trackDaysRepo.GetTrackDayById(day.Id, trackDays.TrackId);
                 if (existingTrackDay != null)
                 {
+                    var userIdClaimm = HttpContext.User.FindFirst("UserId");
+                    int idd = int.Parse(userIdClaimm.Value);
+                    ViewData["TrackId"] = new SelectList(trackRepo.GetTrackBySupervisorId(idd), "Id", "Name");
+
+                    
                     ModelState.AddModelError("", "Schedule already exists for the selected day and track.");
                     ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
-                    ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
+                    //ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
                     return View(trackDays);
                 }
 
@@ -86,8 +102,12 @@ namespace Attendance_Time_tracking_System.Controllers
                 trackDaysRepo.AddTrackDay(trackDays);
                 return RedirectToAction(nameof(Index));
             }
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+            ViewData["TrackId"] = new SelectList(trackRepo.GetTrackBySupervisorId(id), "Id", "Name");
+
             ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
-            ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
+           // ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
             return View(trackDays);
         }
 
@@ -104,8 +124,14 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 return NotFound();
             }
+
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+            ViewData["TrackId"] = new SelectList(trackRepo.GetTrackBySupervisorId(id), "Id", "Name");
+
+
             ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
-            ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
+           // ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
             return View(trackDays);
         }
 
@@ -133,20 +159,24 @@ namespace Attendance_Time_tracking_System.Controllers
                         day = new Days { Day = trackDays.StartPeriod.Date };
                         daysRepo.AddDay(day);
                         // Update the trackDays object with the newly created dayId
-                        trackDays.DayId = day.Id;
+                        //trackDays.DayId = day.Id;
                     }
 
                     // Check if the selected day already has a schedule for the same track
                     var existingTrackDay = trackDaysRepo.GetTrackDayById(day.Id, trackDays.TrackId);
                     if (existingTrackDay != null && existingTrackDay.DayId != dayId)
                     {
+                        var userIdClaim = HttpContext.User.FindFirst("UserId");
+                        int id = int.Parse(userIdClaim.Value);
+                        ViewData["TrackId"] = new SelectList(trackRepo.GetTrackBySupervisorId(id), "Id", "Name");
+
                         ModelState.AddModelError("", "Schedule already exists for the selected day and track.");
                         ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
-                        ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
+                        //ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
                         return View(trackDays);
                     }
 
-                    trackDaysRepo.UpdateTrackDay(trackDays);
+                    trackDaysRepo.UpdateTrackDay(trackDays,day.Id);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -161,8 +191,11 @@ namespace Attendance_Time_tracking_System.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            var userIdClaimm = HttpContext.User.FindFirst("UserId");
+            int idd = int.Parse(userIdClaimm.Value);
+            ViewData["TrackId"] = new SelectList(trackRepo.GetTrackBySupervisorId(idd), "Id", "Name");
             ViewData["DayId"] = new SelectList(daysRepo.GetAllDays(), "Id", "Id", trackDays.DayId);
-            ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
+           // ViewData["TrackId"] = new SelectList(trackRepo.GetAllTracks(), "Id", "Name", trackDays.TrackId);
             return View(trackDays);
         }
 

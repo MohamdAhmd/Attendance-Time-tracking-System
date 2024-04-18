@@ -211,5 +211,12 @@ namespace Attendance_Time_tracking_System.Repos
             return false;
         }
 
+
+        public User GetUserById(int id)
+        {
+            return db.Users.FirstOrDefault(u => u.Id == id);
+        }
+
+
     }
 }
