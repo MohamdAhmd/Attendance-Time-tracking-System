@@ -38,9 +38,17 @@
         <div class="menu-bar">
             <div class="menu">
                 <ul class="menu-links" style="padding-left:0px;">
+
+                    <li class="nav-link" style="padding-left:0px;">
+                        <a href="@Url.Action("Profile", "Account")">
+                            <i class='bx bx-home-alt icon'></i>
+                            <span class="text nav-text">Profile</span>
+                        </a>
+                    </li>
+
                     <li class="nav-link" style="padding-left:0px;">
                         <a href="@Url.Action("Index", "Intakes")">
-                            <i class='bx bx-home-alt icon'></i>
+                            <i class='bx bxs-group icon'></i>
                             <span class="text nav-text">Intakes</span>
                         </a>
                     </li>
@@ -65,6 +73,15 @@
                             <span class="text nav-text">Employees</span>
                         </a>
                     </li>
+
+                    <li class="nav-link" style="padding-left:0px;">
+                        <a href="@Url.Action("Index", "Instructor")">
+                            <i class='bx bx-user icon'></i>
+                            <span class="text nav-text">Instructor</span>
+                        </a>
+                    </li>
+
+
                 </ul>
             </div>
 

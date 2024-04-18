@@ -1,0 +1,130 @@
+﻿@model Instructor
+@{
+    Layout = "Instructor";
+}
+
+
+
+
+<div class="container mt-4">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            @if (@Model.image == null)
+                            {
+                                <img src="~/Images/profile.png" alt="Admin" class="rounded-circle" width="200" />
+                            }
+                            else
+                            {
+                                <img src="~/Images/iti.png" alt="Admin" class="rounded-circle" width="200" />
+                            }
+                            <div class="mt-3">
+                                <h4>@Model.F_name @Model.L_name</h4>
+                                <p class="text-secondary mb-1">Instructor</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">First Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary editable" id="fname">@Model.F_name</div>
+                        </div>
+                        <hr />
+                        <div class="row ">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Last Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary editable" id="lname">@Model.L_name</div>
+                        </div>
+                        <hr />
+                        <div class="row ">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary editable" id="email">
+                                <a href="/cdn-cgi/l/email-protection"
+                                   class="_cf_email_"
+                                   data-cfemail="bbddd2cbfbd1ced0d6ced395dad7" >@Model.Email</a>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row ">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Mobile</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary editable" id="phone">@Model.phone</div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info" id="editProfileBtn">Edit</a>
+                                <a class="btn btn-info" id="saveProfileBtn" style="display:none">Save</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+    <script>
+        document.getElementById('editProfileBtn').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default behavior of the link
+            var editableFields = document.querySelectorAll('.editable');
+            editableFields.forEach(function (field) {
+                var value = field.textContent;
+                var input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('class', 'form-control');
+                input.setAttribute('value', value);
+                input.dataset.field = field.dataset.field;
+                field.innerHTML = ''; // Clear existing content
+                field.appendChild(input);
+            });
+            document.getElementById('editProfileBtn').style.display = 'none';
+            saveBtn.style.display = 'block';
+        });
+
+        let saveBtn = document.getElementById('saveProfileBtn')
+
+        saveBtn.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            let fname = document.querySelector('#fname input')
+            let lname = document.querySelector('#lname input')
+            let email = document.querySelector('#email input')
+            let phone = document.querySelector('#phone input')
+            console.log(email.value)
+            console.log(phone.value)
+
+            $.ajax({
+                type: "POST",
+                url: "/Instructor/Edit",
+                data: { F_name: fname.value, L_name: lname.value, Email: email.value, phone: phone.value },
+                success: function (result) {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Your updates have been saved",
+                        icon: "success",
+                    }).then(() => {
+                        location.reload();
+                    })
+                },
+                error: function (error) {
+                    // Handle error
+                    Swal.fire("Something Went Wrong!", "", "info");
+                    console.log("Error occurred:", error);
+                }
+            })
+        })
+    </script>

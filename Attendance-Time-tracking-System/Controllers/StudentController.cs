@@ -1,4 +1,5 @@
-﻿using Attendance_Time_tracking_System.Migrations;
+﻿using Attendance_Time_tracking_System.IRepos;
+using Attendance_Time_tracking_System.Migrations;
 using Attendance_Time_tracking_System.Models;
 using Attendance_Time_tracking_System.Repos;
 using Microsoft.AspNetCore.Authentication;
@@ -12,10 +13,13 @@ namespace Attendance_Time_tracking_System.Controllers
     public class StudentController : Controller
     {
         readonly dbContext db;
-       
-        public StudentController(dbContext _db )
+        IStudentRepo studentRepo;
+
+        public StudentController(dbContext _db, IStudentRepo _studentRepo)
         {
             db= _db;
+            studentRepo = _studentRepo;
+
         }
         public IActionResult ShowAttendance()
         {
@@ -47,5 +51,13 @@ namespace Attendance_Time_tracking_System.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("index", "home");
         }
+        public IActionResult Profile()
+        {
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+            var user = studentRepo.GetStudentById(id);
+            return View(user);
+        }
+
     }
 }
