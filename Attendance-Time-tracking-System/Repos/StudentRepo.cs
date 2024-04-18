@@ -14,8 +14,12 @@ namespace Attendance_Time_tracking_System.Repos
             this.db = db;
             this.blobRepo = blobRepo;
         }
+        public List<Student> GetAllStudents()
+        {
+            return db.Students.Where(x => x.status == "Accepted").ToList();
+        }
 
-        public async Task<int> AddStudent(Student student,IFormFile personalimage)
+        public async Task<int> AddStudent(Student student,IFormFile? personalimage)
         {
             try
             {
@@ -235,5 +239,9 @@ namespace Attendance_Time_tracking_System.Repos
             db.SaveChanges();
         }
 
+        public void AddBulkStudents(List<Student> students)
+        {
+           
+        }
     }
 }
