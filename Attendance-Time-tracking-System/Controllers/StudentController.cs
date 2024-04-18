@@ -31,11 +31,21 @@ namespace Attendance_Time_tracking_System.Controllers
                         .Include(a => a.DaysNavigation)  
                         .ToList();
                         ;
-
             return View(model);       
 
         }
+        public IActionResult StudentSchedule()
+        {
 
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+            //get the student schedule by his id and the track id then oder it by the date 
+            var model = db.TrackDays.Where(t => t.TrackNavigation.Students.Any(s => s.Id == id))
+                        .Include(t => t.DayNavigation)
+                        .Include(t => t.TrackNavigation)
+                        .ToList().OrderBy(t => t.DayNavigation.Day.Date);
+            return View(model);
+        }
         public async Task<IActionResult> logout()
         {
             await HttpContext.SignOutAsync();
