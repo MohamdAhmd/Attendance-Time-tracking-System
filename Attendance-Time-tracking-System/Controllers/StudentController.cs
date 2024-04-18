@@ -48,7 +48,7 @@ namespace Attendance_Time_tracking_System.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return View(studentRepo.GetAllStudents());
         }
         [HttpGet]
         public IActionResult AddBulkStudents()

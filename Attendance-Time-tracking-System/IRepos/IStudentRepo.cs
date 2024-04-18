@@ -16,5 +16,6 @@
 
 
         public void AddBulkStudents(List<Student> students);
+        public List<Student> GetAllStudents();
     }
 }
