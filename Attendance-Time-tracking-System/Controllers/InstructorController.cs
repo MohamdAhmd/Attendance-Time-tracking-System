@@ -43,7 +43,7 @@ namespace Attendance_Time_tracking_System.Controllers
             var tracks = db.Tracks.ToList();
             ViewBag.Roles = roles;
             ViewBag.Tracks = tracks;
-            return View(instructorRepo.GetInstructorById(id));
+            return View(instructor);
         }
         [HttpPost]
         public IActionResult Edit(Instructor instructor, int? id)

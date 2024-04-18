@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Attendance_Time_tracking_System.Models.Student>
 @{
-    Layout = null;
+    Layout = "../StudentAffairs/StudentAffairs.cshtml";
 }
 
 <!DOCTYPE html>
@@ -9,8 +9,48 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/_style.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="~/css/site.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        table {
+            width: 60vw;
+            overflow-y: auto;
+            padding: 5px;
+            margin: 10px auto;
+            text-align: center;
+            background-color: rgb(255, 248, 248);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-collapse: collapse;
+            border-radius: 25px;
+        }
+
+        td {
+            padding: 10px;
+            border-top: 3px solid rgb(155, 155, 155);
+        }
+
+        th {
+            padding: 10px;
+        }
+
+    </style>
 </head>
 <body>
     <h1>Students</h1>
@@ -18,15 +58,66 @@
         <div class="row">
             <div class="col-md-12">
                 <input type="text" id="searchInput" placeholder="Search by email...">
+                <a href="/Student/AddBulkStudents" class="btn btn-primary">Add Bulk Of Students</a>
             </div>
         </div>
     </div>
-    <table>
+    <table class="table table-hover table-responsive" id="dataTable">
         <thead>
-            <th>
-
-            </th>
+            <tr>
+                <th>Student ID</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Image</th>
+                <th>Faculty</th>
+                <th>University</th>
+                <th>Specialization</th>
+                <th>Graduation Year</th>
+                <th>Grade</th>
+                <th>Next Minus</th>
+                <th>Track Id</th>
+                <th>Intake Id</th>
+                <th>Actions</th>
+            </tr>
         </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Email</td>
+                    <td>@item.Password</td>
+                    <td>@item.F_name</td>
+                    <td>@item.L_name</td>
+                    <td>@item.image</td>
+                    <td>@item.Faculty</td>
+                    <td>@item.University</td>
+                    <td>@item.specialization</td>
+                    <td>@item.GraduationYear</td>
+                    <td>@item.Grade</td>
+                    <td>@item.NextMinus</td>
+                    <td>@item.TrackId</td>
+                    <td>@item.IntakeID</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                    </tr>
+                    }
+                    </tbody>
     </table>
+    <script>
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("table tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+            $('#dataTable').DataTable();
+        });
+    </script>
 </body>
 </html>
