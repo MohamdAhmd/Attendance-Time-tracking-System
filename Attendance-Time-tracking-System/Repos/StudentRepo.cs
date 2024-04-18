@@ -243,5 +243,19 @@ namespace Attendance_Time_tracking_System.Repos
         {
            
         }
+        public void UpdateStudent(Student student, int? id)
+        {
+            student.status = "Accepted";
+           db.Students.Update(student);
+
+            db.SaveChanges();
+        }
+        public void DeleteStudent(Student student)
+        {
+            var std = db.Students.FirstOrDefault(a => a.Id == student.Id);
+           std.User_Status = false;
+            std.status = "Fired";
+            db.SaveChanges();
+        }
     }
 }

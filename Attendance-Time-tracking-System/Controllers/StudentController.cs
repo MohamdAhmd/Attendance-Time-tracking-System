@@ -169,6 +169,25 @@ namespace Attendance_Time_tracking_System.Controllers
             var user = studentRepo.GetStudentById(id);
             return View(user);
         }
+        [HttpGet]
+        public IActionResult Edit (int id)
+        {
+            var student=db.Students.Include(s=>s.TrackNavigation).FirstOrDefault(s=>s.Id==id);
+            var tracks=db.Tracks.ToList();
+            ViewBag.Tracks=tracks;
+            return View(student);
+        }
+        [HttpPost]
+        public IActionResult Edit(Student s,int? id)
+        {
+            studentRepo.UpdateStudent(s,id);
+            return RedirectToAction("Index");
+        }
+        public IActionResult Delete(Student student)
+        {
+            studentRepo.DeleteStudent(student);
+            return RedirectToAction("Index");
+        }
 
     }
 }
