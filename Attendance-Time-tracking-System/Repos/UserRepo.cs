@@ -217,7 +217,7 @@ namespace Attendance_Time_tracking_System.Repos
         }
 
 
-        public UserEditProfile GetUserById(int id)
+        public UserEditProfile GetUserEditById(int id)
         {
             var model = db.Users.Where(x => x.Id == id)
                 .Select(x => new UserEditProfile
@@ -275,6 +275,6 @@ namespace Attendance_Time_tracking_System.Repos
             return db.Users.FirstOrDefault(u => u.Id == id);
         }
 
-
+     
     }
 }

@@ -95,7 +95,7 @@ namespace Attendance_Time_tracking_System.Controllers
         public IActionResult ProfilePage()
         {
             var instid = instructorid();
-            var user = userRepo.GetUserById(instid);
+            var user = userRepo.GetUserEditById(instid);
             return View(user);
         }
         [HttpPost]
