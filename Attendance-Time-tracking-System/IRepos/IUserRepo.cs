@@ -1,4 +1,6 @@
-﻿namespace Attendance_Time_tracking_System.IRepos
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace Attendance_Time_tracking_System.IRepos
 {
     public interface IUserRepo
     {
@@ -12,6 +14,9 @@
         public bool ChangeLeaveAttendance(int userId, bool value);
         public bool PutAllUsersInAttendanceTable();
         public bool ChangeAllToLate(int[] ids);
+
+        public User GetUserById(int id);
+
 
     }
 }

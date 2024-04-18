@@ -2,72 +2,140 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "_Layout";
-
+    Layout = "~/Views/Instructor/Instructor.cshtml";
 }
 
-<h1>Index</h1>
+@section Style {
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.css" />
+    <script src="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/dist/boxicons.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        div {
+            font-size: 20px;
+        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StartPeriod)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lecture1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lecture2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lecture3)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DayNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrackNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartPeriod)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lecture1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lecture2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lecture3)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DayNavigation.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrackNavigation.Name)
-            </td>
-            <td>
-                    @Html.ActionLink("Edit", "Edit", new { dayId = item.DayId, trackId = item.TrackId }) |
-                    @Html.ActionLink("Details", "Details", new { dayId = item.DayId, trackId = item.TrackId }) |
-                    @Html.ActionLink("Delete", "Delete", new { dayId = item.DayId, trackId = item.TrackId })
-            </td>
-        </tr>
+        table {
+            border-spacing: 1;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+            table thead tr {
+                height: 60px;
+                background: #36304a;
+                color: white;
+            }
+            tbody,thead{
+                
+            text-align: center;
+
+            }
+
+            table tr td {
+                margin-left: 10px;
+                padding: 10px;
+            }
+
+        #submitButton {
+            background-color: #36304a;
+            color: white;
+        }
+
+            #submitButton:hover {
+                color: white;
+            }
+    </style>
 }
-    </tbody>
-</table>
+
+<div class="container-fluid mt-5">
+    <div class="mt-5 row">
+        <div class="col-10 offset-1 table-style">
+            <h1>schedule</h1>
+            <p>
+                <a asp-action="Create" id="submitButton" class="btn">Create New</a>
+            </p>
+            <table class="table" id="example" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Lecture1)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Lecture2)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Lecture3)
+                        </th>
+                        <th>
+                          
+                            Track Name
+                        </th>
+                        <th>
+                            Edit Schedule
+                        </th>
+                        <th>
+                            Delete Schedule
+                        </th>
+                    </tr>
+                </thead>
+                <tbody >
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartPeriod)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Lecture1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Lecture2)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Lecture3)
+                            </td>
+                           
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TrackNavigation.Name)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-dayId="@item.DayId" asp-route-trackId="@item.TrackId">
+                                    <box-icon type='solid' name='edit'></box-icon>
+                                </a>
+                               
+                            </td>
+                            <td>
+                              
+                                <a asp-action="Delete" asp-route-dayId="@item.DayId" asp-route-trackId="@item.TrackId">
+                                    <box-icon type='solid' name='trash'></box-icon>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.js"></script>
+}
