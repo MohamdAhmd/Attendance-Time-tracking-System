@@ -1,0 +1,61 @@
+﻿@model User
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+
+<div class="container mt-4">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            @if(Model.image != null)
+                            {
+                            <img src="~/Images/iti.png" alt="Admin" class="rounded-circle" width="200" /> 
+                            }else{
+                            <img src="~/Images/profile.png" alt="Admin" class="rounded-circle" width="200" /> 
+                            }
+                            <div class="mt-3">
+                                <h4>@Model.F_name</h4>
+                                <p class="text-secondary mb-1">Admin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Full Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">@Model.F_name @Model.L_name</div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <a href="/cdn-cgi/l/email-protection"
+                                   class="_cf_email_"
+                                   data-cfemail="bbddd2cbfbd1ced0d6ced395dad7">@Model.Email</a>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Mobile</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">@Model.phone</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

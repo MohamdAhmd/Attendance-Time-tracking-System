@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Attendance_Time_tracking_System.Repos;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -129,6 +130,14 @@ namespace Attendance_Time_tracking_System.Controllers
                 return int.Parse(userId);
             }
             return 7;
+        }
+
+        public IActionResult Profile()
+        {
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+            var user = instructorRepo.GetInstructorById(id);
+            return View(user);
         }
     }
 }

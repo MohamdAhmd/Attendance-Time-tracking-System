@@ -79,7 +79,7 @@ namespace Attendance_Time_tracking_System.Controllers
 
             if (loginroles.Contains("Admin"))
             {
-                return RedirectToAction("Index", "Intakes");
+                return RedirectToAction("Profile", "Account");
             }
             else if (loginroles.Contains("Instructor"))
             {
@@ -155,5 +155,16 @@ namespace Attendance_Time_tracking_System.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("index", "home");
         }
+
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Profile()
+        {
+            var userIdClaim = HttpContext.User.FindFirst("UserId");
+            int id = int.Parse(userIdClaim.Value);
+            var user = userRepo.GetUserById(id);
+            return View(user);
+        }
+
     }
 }
