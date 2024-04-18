@@ -1,4 +1,6 @@
-﻿using Attendance_Time_tracking_System.Repos;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Attendance_Time_tracking_System.Repos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -85,6 +87,71 @@ namespace Attendance_Time_tracking_System.Controllers
         {
             return View("_Layout");
         }
+        /// <summary>
+        /// profile page
+        /// </summary>
+        /// <returns></returns>
+
+        public IActionResult ProfilePage()
+        {
+            var instid = instructorid();
+            var user = userRepo.GetUserById(instid);
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(UserEditProfile user, IFormFile personalimages)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await userRepo.EditUserInfo(user, personalimages) == true)
+                {
+                    return RedirectToAction("ProfilePage");
+                }
+                return RedirectToAction("ProfilePage");
+            }
+            else
+            {
+                return RedirectToAction("ProfilePage");
+            }
+        }
+
+        public IActionResult ChangePassword()
+        {
+            var instid = instructorid();
+            var userpass = userRepo.UserPassword(instid);
+            return View(userpass);
+        }
+        [HttpPost]
+        public IActionResult ChangePassword(UserPassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (userRepo.updatePass(model))
+                {
+                    return RedirectToAction("ProfilePage");
+                }
+            }
+            return View(model);
+        }
+
+
+        public async Task<IActionResult> logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("index", "home");
+        }
+
+        public int instructorid()
+        {
+            var userIdClaim = User.FindFirst("UserId");
+            if (userIdClaim != null)
+            {
+                string userId = userIdClaim.Value;
+                return int.Parse(userId);
+            }
+            return 7;
+        }
+
 
 
         public IActionResult StudentRequests()

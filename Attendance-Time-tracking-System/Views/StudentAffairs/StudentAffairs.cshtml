@@ -43,6 +43,12 @@
                             <span class="text nav-text">Attendance</span>
                         </a>
                     </li>
+                    <li class="nav-link" style="padding-left:0px;">
+                        <a asp-action="ProfilePage" asp-controller="StudentAffairs">
+                            <i class='bx bx-home-alt icon'></i>
+                            <span class="text nav-text">Profile page</span>
+                        </a>
+                    </li>
 
                     <li class="nav-link" style="padding-left:0px;">
                         <a asp-action="StudentRequests" asp-controller="StudentAffairs">
@@ -57,7 +63,7 @@
 
             <div class="bottom-content">
                 <li class="">
-                    <a asp-action="logout" asp-controller="Account">
+                    <a asp-action="logout">
                         <i class='bx bx-log-out icon'></i>
                         <span class="text nav-text">Logout</span>
                     </a>

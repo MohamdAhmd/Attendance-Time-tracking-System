@@ -76,7 +76,11 @@ namespace Attendance_Time_tracking_System.Repos
             if (trackid != null && dayexist != null && dayexistintrack)
             {
                 var allstudents = db.Students.Include(x => x.attends).Include(x => x.TrackNavigation)
-                                    .Where(x => x.TrackId == trackid && (DayStatus == null || x.attends.Any(x => x.attendstatus == DayStatus && x.DayId == dayexist) || (DayStatus == "Absent" && !x.attends.Any(x => x.DayId == dayexist))))
+                                    .Where(x => x.TrackId == trackid
+                                    //&& x.attends.Any(x => x.attendstatus == DayStatus && x.DayId == dayexist)
+                                    && (DayStatus == null || x.attends.Any(x => x.attendstatus == DayStatus && x.DayId == dayexist)
+                                    || (DayStatus == "Absent" && !x.attends.Any(x => x.DayId == dayexist))
+                                    ))
                                     .Select(x => new ShowStudentsSupervisor
                                     {
                                         Fullname = x.F_name + " "+x.L_name,
