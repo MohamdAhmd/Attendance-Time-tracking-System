@@ -1,20 +1,24 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Attendance_Time_tracking_System.Repos;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
+    [Authorize(Roles = "Instructor")]
     public class InstructorController : Controller
     {
         IInstructorRepo instructorRepo;
         readonly ITrackRepo trackRepo;
+        readonly IUserRepo userRepo;
         dbContext db;
         
-        public InstructorController(IInstructorRepo _instructorRepo,dbContext _db, ITrackRepo trackRepo)
+        public InstructorController(IInstructorRepo _instructorRepo,dbContext _db, ITrackRepo trackRepo , IUserRepo userRepo)
         {
             instructorRepo = _instructorRepo;
             this.trackRepo = trackRepo;
+            this.userRepo = userRepo;
             db = _db;
         }
         public IActionResult Index()
@@ -61,7 +65,7 @@ namespace Attendance_Time_tracking_System.Controllers
         /// <returns></returns>
         /// 
 
-        //[Authorize(Roles ="Supervisor")]
+        [Authorize(Roles ="Supervisor")]
         public IActionResult SupervisorShowStudetnsDegrees()
         {
             int SupervisorId = instructorid();
@@ -72,7 +76,7 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(students);
         }
 
-        //[Authorize(Roles = "Supervisor")]
+        [Authorize(Roles = "Supervisor")]
         [HttpPost]
         public IActionResult SupervisorShowStudetnsDegrees(DateOnly choosendate , int SelectedTrack , string DayStatus)
         {
@@ -120,6 +124,56 @@ namespace Attendance_Time_tracking_System.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("index", "home");
         }
+
+
+        /// <summary>
+        /// profile page
+        /// </summary>
+        /// <returns></returns>
+
+        public IActionResult ProfilePage()
+        {
+            var instid = instructorid();
+            var user = userRepo.GetUserById(instid);
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(UserEditProfile user, IFormFile personalimages)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await userRepo.EditUserInfo(user, personalimages) == true)
+                {
+                    return RedirectToAction("ProfilePage");
+                }
+                return RedirectToAction("ProfilePage");
+            }
+            else
+            {
+                return RedirectToAction("ProfilePage");
+            }
+        }
+
+        public IActionResult ChangePassword()
+        {
+            var instid = instructorid();
+            var userpass = userRepo.UserPassword(instid);
+            return View(userpass);
+        }
+        [HttpPost]
+        public IActionResult ChangePassword(UserPassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (userRepo.updatePass(model))
+                {
+                    return RedirectToAction("ProfilePage");
+                }
+            }
+            return View(model);
+        }
+
+
         public int instructorid()
         {
             var userIdClaim = User.FindFirst("UserId");

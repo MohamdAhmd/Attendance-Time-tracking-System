@@ -104,9 +104,9 @@ namespace Attendance_Time_tracking_System.Controllers
             {
                 return RedirectToAction("index", "Security");
             }
-            else if (loginroles.Contains("StudentAffairs"))
+            else if (loginroles.Contains("Student-affairs"))
             {
-                return RedirectToAction("index", "Security");
+                return RedirectToAction("index", "StudentAffairs");
             }
             return RedirectToAction("login");
         }

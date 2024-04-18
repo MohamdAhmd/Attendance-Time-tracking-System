@@ -1,0 +1,140 @@
+﻿@model UserEditProfile
+@{
+    Layout = "StudentAffairs";
+}
+
+<div class="container mt-4">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center">
+                            @if (@Model.Image == null)
+                            {
+                                <img src="" alt="Admin" class="rounded-circle" width="200" />
+                            }
+                            else
+                            {
+                                <img src="@Model.Image" alt="Admin" class="rounded-circle" width="200" />
+                            }
+                            <div class="mt-3">
+                                <h4>@Model.F_name @Model.L_name</h4>
+                                <p class="text-secondary mb-1">Security</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <form asp-action="EditProfile" asp-controller="StudentAffairs" method="post" enctype="multipart/form-data">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">First Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary editable" id="fname">
+                                <span>@Model.F_name</span>
+                                    <input asp-for="F_name" class="showdiv form-control" hidden />
+                                <input asp-for="Id" hidden/>
+                                    <span asp-validation-for="F_name" class="showdiv"></span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row ">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Last Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary editable" id="lname">
+                                <span>@Model.L_name</span>
+                                    <input asp-for="L_name" class="showdiv form-control" hidden />
+                                    <span asp-validation-for="L_name" class="showdiv"></span>
+                            </div>
+
+                        </div>
+                        <hr />
+                        <div class="row ">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary editable" id="email">
+                                <a href="/cdn-cgi/l/email-protection"
+                                   class="_cf_email_"
+                                   data-cfemail="bbddd2cbfbd1ced0d6ced395dad7" >
+                                    <span> @Model.Email</span>
+                                </a>
+                                    <input asp-for="Email" class="showdiv form-control" hidden />
+                                    <span asp-validation-for="Email" class="showdiv"></span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row ">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Mobile</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary editable" id="phone">
+                                <span> @Model.Phone </span>
+                                    <input asp-for="Phone" class="showdiv form-control" hidden />
+                                </div>
+                        </div>
+                            <hr />
+                        <div class="row showdiv" hidden>
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Upload Photo</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary" id="phone">
+                                    <input type="file" accept="image/*" id="imageInput" name="personalimages" class="form-control" />
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info" id="editProfileBtn">Edit</a>
+                                    <a class="btn btn-warning" id="changePassword" asp-action="ChangePassword">Change Password</a>
+                                <button type="submit" class="btn btn-info" id="saveProfileBtn" style="display:none">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="col-md-8 offset-4" id="partialViewContainer">
+
+            </div>
+        </div>
+</div>
+
+@section scripts{
+
+    <script>
+        document.getElementById('editProfileBtn').addEventListener('click', function (event) {
+            event.preventDefault();
+            $("span").attr('hidden', true);
+            $(".showdiv").removeAttr('hidden');
+            var editableFields = document.querySelectorAll('.editable');
+            document.getElementById('editProfileBtn').style.display = 'none';
+            saveBtn.style.display = 'block';
+        });
+
+        let saveBtn = document.getElementById('saveProfileBtn')
+
+        // document.getElementById("changePassword").addEventListener("click", function (event) {
+        //     $.ajax({
+        //         url: '@Url.Action("ChangePassword")',
+        //         type: 'GET',
+        //         dataType: 'html',
+        //         success: function (data) {
+        //             $('#partialViewContainer').html(data);
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.error('Error loading partial view:', error);
+        //         }
+        //     });
+        // });
+            
+        
+
+    </script>
+        
+}
