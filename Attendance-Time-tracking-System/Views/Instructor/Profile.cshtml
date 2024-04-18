@@ -76,11 +76,8 @@
         </div>
 </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-
-
         document.getElementById('editProfileBtn').addEventListener('click', function (event) {
             event.preventDefault(); // Prevent the default behavior of the link
             var editableFields = document.querySelectorAll('.editable');
@@ -107,14 +104,13 @@
             let lname = document.querySelector('#lname input')
             let email = document.querySelector('#email input')
             let phone = document.querySelector('#phone input')
-            console.log(fullname.value)
             console.log(email.value)
             console.log(phone.value)
 
             $.ajax({
                 type: "POST",
                 url: "/Instructor/Edit",
-                data: { F_name: fname.value, L_name: lname.value,Email:email.value,phone:phone.value },
+                data: { F_name: fname.value, L_name: lname.value, Email: email.value, phone: phone.value },
                 success: function (result) {
                     Swal.fire({
                         title: "Good job!",
@@ -123,15 +119,12 @@
                     }).then(() => {
                         location.reload();
                     })
-
                 },
                 error: function (error) {
                     // Handle error
                     Swal.fire("Something Went Wrong!", "", "info");
                     console.log("Error occurred:", error);
                 }
-            });
-
-
-
+            })
+        })
     </script>
