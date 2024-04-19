@@ -83,11 +83,11 @@ namespace Attendance_Time_tracking_System.Controllers
             }
             else if (loginroles.Contains("Instructor"))
             {
-                return RedirectToAction("showAttendance", "Instructor");
+                return RedirectToAction("ProfilePage", "Instructor");
             }
             else if (loginroles.Contains("Supervisor"))
             {
-                return RedirectToAction("SupervisorShowStudetnsDegrees", "Instructor");
+                return RedirectToAction("ProfilePage", "Instructor");
             }
             else if(loginroles.Contains("Student"))
             {
@@ -102,15 +102,15 @@ namespace Attendance_Time_tracking_System.Controllers
                     TempData["Not Found"] = "Your account have been refused";
                     return View(loginVM);
                 }
-                return RedirectToAction("ShowAttendance", "Student");
+                return RedirectToAction("ProfilePage", "Student");
             }
             else if (loginroles.Contains("Security"))
             {
-                return RedirectToAction("index", "Security");
+                return RedirectToAction("ProfilePage", "Security");
             }
             else if (loginroles.Contains("Student-affairs"))
             {
-                return RedirectToAction("index", "StudentAffairs");
+                return RedirectToAction("ProfilePage", "StudentAffairs");
             }
             return RedirectToAction("login");
         }

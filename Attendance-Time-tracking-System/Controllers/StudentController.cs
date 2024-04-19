@@ -16,18 +16,19 @@ using Attendance_Time_tracking_System.IRepos;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
-    [Authorize(Roles = "Student")]
     public class StudentController : Controller
     {
         readonly dbContext db;
         IStudentRepo studentRepo;
+        IUserRepo userRepo;
 
-        public StudentController(dbContext _db, IStudentRepo _studentRepo)
+        public StudentController(dbContext _db, IStudentRepo _studentRepo, IUserRepo _userRepo)
         {
-            db= _db;
+            db = _db;
             studentRepo = _studentRepo;
-
+            userRepo = _userRepo;
         }
+        [Authorize(Roles = "Student")]
         public IActionResult ShowAttendance()
         {
             var userIdClaim = HttpContext.User.FindFirst("UserId");
@@ -41,6 +42,7 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(model);       
 
         }
+        [Authorize(Roles = "Student")]
         public IActionResult StudentSchedule()
         {
 
@@ -53,115 +55,14 @@ namespace Attendance_Time_tracking_System.Controllers
                         .ToList().OrderBy(t => t.DayNavigation.Day.Date);
             return View(model);
         }
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> logout()
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("index", "home");
         }
-        public IActionResult Index()
-        {
-            return View(studentRepo.GetAllStudents());
-        }
-        [HttpGet]
-        public IActionResult AddBulkStudents()
-        {
-            return View();
-        }
-        
-        [HttpPost]
-        public IActionResult AddBulkStudents(IFormFile excelFile)
-        {
-            int studentAdded = 0;
+        [Authorize(Roles = "Student-affairs")]
 
-            try
-            {
-                if (excelFile == null || excelFile.Length == 0)
-                {
-                    return BadRequest("No file uploaded.");
-                }
-                else if (excelFile.ContentType != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-                {
-                    return BadRequest("Only Excel files are allowed.");
-                }
-
-                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-                using (var stream = new MemoryStream())
-                {
-                    excelFile.CopyTo(stream);
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                        int rowCount = worksheet.Dimension.Rows;
-
-                        for (int row = 2; row <= rowCount; row++)
-                        {
-                            if (String.IsNullOrEmpty(worksheet.Cells[row, 1].Value?.ToString()))
-                            {
-                                break;
-                            }
-
-                            // Extract values from Excel columns into variables
-                            string email = worksheet.Cells[row, 1].Value?.ToString();
-                            string password = worksheet.Cells[row, 2].Value?.ToString();
-                            string fName = worksheet.Cells[row, 3].Value?.ToString();
-                            string lName = worksheet.Cells[row, 4].Value?.ToString();
-                            int? phone = Convert.ToInt32(worksheet.Cells[row, 5].Value);
-                            bool userStatus = Convert.ToBoolean(worksheet.Cells[row, 6].Value);
-                            string imagePath = worksheet.Cells[row, 7].Value?.ToString();
-                            string faculty = worksheet.Cells[row, 8].Value?.ToString();
-                            string university = worksheet.Cells[row, 9].Value?.ToString();
-                            string specialization = worksheet.Cells[row, 10].Value?.ToString();
-                            string st = worksheet.Cells[row, 11].Value?.ToString();
-                            int _studentGraduationYear = int.Parse(st);
-                            DateTime graduationYear = new DateTime(_studentGraduationYear, 1, 1);
-                            // DateTime graduationYear = Convert.ToDateTime(worksheet.Cells[row, 10].Value);
-                            int grade = Convert.ToInt32(worksheet.Cells[row, 12].Value);
-                            string status = worksheet.Cells[row, 13].Value?.ToString();
-                            int nextMinus = Convert.ToInt32(worksheet.Cells[row, 14].Value);
-                            int trackId = Convert.ToInt32(worksheet.Cells[row, 15].Value);
-                            int intakeId = Convert.ToInt32(worksheet.Cells[row, 16].Value);
-                            string graduationDegree = worksheet.Cells[row, 17].Value?.ToString();
-
-                            // Create Student object using extracted variables
-                            Student s = new Student
-                            {
-                                Email = email,
-                                Password = password,
-                                F_name = fName,
-                                L_name = lName,
-                                phone = phone,
-                                User_Status = userStatus,
-                                image = imagePath,
-                                Faculty = faculty,
-                                University = university,
-                                specialization = specialization,
-                                GraduationYear = graduationYear,
-                                Grade = grade,
-                                status = status,
-                                NextMinus = nextMinus,
-                                TrackId = trackId,
-                                IntakeID = intakeId,
-                                GraduationDegree = graduationDegree
-                            };
-                            studentRepo.AddStudent(s,null);
-                            studentAdded++;
-                          
-
-
-
-
-                        }
-                        }
-                    
-
-                    return Ok($"Students uploaded successfully.\nNumber of Students Added: {studentAdded}");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"An error occurred while processing the file. Please try again later.\nNumber of Students Added: {studentAdded}");
-            }
-        }
         public IActionResult Profile()
         {
             var userIdClaim = HttpContext.User.FindFirst("UserId");
@@ -169,24 +70,60 @@ namespace Attendance_Time_tracking_System.Controllers
             var user = studentRepo.GetStudentById(id);
             return View(user);
         }
-        [HttpGet]
-        public IActionResult Edit (int id)
+
+
+        public IActionResult ProfilePage()
         {
-            var student=db.Students.Include(s=>s.TrackNavigation).FirstOrDefault(s=>s.Id==id);
-            var tracks=db.Tracks.ToList();
-            ViewBag.Tracks=tracks;
-            return View(student);
+            var instid = stdid();
+            var user = userRepo.GetUserEditById(instid);
+            return View(user);
         }
         [HttpPost]
-        public IActionResult Edit(Student s,int? id)
+        public async Task<IActionResult> EditProfile(UserEditProfile user, IFormFile personalimages)
         {
-            studentRepo.UpdateStudent(s,id);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                if (await userRepo.EditUserInfo(user, personalimages) == true)
+                {
+                    return RedirectToAction("ProfilePage");
+                }
+                return RedirectToAction("ProfilePage");
+            }
+            else
+            {
+                return RedirectToAction("ProfilePage");
+            }
         }
-        public IActionResult Delete(Student student)
+
+        public IActionResult ChangePassword()
         {
-            studentRepo.DeleteStudent(student);
-            return RedirectToAction("Index");
+            var instid = stdid();
+            var userpass = userRepo.UserPassword(instid);
+            return View(userpass);
+        }
+        [HttpPost]
+        public IActionResult ChangePassword(UserPassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (userRepo.updatePass(model))
+                {
+                    return RedirectToAction("ProfilePage");
+                }
+            }
+            return View(model);
+        }
+
+
+        public int stdid()
+        {
+            var userIdClaim = User.FindFirst("UserId");
+            if (userIdClaim != null)
+            {
+                string userId = userIdClaim.Value;
+                return int.Parse(userId);
+            }
+            return 7;
         }
 
     }
