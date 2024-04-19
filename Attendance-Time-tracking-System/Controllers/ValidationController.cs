@@ -28,5 +28,21 @@ namespace Attendance_Time_tracking_System.Controllers
             return Json(userRepo.isunique(Email,Id));
         }
 
+
+        public IActionResult IsPassword (string oldPassword, int Id)
+        {
+            return Json(userRepo.currentpass(oldPassword, Id)); 
+        }
+
+        public IActionResult IsEqualToPassword (string oldPassword, string newPassword)
+        {
+            bool valid = oldPassword == newPassword; 
+            return Json(!valid);
+        }
+        public IActionResult ConfirmPasswords(string ConfirmPassword, string NewPassword)
+        {
+            bool valid = ConfirmPassword == NewPassword;
+            return Json(valid);
+        }
     }
 }

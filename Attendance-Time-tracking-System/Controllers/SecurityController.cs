@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json.Linq;
 using System.CodeDom;
@@ -107,5 +108,63 @@ namespace Attendance_Time_tracking_System.Controllers
             return RedirectToAction("index","home");
         }
 
+        /// <summary>
+        /// profile page
+        /// </summary>
+        /// <returns></returns>
+
+        public IActionResult ProfilePage()
+        {
+            var instid = instructorid();
+            var user = userRepo.GetUserEditById(instid);
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(UserEditProfile user, IFormFile personalimages)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await userRepo.EditUserInfo(user, personalimages) == true)
+                {
+                    return RedirectToAction("ProfilePage");
+                }
+                return RedirectToAction("ProfilePage");
+            }
+            else
+            {
+                return RedirectToAction("ProfilePage");
+            }
+        }
+
+        public IActionResult ChangePassword()
+        {
+            var instid = instructorid();
+            var userpass = userRepo.UserPassword(instid);
+            return View(userpass);
+        }
+        [HttpPost]
+        public IActionResult ChangePassword(UserPassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (userRepo.updatePass(model))
+                {
+                    return RedirectToAction("ProfilePage");
+                }
+            }
+            return View(model);
+        }
+
+
+        public int instructorid()
+        {
+            var userIdClaim = User.FindFirst("UserId");
+            if (userIdClaim != null)
+            {
+                string userId = userIdClaim.Value;
+                return int.Parse(userId);
+            }
+            return 7;
+        }
     }
 }

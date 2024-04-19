@@ -1,16 +1,21 @@
 ﻿using Attendance_Time_tracking_System.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.Drawing;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Attendance_Time_tracking_System.Repos
 {
     public class UserRepo  : IUserRepo
     {
         readonly dbContext db;
-        public UserRepo(dbContext db)
+        readonly IBlobRepo BlobRepo;
+        public UserRepo(dbContext db , IBlobRepo _blob)
         {
             this.db = db;
+            BlobRepo = _blob;
         }
 
         public List<User> GetAllUsers()
@@ -212,11 +217,64 @@ namespace Attendance_Time_tracking_System.Repos
         }
 
 
+        public UserEditProfile GetUserEditById(int id)
+        {
+            var model = db.Users.Where(x => x.Id == id)
+                .Select(x => new UserEditProfile
+                {
+                    Id = x.Id,
+                    F_name = x.F_name,
+                    L_name = x.L_name,
+                    Email = x.Email,
+                    Phone = x.phone,
+                    Image = x.image
+                }).First();
+            return model;
+        }
+        public async Task<bool> EditUserInfo (UserEditProfile model , IFormFile file1)
+        {
+            var user = db.Users.FirstOrDefault(x => x.Id == model.Id);
+            user.F_name = model.F_name;
+            user.L_name = model.L_name;
+            user.Email = model.Email;
+            user.phone = model.Phone;
+            user.image =await BlobRepo.AddingImage(file1);
+            db.Users.Update(user);
+            if(db.SaveChanges()> 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        public UserPassword UserPassword (int id)
+        {
+            var model = db.Users.Select(x => new UserPassword { Id = x.Id }).FirstOrDefault(x=>x.Id==id);
+            return model;
+        }
+        
+        public bool currentpass (string password,int id)
+        {
+            var pass = db.Users.First(x => x.Id == id).Password;
+            return pass == password;
+        }
+
+        public bool updatePass(UserPassword user)
+        {
+            var model = db.Users.FirstOrDefault(x=>x.Id==user.Id);
+            model.Password = user.NewPassword;
+            if(db.SaveChanges() > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
         public User GetUserById(int id)
         {
             return db.Users.FirstOrDefault(u => u.Id == id);
         }
 
-
+     
     }
 }
