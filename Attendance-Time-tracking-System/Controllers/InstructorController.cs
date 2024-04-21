@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Time_tracking_System.Controllers
 {
-    [Authorize(Roles = "Instructor")]
     public class InstructorController : Controller
     {
         IInstructorRepo instructorRepo;
@@ -22,23 +21,27 @@ namespace Attendance_Time_tracking_System.Controllers
             this.userRepo = userRepo;
             db = _db;
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             
             return View(instructorRepo.GetAllInstructors());
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(Instructor instructor)
         {
             instructorRepo.AddInstructor(instructor);
             return RedirectToAction("Index");
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             var instructor=db.Instructors.Include(i=>i.roles).Include(i=>i.supervisor).FirstOrDefault(i=>i.Id==id);
@@ -49,11 +52,13 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(instructor);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(Instructor instructor, int? id)
         {
             instructorRepo.UpdateInstructor(instructor,id);
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             instructorRepo.DeleteInstructor(instructorRepo.GetInstructorById(id));
@@ -132,7 +137,7 @@ namespace Attendance_Time_tracking_System.Controllers
         /// profile page
         /// </summary>
         /// <returns></returns>
-
+        [Authorize(Roles = "Instructor")]
         public IActionResult ProfilePage()
         {
             var instid = instructorid();
@@ -140,6 +145,7 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(user);
         }
         [HttpPost]
+        [Authorize(Roles = "Instructor")]
         public async Task<IActionResult> EditProfile(UserEditProfile user, IFormFile personalimages)
         {
             if (ModelState.IsValid)
