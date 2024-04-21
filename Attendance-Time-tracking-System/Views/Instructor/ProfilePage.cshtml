@@ -20,7 +20,14 @@
                             }
                             <div class="mt-3">
                                 <h4>@Model.F_name @Model.L_name</h4>
-                                <p class="text-secondary mb-1">Instructor</p>
+                                @if (User.IsInRole("Supervisor"))
+                                {
+                                    <p class="text-secondary mb-1">Supervisor</p>
+                                }
+                                else
+                                {
+                                    <p class="text-secondary mb-1">Instructor</p>
+                                }
                             </div>
                         </div>
                     </div>

@@ -24,8 +24,15 @@
 
                 <div class="text logo-text">
                     <span class="name">ITI</span>
-                    <span class="profession">Security</span>
-                </div>
+                    @if (User.IsInRole("Supervisor"))
+                    {
+                        <span class="profession">Supervisor</span>
+                    }
+                    else
+                    {
+                        <span class="profession">Instructor</span>
+                      }
+                    </div>
             </div>
 
             <i class='bx bx-chevron-right toggle'></i>
