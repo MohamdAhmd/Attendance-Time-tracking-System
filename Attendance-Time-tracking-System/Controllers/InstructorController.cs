@@ -101,23 +101,23 @@ namespace Attendance_Time_tracking_System.Controllers
 
 
         //show instructor absence status
-        [Authorize(Roles = "Instructor")]
+        [Authorize(Roles = "Instructor, Supervisor")]
         public IActionResult showAttendance()
         {
             var instid = instructorid();
             var model = instructorRepo.ShowInstructorAbseneceDays(instid);
             return View(model);
         }
-        [Authorize(Roles = "Instructor")]
         [HttpPost]
+        [Authorize(Roles = "Instructor, Supervisor")]
         public IActionResult showAttendance(string SelectedStatus)
         {
             var instid = instructorid();
             var model = instructorRepo.ShowInstructorAbseneceDays(instid, SelectedStatus);
             return View(model);
         }
-        [Authorize(Roles = "Instructor")]
         [HttpPost]
+        [Authorize(Roles = "Instructor, Supervisor")]
         public IActionResult showAttendance2(string SelectedStatus)
         {
             var instid = instructorid();
@@ -137,7 +137,8 @@ namespace Attendance_Time_tracking_System.Controllers
         /// profile page
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = "Instructor")]
+        /// 
+        [Authorize(Roles = "Instructor, Supervisor")]
         public IActionResult ProfilePage()
         {
             var instid = instructorid();
@@ -145,7 +146,7 @@ namespace Attendance_Time_tracking_System.Controllers
             return View(user);
         }
         [HttpPost]
-        [Authorize(Roles = "Instructor")]
+        [Authorize(Roles = "Instructor, Supervisor")]
         public async Task<IActionResult> EditProfile(UserEditProfile user, IFormFile personalimages)
         {
             if (ModelState.IsValid)
@@ -161,7 +162,7 @@ namespace Attendance_Time_tracking_System.Controllers
                 return RedirectToAction("ProfilePage");
             }
         }
-
+        [Authorize(Roles = "Instructor, Supervisor")]
         public IActionResult ChangePassword()
         {
             var instid = instructorid();
