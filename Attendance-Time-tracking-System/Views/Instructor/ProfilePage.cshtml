@@ -12,7 +12,7 @@
                         <div class="d-flex flex-column align-items-center text-center">
                             @if (@Model.Image == null)
                             {
-                                <img src="" alt="Admin" class="rounded-circle" width="200" />
+                                <img src="~/Images/profile.png" alt="Admin" class="rounded-circle" width="200" />
                             }
                             else
                             {
@@ -115,13 +115,18 @@
 @section scripts{
 
     <script>
-        document.getElementById('editProfileBtn').addEventListener('click', function (event) {
+            let editBtn = document.getElementById('editProfileBtn')
+            let saveBtn = document.getElementById('saveProfileBtn')
+            let passwordBtn = document.getElementById('changePassword')
+
+        editBtm.addEventListener('click', function (event) {
             event.preventDefault();
             $("span").attr('hidden', true);
             $(".showdiv").removeAttr('hidden');
             var editableFields = document.querySelectorAll('.editable');
             document.getElementById('editProfileBtn').style.display = 'none';
             saveBtn.style.display = 'block';
+            passwordBtn.style.display = 'none'
         });
 
         let saveBtn = document.getElementById('saveProfileBtn')
