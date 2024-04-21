@@ -30,7 +30,27 @@ This project is a web application designed to streamline attendance management f
     * Development knowledge (details in code)
 3. **Setup:**
     * Update database connection details in the project.
-
+4. **Website:**
+    * https://trackingsystemapp.azurewebsites.net
+5. **Credentials For Testing** 
+    Admin: 
+        -	Email : admin@gmail.com
+        -	Password : Admin12345
+    Instructor
+        -	Email : adbellatief@gmail.com
+        -	Password : Aadbellatief12345
+    Supervisor
+        -	Email : nada@gmail.com
+        -	Password : Password123!
+    Student
+        -	Email :  mohamed10@gmail.com
+        -	Password :  test12345
+    Student Affairs
+        -	Email : Mayar@gmail.com
+        -	Password : mayar12345
+    Security
+        -	Email : Security@gmail.com
+        -	Password : Password123!
 
 **Contributing**
 
